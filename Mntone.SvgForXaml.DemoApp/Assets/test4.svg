@@ -1,0 +1,12 @@
+﻿<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     viewBox="0 0 2834.6 2834.6" enable-background="new 0 0 2834.6 2834.6" xml:space="preserve">
+<g id="Effect">
+  <rect opacity="1.0" fill="#B6C0C6" width="2834.6" height="2834.6"/>
+  <radialGradient id="SVGID_2_" cx="458.6157" cy="1137.1204" r="644.0953" fx="494.8075" fy="1386.5354" gradientTransform="matrix(3.321 -0.6998 0.4077 1.9347 -440.9168 -408.0598)" gradientUnits="userSpaceOnUse">
+    <stop  offset="0.3301" style="stop-color:#FFFFFF;stop-opacity:0.9"/>
+    <stop  offset="0.4549" style="stop-color:#F00;stop-opacity:0.8"/>
+    <stop  offset="0.8525" style="stop-color:#FFFFFF;stop-opacity:0.1"/>
+  </radialGradient>
+  <rect fill="url(#SVGID_2_)" width="2834.6" height="2834.6"/>
+</g>
+</svg>

@@ -1,0 +1,22 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="using:Mntone.SvgForXaml.UI.Xaml"
+	xmlns:win2d="using:Microsoft.Graphics.Canvas.UI.Xaml">
+
+	<Style
+		TargetType="local:SvgImage">
+		<Setter
+			Property="Template">
+			<Setter.Value>
+				<ControlTemplate
+					TargetType="local:SvgImage">
+					<win2d:CanvasControl
+						x:FieldModifier="Private"
+						x:Name="CanvasControl"
+						ClearColor="Transparent" />
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

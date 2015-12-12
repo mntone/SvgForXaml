@@ -1,0 +1,44 @@
+﻿<Page
+	x:Class="SvgImageControlSample.MainPage"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="using:SvgImageControlSample"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+	Loaded="OnLoaded"
+	Unloaded="OnUnloaded"
+	xmlns:svg="using:Mntone.SvgForXaml.UI.Xaml">
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition
+				Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition
+				Width="100" />
+		</Grid.ColumnDefinitions>
+
+		<svg:SvgImage
+			x:FieldModifier="Private"
+			x:Name="SvgImageControl"
+			Grid.ColumnSpan="2" />
+
+		<TextBox
+			x:FieldModifier="Private"
+			x:Name="PathTextBox"
+			Margin="0,0,4,0"
+			Grid.Row="1"
+			IsEnabled="False" />
+		<Button
+			Grid.Row="1"
+			Grid.Column="1"
+			HorizontalAlignment="Stretch"
+			Content="Open…"
+			Click="OnOpenClick" />
+	</Grid>
+</Page>

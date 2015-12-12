@@ -1,0 +1,496 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{75B440FE-2CC7-42AE-AF3B-9514A148E6A9}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SvgImageControlSample</RootNamespace>
+    <AssemblyName>SvgImageControlSample</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PackageCertificateKeyFile>SvgImageControlSample_TemporaryKey.pfx</PackageCertificateKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+    <None Include="Mntone.SvgForXaml.DemoApp_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\AppList44x44.scale-100.png" />
+    <Content Include="Assets\AppList44x44.scale-100_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.scale-100_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.scale-125.png" />
+    <Content Include="Assets\AppList44x44.scale-125_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.scale-125_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.scale-150.png" />
+    <Content Include="Assets\AppList44x44.scale-150_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.scale-150_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.scale-160.png" />
+    <Content Include="Assets\AppList44x44.scale-160_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.scale-160_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.scale-200.png" />
+    <Content Include="Assets\AppList44x44.scale-200_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.scale-200_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.scale-225.png" />
+    <Content Include="Assets\AppList44x44.scale-225_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.scale-225_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.scale-250.png" />
+    <Content Include="Assets\AppList44x44.scale-250_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.scale-250_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.scale-300.png" />
+    <Content Include="Assets\AppList44x44.scale-300_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.scale-300_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.scale-400.png" />
+    <Content Include="Assets\AppList44x44.scale-400_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.scale-400_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-1024.png" />
+    <Content Include="Assets\AppList44x44.targetsize-1024_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-1024_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-104.png" />
+    <Content Include="Assets\AppList44x44.targetsize-104_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-104_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-108.png" />
+    <Content Include="Assets\AppList44x44.targetsize-108_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-108_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-112.png" />
+    <Content Include="Assets\AppList44x44.targetsize-112_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-112_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-120.png" />
+    <Content Include="Assets\AppList44x44.targetsize-120_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-120_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-128.png" />
+    <Content Include="Assets\AppList44x44.targetsize-128_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-128_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-132.png" />
+    <Content Include="Assets\AppList44x44.targetsize-132_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-132_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-144.png" />
+    <Content Include="Assets\AppList44x44.targetsize-144_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-144_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-156.png" />
+    <Content Include="Assets\AppList44x44.targetsize-156_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-156_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-16.png" />
+    <Content Include="Assets\AppList44x44.targetsize-160.png" />
+    <Content Include="Assets\AppList44x44.targetsize-160_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-160_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-168.png" />
+    <Content Include="Assets\AppList44x44.targetsize-168_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-168_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-16_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-16_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-180.png" />
+    <Content Include="Assets\AppList44x44.targetsize-180_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-180_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-192.png" />
+    <Content Include="Assets\AppList44x44.targetsize-192_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-192_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-20.png" />
+    <Content Include="Assets\AppList44x44.targetsize-20_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-20_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-224.png" />
+    <Content Include="Assets\AppList44x44.targetsize-224_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-224_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-24.png" />
+    <Content Include="Assets\AppList44x44.targetsize-24_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-24_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-256.png" />
+    <Content Include="Assets\AppList44x44.targetsize-256_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-256_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-28.png" />
+    <Content Include="Assets\AppList44x44.targetsize-288.png" />
+    <Content Include="Assets\AppList44x44.targetsize-288_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-288_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-28_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-28_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-30.png" />
+    <Content Include="Assets\AppList44x44.targetsize-30_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-30_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-32.png" />
+    <Content Include="Assets\AppList44x44.targetsize-320.png" />
+    <Content Include="Assets\AppList44x44.targetsize-320_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-320_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-32_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-32_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-352.png" />
+    <Content Include="Assets\AppList44x44.targetsize-352_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-352_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-36.png" />
+    <Content Include="Assets\AppList44x44.targetsize-36_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-36_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-384.png" />
+    <Content Include="Assets\AppList44x44.targetsize-384_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-384_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-40.png" />
+    <Content Include="Assets\AppList44x44.targetsize-40_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-40_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-416.png" />
+    <Content Include="Assets\AppList44x44.targetsize-416_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-416_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-42.png" />
+    <Content Include="Assets\AppList44x44.targetsize-42_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-42_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-44.png" />
+    <Content Include="Assets\AppList44x44.targetsize-448.png" />
+    <Content Include="Assets\AppList44x44.targetsize-448_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-448_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-44_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-44_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-48.png" />
+    <Content Include="Assets\AppList44x44.targetsize-480.png" />
+    <Content Include="Assets\AppList44x44.targetsize-480_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-480_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-48_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-48_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-512.png" />
+    <Content Include="Assets\AppList44x44.targetsize-512_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-512_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-52.png" />
+    <Content Include="Assets\AppList44x44.targetsize-52_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-52_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-54.png" />
+    <Content Include="Assets\AppList44x44.targetsize-54_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-54_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-56.png" />
+    <Content Include="Assets\AppList44x44.targetsize-56_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-56_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-576.png" />
+    <Content Include="Assets\AppList44x44.targetsize-576_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-576_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-60.png" />
+    <Content Include="Assets\AppList44x44.targetsize-60_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-60_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-64.png" />
+    <Content Include="Assets\AppList44x44.targetsize-640.png" />
+    <Content Include="Assets\AppList44x44.targetsize-640_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-640_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-64_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-64_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-66.png" />
+    <Content Include="Assets\AppList44x44.targetsize-66_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-66_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-704.png" />
+    <Content Include="Assets\AppList44x44.targetsize-704_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-704_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-72.png" />
+    <Content Include="Assets\AppList44x44.targetsize-72_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-72_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-768.png" />
+    <Content Include="Assets\AppList44x44.targetsize-768_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-768_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-78.png" />
+    <Content Include="Assets\AppList44x44.targetsize-78_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-78_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-80.png" />
+    <Content Include="Assets\AppList44x44.targetsize-80_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-80_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-832.png" />
+    <Content Include="Assets\AppList44x44.targetsize-832_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-832_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-84.png" />
+    <Content Include="Assets\AppList44x44.targetsize-84_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-84_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-88.png" />
+    <Content Include="Assets\AppList44x44.targetsize-88_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-88_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-896.png" />
+    <Content Include="Assets\AppList44x44.targetsize-896_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-896_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-90.png" />
+    <Content Include="Assets\AppList44x44.targetsize-90_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-90_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-96.png" />
+    <Content Include="Assets\AppList44x44.targetsize-960.png" />
+    <Content Include="Assets\AppList44x44.targetsize-960_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-960_contrast-white.png" />
+    <Content Include="Assets\AppList44x44.targetsize-96_contrast-black.png" />
+    <Content Include="Assets\AppList44x44.targetsize-96_contrast-white.png" />
+    <Content Include="Assets\SplashScreen.scale-100.png" />
+    <Content Include="Assets\SplashScreen.scale-100_contrast-black.png" />
+    <Content Include="Assets\SplashScreen.scale-100_contrast-white.png" />
+    <Content Include="Assets\SplashScreen.scale-125.png" />
+    <Content Include="Assets\SplashScreen.scale-125_contrast-black.png" />
+    <Content Include="Assets\SplashScreen.scale-125_contrast-white.png" />
+    <Content Include="Assets\SplashScreen.scale-150.png" />
+    <Content Include="Assets\SplashScreen.scale-150_contrast-black.png" />
+    <Content Include="Assets\SplashScreen.scale-150_contrast-white.png" />
+    <Content Include="Assets\SplashScreen.scale-160.png" />
+    <Content Include="Assets\SplashScreen.scale-160_contrast-black.png" />
+    <Content Include="Assets\SplashScreen.scale-160_contrast-white.png" />
+    <Content Include="Assets\SplashScreen.scale-200_contrast-black.png" />
+    <Content Include="Assets\SplashScreen.scale-200_contrast-white.png" />
+    <Content Include="Assets\SplashScreen.scale-225.png" />
+    <Content Include="Assets\SplashScreen.scale-225_contrast-black.png" />
+    <Content Include="Assets\SplashScreen.scale-225_contrast-white.png" />
+    <Content Include="Assets\SplashScreen.scale-250.png" />
+    <Content Include="Assets\SplashScreen.scale-250_contrast-black.png" />
+    <Content Include="Assets\SplashScreen.scale-250_contrast-white.png" />
+    <Content Include="Assets\SplashScreen.scale-300.png" />
+    <Content Include="Assets\SplashScreen.scale-300_contrast-black.png" />
+    <Content Include="Assets\SplashScreen.scale-300_contrast-white.png" />
+    <Content Include="Assets\SplashScreen.scale-400.png" />
+    <Content Include="Assets\SplashScreen.scale-400_contrast-black.png" />
+    <Content Include="Assets\SplashScreen.scale-400_contrast-white.png" />
+    <Content Include="Assets\StoreLogo.scale-100.png" />
+    <Content Include="Assets\StoreLogo.scale-100_contrast-black.png" />
+    <Content Include="Assets\StoreLogo.scale-100_contrast-white.png" />
+    <Content Include="Assets\StoreLogo.scale-125.png" />
+    <Content Include="Assets\StoreLogo.scale-125_contrast-black.png" />
+    <Content Include="Assets\StoreLogo.scale-125_contrast-white.png" />
+    <Content Include="Assets\StoreLogo.scale-150.png" />
+    <Content Include="Assets\StoreLogo.scale-150_contrast-black.png" />
+    <Content Include="Assets\StoreLogo.scale-150_contrast-white.png" />
+    <Content Include="Assets\StoreLogo.scale-160.png" />
+    <Content Include="Assets\StoreLogo.scale-160_contrast-black.png" />
+    <Content Include="Assets\StoreLogo.scale-160_contrast-white.png" />
+    <Content Include="Assets\StoreLogo.scale-200.png" />
+    <Content Include="Assets\StoreLogo.scale-200_contrast-black.png" />
+    <Content Include="Assets\StoreLogo.scale-200_contrast-white.png" />
+    <Content Include="Assets\StoreLogo.scale-225.png" />
+    <Content Include="Assets\StoreLogo.scale-225_contrast-black.png" />
+    <Content Include="Assets\StoreLogo.scale-225_contrast-white.png" />
+    <Content Include="Assets\StoreLogo.scale-250.png" />
+    <Content Include="Assets\StoreLogo.scale-250_contrast-black.png" />
+    <Content Include="Assets\StoreLogo.scale-250_contrast-white.png" />
+    <Content Include="Assets\StoreLogo.scale-300.png" />
+    <Content Include="Assets\StoreLogo.scale-300_contrast-black.png" />
+    <Content Include="Assets\StoreLogo.scale-300_contrast-white.png" />
+    <Content Include="Assets\StoreLogo.scale-400.png" />
+    <Content Include="Assets\StoreLogo.scale-400_contrast-black.png" />
+    <Content Include="Assets\StoreLogo.scale-400_contrast-white.png" />
+    <Content Include="Assets\test4.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Tile150x150.scale-100.png" />
+    <Content Include="Assets\Tile150x150.scale-100_contrast-black.png" />
+    <Content Include="Assets\Tile150x150.scale-100_contrast-white.png" />
+    <Content Include="Assets\Tile150x150.scale-125.png" />
+    <Content Include="Assets\Tile150x150.scale-125_contrast-black.png" />
+    <Content Include="Assets\Tile150x150.scale-125_contrast-white.png" />
+    <Content Include="Assets\Tile150x150.scale-150.png" />
+    <Content Include="Assets\Tile150x150.scale-150_contrast-black.png" />
+    <Content Include="Assets\Tile150x150.scale-150_contrast-white.png" />
+    <Content Include="Assets\Tile150x150.scale-160.png" />
+    <Content Include="Assets\Tile150x150.scale-160_contrast-black.png" />
+    <Content Include="Assets\Tile150x150.scale-160_contrast-white.png" />
+    <Content Include="Assets\Tile150x150.scale-200.png" />
+    <Content Include="Assets\Tile150x150.scale-200_contrast-black.png" />
+    <Content Include="Assets\Tile150x150.scale-200_contrast-white.png" />
+    <Content Include="Assets\Tile150x150.scale-225.png" />
+    <Content Include="Assets\Tile150x150.scale-225_contrast-black.png" />
+    <Content Include="Assets\Tile150x150.scale-225_contrast-white.png" />
+    <Content Include="Assets\Tile150x150.scale-250.png" />
+    <Content Include="Assets\Tile150x150.scale-250_contrast-black.png" />
+    <Content Include="Assets\Tile150x150.scale-250_contrast-white.png" />
+    <Content Include="Assets\Tile150x150.scale-300.png" />
+    <Content Include="Assets\Tile150x150.scale-300_contrast-black.png" />
+    <Content Include="Assets\Tile150x150.scale-300_contrast-white.png" />
+    <Content Include="Assets\Tile150x150.scale-400.png" />
+    <Content Include="Assets\Tile150x150.scale-400_contrast-black.png" />
+    <Content Include="Assets\Tile150x150.scale-400_contrast-white.png" />
+    <Content Include="Assets\Tile310x150.scale-100.png" />
+    <Content Include="Assets\Tile310x150.scale-100_contrast-black.png" />
+    <Content Include="Assets\Tile310x150.scale-100_contrast-white.png" />
+    <Content Include="Assets\Tile310x150.scale-125.png" />
+    <Content Include="Assets\Tile310x150.scale-125_contrast-black.png" />
+    <Content Include="Assets\Tile310x150.scale-125_contrast-white.png" />
+    <Content Include="Assets\Tile310x150.scale-150.png" />
+    <Content Include="Assets\Tile310x150.scale-150_contrast-black.png" />
+    <Content Include="Assets\Tile310x150.scale-150_contrast-white.png" />
+    <Content Include="Assets\Tile310x150.scale-160.png" />
+    <Content Include="Assets\Tile310x150.scale-160_contrast-black.png" />
+    <Content Include="Assets\Tile310x150.scale-160_contrast-white.png" />
+    <Content Include="Assets\Tile310x150.scale-200.png" />
+    <Content Include="Assets\Tile310x150.scale-200_contrast-black.png" />
+    <Content Include="Assets\Tile310x150.scale-200_contrast-white.png" />
+    <Content Include="Assets\Tile310x150.scale-225.png" />
+    <Content Include="Assets\Tile310x150.scale-225_contrast-black.png" />
+    <Content Include="Assets\Tile310x150.scale-225_contrast-white.png" />
+    <Content Include="Assets\Tile310x150.scale-250.png" />
+    <Content Include="Assets\Tile310x150.scale-250_contrast-black.png" />
+    <Content Include="Assets\Tile310x150.scale-250_contrast-white.png" />
+    <Content Include="Assets\Tile310x150.scale-300.png" />
+    <Content Include="Assets\Tile310x150.scale-300_contrast-black.png" />
+    <Content Include="Assets\Tile310x150.scale-300_contrast-white.png" />
+    <Content Include="Assets\Tile310x150.scale-400.png" />
+    <Content Include="Assets\Tile310x150.scale-400_contrast-black.png" />
+    <Content Include="Assets\Tile310x150.scale-400_contrast-white.png" />
+    <Content Include="Assets\Tile310x310.scale-100.png" />
+    <Content Include="Assets\Tile310x310.scale-100_contrast-black.png" />
+    <Content Include="Assets\Tile310x310.scale-100_contrast-white.png" />
+    <Content Include="Assets\Tile310x310.scale-125.png" />
+    <Content Include="Assets\Tile310x310.scale-125_contrast-black.png" />
+    <Content Include="Assets\Tile310x310.scale-125_contrast-white.png" />
+    <Content Include="Assets\Tile310x310.scale-150.png" />
+    <Content Include="Assets\Tile310x310.scale-150_contrast-black.png" />
+    <Content Include="Assets\Tile310x310.scale-150_contrast-white.png" />
+    <Content Include="Assets\Tile310x310.scale-160.png" />
+    <Content Include="Assets\Tile310x310.scale-160_contrast-black.png" />
+    <Content Include="Assets\Tile310x310.scale-160_contrast-white.png" />
+    <Content Include="Assets\Tile310x310.scale-200.png" />
+    <Content Include="Assets\Tile310x310.scale-200_contrast-black.png" />
+    <Content Include="Assets\Tile310x310.scale-200_contrast-white.png" />
+    <Content Include="Assets\Tile310x310.scale-225.png" />
+    <Content Include="Assets\Tile310x310.scale-225_contrast-black.png" />
+    <Content Include="Assets\Tile310x310.scale-225_contrast-white.png" />
+    <Content Include="Assets\Tile310x310.scale-250.png" />
+    <Content Include="Assets\Tile310x310.scale-250_contrast-black.png" />
+    <Content Include="Assets\Tile310x310.scale-250_contrast-white.png" />
+    <Content Include="Assets\Tile310x310.scale-300.png" />
+    <Content Include="Assets\Tile310x310.scale-300_contrast-black.png" />
+    <Content Include="Assets\Tile310x310.scale-300_contrast-white.png" />
+    <Content Include="Assets\Tile310x310.scale-400.png" />
+    <Content Include="Assets\Tile310x310.scale-400_contrast-black.png" />
+    <Content Include="Assets\Tile310x310.scale-400_contrast-white.png" />
+    <Content Include="Assets\Tile71x71.scale-100.png" />
+    <Content Include="Assets\Tile71x71.scale-100_contrast-black.png" />
+    <Content Include="Assets\Tile71x71.scale-100_contrast-white.png" />
+    <Content Include="Assets\Tile71x71.scale-125.png" />
+    <Content Include="Assets\Tile71x71.scale-125_contrast-black.png" />
+    <Content Include="Assets\Tile71x71.scale-125_contrast-white.png" />
+    <Content Include="Assets\Tile71x71.scale-150.png" />
+    <Content Include="Assets\Tile71x71.scale-150_contrast-black.png" />
+    <Content Include="Assets\Tile71x71.scale-150_contrast-white.png" />
+    <Content Include="Assets\Tile71x71.scale-160.png" />
+    <Content Include="Assets\Tile71x71.scale-160_contrast-black.png" />
+    <Content Include="Assets\Tile71x71.scale-160_contrast-white.png" />
+    <Content Include="Assets\Tile71x71.scale-200.png" />
+    <Content Include="Assets\Tile71x71.scale-200_contrast-black.png" />
+    <Content Include="Assets\Tile71x71.scale-200_contrast-white.png" />
+    <Content Include="Assets\Tile71x71.scale-225.png" />
+    <Content Include="Assets\Tile71x71.scale-225_contrast-black.png" />
+    <Content Include="Assets\Tile71x71.scale-225_contrast-white.png" />
+    <Content Include="Assets\Tile71x71.scale-250.png" />
+    <Content Include="Assets\Tile71x71.scale-250_contrast-black.png" />
+    <Content Include="Assets\Tile71x71.scale-250_contrast-white.png" />
+    <Content Include="Assets\Tile71x71.scale-300.png" />
+    <Content Include="Assets\Tile71x71.scale-300_contrast-black.png" />
+    <Content Include="Assets\Tile71x71.scale-300_contrast-white.png" />
+    <Content Include="Assets\Tile71x71.scale-400.png" />
+    <Content Include="Assets\Tile71x71.scale-400_contrast-black.png" />
+    <Content Include="Assets\Tile71x71.scale-400_contrast-white.png" />
+    <Content Include="Properties\Default.rd.xml" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mntone.SvgForXaml\Mntone.SvgForXaml.csproj">
+      <Project>{b1e3a656-f9ef-4491-92df-4e6ba970e3e4}</Project>
+      <Name>Mntone.SvgForXaml</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
