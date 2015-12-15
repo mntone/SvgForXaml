@@ -16,18 +16,18 @@ using Windows.UI;
 
 namespace Mntone.SvgForXaml
 {
-	public class WinRtWin2dRenderer : SvgRendererBase<CanvasControl, CanvasDrawEventArgs>, IDisposable
+	public class Win2dRenderer : SvgRendererBase<CanvasDrawingSession>, IDisposable
 	{
-		protected SvgLengthConverter LengthConverter { get; }
+		protected ICanvasResourceCreator ResourceCreator { get; }
 		protected Collection<IDisposable> DisposableObjects { get; }
 		protected Dictionary<SvgGradientElement, ICanvasBrush> ResourceCache { get; }
 
 		private bool _disposed = false;
 
-		public WinRtWin2dRenderer(CanvasControl rendererTarget, SvgDocument targetDocument)
-			: base(rendererTarget, targetDocument)
+		public Win2dRenderer(ICanvasResourceCreator resourceCreator, SvgDocument targetDocument)
+			: base(targetDocument)
 		{
-			this.LengthConverter = new SvgLengthConverter();
+			this.ResourceCreator = resourceCreator;
 			this.DisposableObjects = new Collection<IDisposable>();
 			this.ResourceCache = new Dictionary<SvgGradientElement, ICanvasBrush>();
 		}
@@ -46,27 +46,18 @@ namespace Mntone.SvgForXaml
 			this._disposed = true;
 		}
 
-		public override void Renderer(CanvasDrawEventArgs session)
-		{
-			if (this.RendererTarget == null) return;
-			this.LengthConverter.CanvasSize = new Size(this.RendererTarget.ActualWidth, this.RendererTarget.ActualHeight);
-
-			var root = this.TargetDocument.RootElement;
-			this.RendererSvg(session, root);
-		}
-
-		protected override void RendererSvg(CanvasDrawEventArgs session, SvgSvgElement element)
+		protected override void RendererSvg(CanvasDrawingSession session, SvgSvgElement element)
 		{
 			this.RendererChildren(session, element.ChildNodes);
 		}
 
-		protected override void RendererPath(CanvasDrawEventArgs session, SvgPathElement element)
+		protected override void RendererPath(CanvasDrawingSession session, SvgPathElement element)
 		{
 			double minX = double.MaxValue, minY = double.MaxValue, maxX = double.MinValue, maxY = double.MinValue;
 
 			var open = false;
 			var v = new Vector2(0.0F, 0.0F);
-			var builder = new CanvasPathBuilder(this.RendererTarget);
+			var builder = new CanvasPathBuilder(this.ResourceCreator);
 			foreach (var segment in element.Segments)
 			{
 				if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.ClosePath)
@@ -256,18 +247,18 @@ namespace Mntone.SvgForXaml
 			if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
 			{
 				var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
-				session.DrawingSession.FillGeometry(geometry, pen);
+				session.FillGeometry(geometry, pen);
 			}
 			var stroke = element.Style.Stroke;
 			if (stroke != null && fill.PaintType != SvgPaintType.None)
 			{
 				var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
 				var width = element.Style.StrokeWidth;
-				session.DrawingSession.DrawGeometry(geometry, pen, width.HasValue ? this.LengthConverter.Convert(width.Value) : 1.0F);
+				session.DrawGeometry(geometry, pen, width.HasValue ? this.LengthConverter.Convert(width.Value) : 1.0F);
 			}
 		}
 
-		protected override void RendererRect(CanvasDrawEventArgs session, SvgRectElement element)
+		protected override void RendererRect(CanvasDrawingSession session, SvgRectElement element)
 		{
 			var x = this.LengthConverter.ConvertX(element.X);
 			var y = this.LengthConverter.ConvertY(element.Y);
@@ -279,18 +270,18 @@ namespace Mntone.SvgForXaml
 			if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
 			{
 				var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
-				session.DrawingSession.FillRectangle(x, y, width, height, pen);
+				session.FillRectangle(x, y, width, height, pen);
 			}
 			var stroke = element.Style.Stroke;
 			if (stroke != null && fill.PaintType != SvgPaintType.None)
 			{
 				var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
 				var strokeWidth = element.Style.StrokeWidth;
-				session.DrawingSession.DrawRectangle(x, y, width, height, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
+				session.DrawRectangle(x, y, width, height, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
 			}
 		}
 
-		protected override void RendererCircle(CanvasDrawEventArgs session, SvgCircleElement element)
+		protected override void RendererCircle(CanvasDrawingSession session, SvgCircleElement element)
 		{
 			var centerX = this.LengthConverter.ConvertX(element.CenterX);
 			var centerY = this.LengthConverter.ConvertY(element.CenterY);
@@ -302,18 +293,18 @@ namespace Mntone.SvgForXaml
 			if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
 			{
 				var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
-				session.DrawingSession.FillEllipse(centerX, centerY, radiusX, radiusY, pen);
+				session.FillEllipse(centerX, centerY, radiusX, radiusY, pen);
 			}
 			var stroke = element.Style.Stroke;
 			if (stroke != null && stroke.PaintType != SvgPaintType.None)
 			{
 				var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
 				var strokeWidth = element.Style.StrokeWidth;
-				session.DrawingSession.DrawEllipse(centerX, centerY, radiusX, radiusY, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
+				session.DrawEllipse(centerX, centerY, radiusX, radiusY, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
 			}
 		}
 
-		protected override void RendererEllipse(CanvasDrawEventArgs session, SvgEllipseElement element)
+		protected override void RendererEllipse(CanvasDrawingSession session, SvgEllipseElement element)
 		{
 			var centerX = this.LengthConverter.ConvertX(element.CenterX);
 			var centerY = this.LengthConverter.ConvertY(element.CenterY);
@@ -325,18 +316,18 @@ namespace Mntone.SvgForXaml
 			if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
 			{
 				var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
-				session.DrawingSession.FillEllipse(centerX, centerY, radiusX, radiusY, pen);
+				session.FillEllipse(centerX, centerY, radiusX, radiusY, pen);
 			}
 			var stroke = element.Style.Stroke;
 			if (stroke != null && stroke.PaintType != SvgPaintType.None)
 			{
 				var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
 				var strokeWidth = element.Style.StrokeWidth;
-				session.DrawingSession.DrawEllipse(centerX, centerY, radiusX, radiusY, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
+				session.DrawEllipse(centerX, centerY, radiusX, radiusY, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
 			}
 		}
 
-		protected override void RendererLine(CanvasDrawEventArgs session, SvgLineElement element)
+		protected override void RendererLine(CanvasDrawingSession session, SvgLineElement element)
 		{
 			var x1 = this.LengthConverter.ConvertX(element.X1);
 			var y1 = this.LengthConverter.ConvertY(element.Y1);
@@ -349,11 +340,11 @@ namespace Mntone.SvgForXaml
 			{
 				var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
 				var width = element.Style.StrokeWidth;
-				session.DrawingSession.DrawLine(x1, y1, x2, y2, pen, width.HasValue ? this.LengthConverter.Convert(width.Value) : 1.0F);
+				session.DrawLine(x1, y1, x2, y2, pen, width.HasValue ? this.LengthConverter.Convert(width.Value) : 1.0F);
 			}
 		}
 
-		protected override void RendererPolyline(CanvasDrawEventArgs session, SvgPolylineElement element)
+		protected override void RendererPolyline(CanvasDrawingSession session, SvgPolylineElement element)
 		{
 			var minX = element.Points.Min(p => p.X);
 			var minY = element.Points.Min(p => p.Y);
@@ -361,26 +352,26 @@ namespace Mntone.SvgForXaml
 			var maxY = element.Points.Max(p => p.Y);
 
 			var area = new Rect(minX, minY, maxX - minX, maxY - minY);
-			var geometry = CanvasGeometry.CreatePolygon(this.RendererTarget, element.Points.Select(p => new Vector2((float)p.X, (float)p.Y)).ToArray());
+			var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2((float)p.X, (float)p.Y)).ToArray());
 			var pen = this.CreatePaint(session, area, element.Style.Stroke, element.Style.StrokeOpacity);
-			session.DrawingSession.DrawGeometry(geometry, pen);
+			session.DrawGeometry(geometry, pen);
 		}
 
-		protected override void RendererPolygon(CanvasDrawEventArgs session, SvgPolygonElement element)
+		protected override void RendererPolygon(CanvasDrawingSession session, SvgPolygonElement element)
 		{
 			var minX = element.Points.Min(p => p.X);
 			var minY = element.Points.Min(p => p.Y);
 			var maxX = element.Points.Max(p => p.X);
 			var maxY = element.Points.Max(p => p.Y);
 
-			var geometry = CanvasGeometry.CreatePolygon(this.RendererTarget, element.Points.Select(p => new Vector2((float)p.X, (float)p.Y)).ToArray());
+			var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2((float)p.X, (float)p.Y)).ToArray());
 			var pen = this.CreatePaint(session, new Rect(minX, minY, maxX - minX, maxY - minY), element.Style.Fill, element.Style.FillOpacity);
-			session.DrawingSession.FillGeometry(geometry, pen);
+			session.FillGeometry(geometry, pen);
 		}
 
-		private CanvasSolidColorBrush CreateColor(CanvasDrawEventArgs session, SvgColor color)
+		private CanvasSolidColorBrush CreateColor(CanvasDrawingSession session, SvgColor color)
 		{
-			var brush = new CanvasSolidColorBrush(this.RendererTarget,
+			var brush = new CanvasSolidColorBrush(this.ResourceCreator,
 				color != null
 					? Color.FromArgb(0xff, color.RgbColor.Red, color.RgbColor.Green, color.RgbColor.Blue)
 					: Color.FromArgb(0xff, 0, 0, 0));
@@ -388,13 +379,13 @@ namespace Mntone.SvgForXaml
 			return brush;
 		}
 
-		private ICanvasBrush CreatePaint(CanvasDrawEventArgs session, Rect area, SvgPaint paint, SvgNumber? opacity)
+		private ICanvasBrush CreatePaint(CanvasDrawingSession session, Rect area, SvgPaint paint, SvgNumber? opacity)
 		{
 			if (paint == null || paint.PaintType == SvgPaintType.RgbColor)
 			{
 				var alpha = (byte)(255.0F * (opacity?.Value ?? 1.0F));
 				var brush = new CanvasSolidColorBrush(
-					this.RendererTarget,
+					this.ResourceCreator,
 					paint != null
 						? Color.FromArgb(alpha, paint.RgbColor.Red, paint.RgbColor.Green, paint.RgbColor.Blue)
 						: Color.FromArgb(alpha, 0, 0, 0));
@@ -417,7 +408,7 @@ namespace Mntone.SvgForXaml
 			throw new NotImplementedException();
 		}
 
-		private CanvasLinearGradientBrush CreateLinearGradient(CanvasDrawEventArgs session, Rect area, SvgLinearGradientElement element)
+		private CanvasLinearGradientBrush CreateLinearGradient(CanvasDrawingSession session, Rect area, SvgLinearGradientElement element)
 		{
 			if (this.ResourceCache.ContainsKey(element)) return (CanvasLinearGradientBrush)this.ResourceCache[element];
 
@@ -444,7 +435,7 @@ namespace Mntone.SvgForXaml
 			var x2 = this.LengthConverter.ConvertX(element.X2);
 			var y2 = this.LengthConverter.ConvertY(element.Y2);
 			var spreadMethod = GetSpreadMethod(element.SpreadMethod);
-			var brush = new CanvasLinearGradientBrush(this.RendererTarget, stops, spreadMethod, CanvasAlphaMode.Straight)
+			var brush = new CanvasLinearGradientBrush(this.ResourceCreator, stops, spreadMethod, CanvasAlphaMode.Straight)
 			{
 				StartPoint = new Vector2(x1, y1),
 				EndPoint = new Vector2(x2, y2),
@@ -455,7 +446,7 @@ namespace Mntone.SvgForXaml
 			return brush;
 		}
 
-		private CanvasRadialGradientBrush CreateRadialGradient(CanvasDrawEventArgs session, Rect area, SvgRadialGradientElement element)
+		private CanvasRadialGradientBrush CreateRadialGradient(CanvasDrawingSession session, Rect area, SvgRadialGradientElement element)
 		{
 			if (this.ResourceCache.ContainsKey(element)) return (CanvasRadialGradientBrush)this.ResourceCache[element];
 
@@ -484,7 +475,7 @@ namespace Mntone.SvgForXaml
 			var radiusX = this.LengthConverter.ConvertX(element.Radius);
 			var radiusY = this.LengthConverter.ConvertY(element.Radius);
 			var spreadMethod = GetSpreadMethod(element.SpreadMethod);
-			var brush = new CanvasRadialGradientBrush(this.RendererTarget, stops, spreadMethod, CanvasAlphaMode.Straight)
+			var brush = new CanvasRadialGradientBrush(this.ResourceCreator, stops, spreadMethod, CanvasAlphaMode.Straight)
 			{
 				OriginOffset = new Vector2(focusX - centerX, focusY - centerY),
 				Center = new Vector2(centerX, centerY),

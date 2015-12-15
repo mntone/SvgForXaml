@@ -20,25 +20,34 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition />
 			<ColumnDefinition
-				Width="100" />
+				Width="80" />
+			<ColumnDefinition
+				Width="80" />
 		</Grid.ColumnDefinitions>
 
 		<svg:SvgImage
 			x:FieldModifier="Private"
 			x:Name="SvgImageControl"
-			Grid.ColumnSpan="2" />
+			Grid.ColumnSpan="3" />
 
 		<TextBox
 			x:FieldModifier="Private"
 			x:Name="PathTextBox"
-			Margin="0,0,4,0"
 			Grid.Row="1"
 			IsEnabled="False" />
 		<Button
 			Grid.Row="1"
 			Grid.Column="1"
+			Margin="4,0,0,0"
 			HorizontalAlignment="Stretch"
 			Content="Open…"
 			Click="OnOpenClick" />
+		<Button
+			Grid.Row="1"
+			Grid.Column="2"
+			Margin="4,0,0,0"
+			HorizontalAlignment="Stretch"
+			Content="Save…"
+			Click="OnSaveClick" />
 	</Grid>
 </Page>

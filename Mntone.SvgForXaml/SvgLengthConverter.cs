@@ -1,18 +1,17 @@
 ﻿using Mntone.SvgForXaml.Primitives;
 using System;
-using Windows.Foundation;
 
 namespace Mntone.SvgForXaml
 {
 	public sealed class SvgLengthConverter
 	{
-		public Size CanvasSize { get; internal set; }
+		public SvgPoint CanvasSize { get; internal set; }
 
 		public float ConvertX(SvgLength length)
 		{
 			if (length.UnitType == SvgLength.SvgLengthType.Percentage)
 			{
-				return (float)this.CanvasSize.Width * length.Value / 100.0F;
+				return (float)this.CanvasSize.X * length.Value / 100.0F;
 			}
 			return this.Convert(length);
 		}
@@ -21,7 +20,7 @@ namespace Mntone.SvgForXaml
 		{
 			if (length.UnitType == SvgLength.SvgLengthType.Percentage)
 			{
-				return (float)this.CanvasSize.Height * length.Value / 100.0F;
+				return (float)this.CanvasSize.Y * length.Value / 100.0F;
 			}
 			return this.Convert(length);
 		}

@@ -151,6 +151,7 @@
     <Compile Include="SvgGroupElement.cs" />
     <Compile Include="Shapes\SvgLineElement.cs" />
     <Compile Include="Primitives\SvgNumber.cs" />
+    <Compile Include="SvgImageRenderer.cs" />
     <Compile Include="SvgLengthConverter.cs" />
     <Compile Include="UI\Xaml\SvgImage.cs" />
     <Compile Include="SvgPaint.cs" />
@@ -168,7 +169,7 @@
     <Compile Include="SvgTitleElement.cs" />
     <Compile Include="Primitives\SvgUnitType.cs" />
     <Compile Include="SvgUseElement.cs" />
-    <Compile Include="WinRtWin2dRenderer.cs" />
+    <Compile Include="Win2dRenderer.cs" />
     <EmbeddedResource Include="Properties\Mntone.SvgForXaml.rd.xml" />
   </ItemGroup>
   <ItemGroup />

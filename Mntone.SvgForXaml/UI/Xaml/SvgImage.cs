@@ -15,7 +15,7 @@ namespace Mntone.SvgForXaml.UI.Xaml
 	{
 		private const string CANVAS_CONTROL_NAME = "CanvasControl";
 
-		private WinRtWin2dRenderer _renderer;
+		private Win2dRenderer _renderer;
 		private CanvasControl _canvasControl;
 
 		public SvgDocument Content
@@ -57,7 +57,7 @@ namespace Mntone.SvgForXaml.UI.Xaml
 				var xml = new XmlDocument();
 				xml.Load(reader);
 				var svgDocument = SvgDocument.Parse(xml);
-				this._renderer = new WinRtWin2dRenderer(this._canvasControl, svgDocument);
+				this._renderer = new Win2dRenderer(this._canvasControl, svgDocument);
 				this._canvasControl?.Invalidate();
 
 				this.Content = svgDocument;
@@ -75,7 +75,7 @@ namespace Mntone.SvgForXaml.UI.Xaml
 			}
 
 			var svg = SvgDocument.Parse(text);
-			this._renderer = new WinRtWin2dRenderer(this._canvasControl, svg);
+			this._renderer = new Win2dRenderer(this._canvasControl, svg);
 			this._canvasControl?.Invalidate();
 
 			this.Content = svg;
@@ -91,7 +91,7 @@ namespace Mntone.SvgForXaml.UI.Xaml
 				this._renderer = null;
 			}
 
-			this._renderer = new WinRtWin2dRenderer(this._canvasControl, svg);
+			this._renderer = new Win2dRenderer(this._canvasControl, svg);
 			this._canvasControl?.Invalidate();
 
 			this.Content = svg;
@@ -108,11 +108,11 @@ namespace Mntone.SvgForXaml.UI.Xaml
 
 			if (svg != null)
 			{
-				this._renderer = new WinRtWin2dRenderer(this._canvasControl, svg);
+				this._renderer = new Win2dRenderer(this._canvasControl, svg);
 				this._canvasControl?.Invalidate();
 			}
 		}
-		
+
 		public void SafeUnload()
 		{
 			if (this._renderer != null)
@@ -150,7 +150,7 @@ namespace Mntone.SvgForXaml.UI.Xaml
 					}
 				}
 
-				this._renderer.Renderer(args);
+				this._renderer.Renderer((float)this._canvasControl.Width, (float)this._canvasControl.Height, args.DrawingSession);
 			}
 		}
 	}

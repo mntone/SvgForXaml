@@ -1,22 +1,25 @@
 ﻿using Mntone.SvgForXaml.Path;
+using Mntone.SvgForXaml.Primitives;
 using Mntone.SvgForXaml.Shapes;
 using System.Collections.Generic;
 
 namespace Mntone.SvgForXaml
 {
-	public abstract class SvgRendererBase<TCanvas, TSession>
+	public abstract class SvgRendererBase<TSession>
 	{
-		protected TCanvas RendererTarget { get; }
 		protected SvgDocument TargetDocument { get; set; }
+		protected SvgLengthConverter LengthConverter { get; }
 
-		public SvgRendererBase(TCanvas rendererTarget, SvgDocument targetDocument)
+		public SvgRendererBase(SvgDocument targetDocument)
 		{
-			this.RendererTarget = rendererTarget;
 			this.TargetDocument = targetDocument;
+			this.LengthConverter = new SvgLengthConverter();
 		}
 
-		public virtual void Renderer(TSession session)
+		public virtual void Renderer(float width, float height, TSession session)
 		{
+			this.LengthConverter.CanvasSize = new SvgPoint(width, height);
+
 			var root = this.TargetDocument.RootElement;
 			this.RendererSvg(session, root);
 		}
