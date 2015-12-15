@@ -48,6 +48,7 @@ namespace Mntone.SvgForXaml
 
 		public override void Renderer(CanvasDrawEventArgs session)
 		{
+			if (this.RendererTarget == null) return;
 			this.LengthConverter.CanvasSize = new Size(this.RendererTarget.ActualWidth, this.RendererTarget.ActualHeight);
 
 			var root = this.TargetDocument.RootElement;
