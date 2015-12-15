@@ -151,6 +151,7 @@
     <Compile Include="SvgGroupElement.cs" />
     <Compile Include="Shapes\SvgLineElement.cs" />
     <Compile Include="Primitives\SvgNumber.cs" />
+    <Compile Include="SvgLengthConverter.cs" />
     <Compile Include="UI\Xaml\SvgImage.cs" />
     <Compile Include="SvgPaint.cs" />
     <Compile Include="Path\SvgPathElement.cs" />

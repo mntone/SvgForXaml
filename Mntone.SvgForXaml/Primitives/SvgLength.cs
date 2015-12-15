@@ -17,6 +17,36 @@ namespace Mntone.SvgForXaml.Primitives
 		public SvgLengthType UnitType { get; }
 		public float Value { get; }
 
+		public float ValueAsPixel
+		{
+			get
+			{
+				switch (this.UnitType)
+				{
+					case SvgLengthType.Percentage:
+					case SvgLengthType.Ems:
+					case SvgLengthType.Exs:
+						throw new InvalidOperationException();
+
+					case SvgLengthType.Centimeter:
+						return this.Value * 96.0F / 0.254F;
+
+					case SvgLengthType.Millimeter:
+						return this.Value * 96.0F / 25.4F;
+
+					case SvgLengthType.Inch:
+						return this.Value * 96.0F;
+
+					case SvgLengthType.Point:
+						return this.Value * 12.0F / 9.0F;
+
+					case SvgLengthType.Pica:
+						return this.Value * 16.0F;
+				}
+				return this.Value;
+			}
+		}
+
 		public string ValueAsString
 		{
 			get
@@ -97,9 +127,6 @@ namespace Mntone.SvgForXaml.Primitives
 		public bool Equals(SvgLength other) => this.UnitType == other.UnitType && this.Value == other.Value;
 
 		public static implicit operator SvgLength(float f) => new SvgLength(SvgLengthType.Number, f);
-#if DEBUG
-		public static implicit operator float(SvgLength l) => l.Value;
-#endif
 
 		public static implicit operator SvgLength(string s) => Parse(s);
 		public static implicit operator string(SvgLength a) => a.ValueAsString;
