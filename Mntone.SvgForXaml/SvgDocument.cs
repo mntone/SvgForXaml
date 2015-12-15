@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Xml;
 
 namespace Mntone.SvgForXaml
@@ -41,6 +43,19 @@ namespace Mntone.SvgForXaml
 		{
 			if (!this._idCache.ContainsKey(id)) return null;
 			return this._idCache[id];
+		}
+
+		public static SvgDocument Parse(byte[] document) => Parse(Encoding.UTF8.GetString(document));
+		public static SvgDocument Parse(byte[] document, Encoding encoding) => Parse(encoding.GetString(document));
+		public static SvgDocument Parse(string document)
+		{
+			using (var sr = new StringReader(document))
+			using (var reader = XmlReader.Create(sr, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Ignore }))
+			{
+				var xml = new XmlDocument();
+				xml.Load(reader);
+				return Parse(xml);
+			}
 		}
 
 		public static SvgDocument Parse(XmlDocument document)

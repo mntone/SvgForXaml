@@ -74,17 +74,11 @@ namespace Mntone.SvgForXaml.UI.Xaml
 				this._renderer = null;
 			}
 
-			using (var sr = new StringReader(text))
-			using (var reader = XmlReader.Create(sr, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Ignore }))
-			{
-				var xml = new XmlDocument();
-				xml.Load(reader);
-				var svgDocument = SvgDocument.Parse(xml);
-				this._renderer = new WinRtWin2dRenderer(this._canvasControl, svgDocument);
-				this._canvasControl?.Invalidate();
+			var svg = SvgDocument.Parse(text);
+			this._renderer = new WinRtWin2dRenderer(this._canvasControl, svg);
+			this._canvasControl?.Invalidate();
 
-				this.Content = svgDocument;
-			}
+			this.Content = svg;
 		}
 
 		public void LoadSvg(SvgDocument svg)
@@ -106,18 +100,19 @@ namespace Mntone.SvgForXaml.UI.Xaml
 		private static void OnContentChangedDelegate(DependencyObject d, DependencyPropertyChangedEventArgs e) => ((SvgImage)d).OnContentChanged((SvgDocument)e.NewValue);
 		private void OnContentChanged(SvgDocument svg)
 		{
-			if (svg == null) throw new ArgumentNullException(nameof(svg));
-
 			if (this._renderer != null)
 			{
 				this._renderer.Dispose();
 				this._renderer = null;
 			}
 
-			this._renderer = new WinRtWin2dRenderer(this._canvasControl, svg);
-			this._canvasControl?.Invalidate();
+			if (svg != null)
+			{
+				this._renderer = new WinRtWin2dRenderer(this._canvasControl, svg);
+				this._canvasControl?.Invalidate();
+			}
 		}
-
+		
 		public void SafeUnload()
 		{
 			if (this._renderer != null)
