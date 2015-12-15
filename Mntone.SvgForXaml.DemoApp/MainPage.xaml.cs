@@ -87,7 +87,7 @@ namespace SvgImageControlSample
 				{
 					Document = content,
 					Format = format,
-					Scaling = 200,
+					Scaling = 2.0F,
 				});
 			}
 		}
