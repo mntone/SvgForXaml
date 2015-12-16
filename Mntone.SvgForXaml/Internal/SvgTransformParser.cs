@@ -105,6 +105,7 @@ namespace Mntone.SvgForXaml.Internal
 						ptr.AdvanceWhiteSpace();
 						if (ptr.Char == ')')
 						{
+							++ptr;
 							this.Transforms.Add(SvgTransform.CreateTranslate(tx, ty.Value));
 							return;
 						}
