@@ -45,20 +45,12 @@ namespace Mntone.SvgForXaml.UI.Xaml
 		{
 			if (file == null) throw new ArgumentNullException(nameof(file));
 
-			if (this._renderer != null)
-			{
-				this._renderer.Dispose();
-				this._renderer = null;
-			}
-
 			using (var stream = await WindowsRuntimeStorageExtensions.OpenStreamForReadAsync(file))
 			using (var reader = XmlReader.Create(stream, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Ignore }))
 			{
 				var xml = new XmlDocument();
 				xml.Load(reader);
 				var svgDocument = SvgDocument.Parse(xml);
-				this._renderer = new Win2dRenderer(this._canvasControl, svgDocument);
-				this._canvasControl?.Invalidate();
 
 				this.Content = svgDocument;
 			}
@@ -68,31 +60,13 @@ namespace Mntone.SvgForXaml.UI.Xaml
 		{
 			if (text == null) throw new ArgumentNullException(nameof(text));
 
-			if (this._renderer != null)
-			{
-				this._renderer.Dispose();
-				this._renderer = null;
-			}
-
 			var svg = SvgDocument.Parse(text);
-			this._renderer = new Win2dRenderer(this._canvasControl, svg);
-			this._canvasControl?.Invalidate();
-
 			this.Content = svg;
 		}
 
 		public void LoadSvg(SvgDocument svg)
 		{
 			if (svg == null) throw new ArgumentNullException(nameof(svg));
-
-			if (this._renderer != null)
-			{
-				this._renderer.Dispose();
-				this._renderer = null;
-			}
-
-			this._renderer = new Win2dRenderer(this._canvasControl, svg);
-			this._canvasControl?.Invalidate();
 
 			this.Content = svg;
 		}
@@ -150,7 +124,7 @@ namespace Mntone.SvgForXaml.UI.Xaml
 					}
 				}
 
-				this._renderer.Render((float)this._canvasControl.Width, (float)this._canvasControl.Height, args.DrawingSession);
+				this._renderer.Render((float)sender.ActualWidth, (float)sender.ActualHeight, args.DrawingSession);
 			}
 		}
 	}
