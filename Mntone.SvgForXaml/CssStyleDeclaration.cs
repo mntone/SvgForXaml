@@ -8,23 +8,26 @@ namespace Mntone.SvgForXaml
 {
 	public sealed class CssStyleDeclaration
 	{
+		private readonly ISvgStylable _parent;
 		private readonly List<string> _items;
 		private readonly Dictionary<string, Tuple<string, ICssValue>> _cache;
 
-		private CssStyleDeclaration(List<string> items, Dictionary<string, Tuple<string, ICssValue>> cache)
+		private CssStyleDeclaration(ISvgStylable parent, List<string> items, Dictionary<string, Tuple<string, ICssValue>> cache)
 		{
+			this._parent = parent;
 			this._items = items;
 			this._cache = cache;
 		}
 
-		internal CssStyleDeclaration(string css)
+		internal CssStyleDeclaration(ISvgStylable parent, string css)
 		{
+			this._parent = parent;
 			this._items = new List<string>();
 			this._cache = new Dictionary<string, Tuple<string, ICssValue>>();
 			this.ParseText(css);
 		}
 
-		internal CssStyleDeclaration DeepCopy()
+		internal CssStyleDeclaration DeepCopy(ISvgStylable parent)
 		{
 			var item = new List<string>(this._items);
 			var cache = new Dictionary<string, Tuple<string, ICssValue>>();
@@ -46,7 +49,7 @@ namespace Mntone.SvgForXaml
 				}
 				cache.Add(c.Key, Tuple.Create(c.Value.Item1, value));
 			}
-			return new CssStyleDeclaration(item, cache);
+			return new CssStyleDeclaration(parent, item, cache);
 		}
 
 		public string GetPropertyValue(string propertyName) => this.GetPropertyValuePrivate(propertyName)?.Item1;
@@ -59,7 +62,15 @@ namespace Mntone.SvgForXaml
 
 		private Tuple<string, ICssValue> GetPropertyValuePrivate(string propertyName)
 		{
-			if (!this._cache.ContainsKey(propertyName)) return null;
+			if (!this._cache.ContainsKey(propertyName))
+			{
+				var target = ((INode)this._parent)?.ParentNode as ISvgStylable;
+				if (target != null)
+				{
+					return target.Style.GetPropertyValuePrivate(propertyName);
+				}
+				return null;
+			}
 			return this._cache[propertyName];
 		}
 

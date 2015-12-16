@@ -10,7 +10,7 @@ namespace Mntone.SvgForXaml
 		internal SvgSvgElement(INode parent, XmlElement element)
 			: base(parent, element)
 		{
-			this._stylableHelper = new SvgStylableHelper(element);
+			this._stylableHelper = new SvgStylableHelper(this, element);
 
 			this.ViewPort = SvgRect.Parse(element.GetAttribute("viewBox"));
 		}
@@ -18,7 +18,7 @@ namespace Mntone.SvgForXaml
 		protected override void DeepCopy(SvgElement element)
 		{
 			var casted = (SvgSvgElement)element;
-			casted._stylableHelper = this._stylableHelper.DeepCopy();
+			casted._stylableHelper = this._stylableHelper.DeepCopy(casted);
 		}
 
 		public override string TagName => "svg";

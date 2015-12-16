@@ -8,10 +8,10 @@ namespace Mntone.SvgForXaml.Internal
 	{
 		private static readonly string[] PRESENTATION_ATTRIBUTE_NAMES = { "fill", "fill-opacity", "stroke", "stroke-width", "stroke-opacity", "stop-color", "stop-opacity", "clip-path" };
 
-		public SvgStylableHelper(XmlElement element)
+		public SvgStylableHelper(ISvgStylable parent, XmlElement element)
 		{
 			this.ClassName = element.GetAttributeOrNone("class", string.Empty);
-			this.Style = new CssStyleDeclaration(element.GetAttribute("style"));
+			this.Style = new CssStyleDeclaration(parent, element.GetAttribute("style"));
 
 			foreach (var pn in PRESENTATION_ATTRIBUTE_NAMES)
 			{
@@ -20,10 +20,10 @@ namespace Mntone.SvgForXaml.Internal
 			}
 		}
 
-		internal SvgStylableHelper DeepCopy()
+		internal SvgStylableHelper DeepCopy(ISvgStylable parent)
 		{
 			var obj = (SvgStylableHelper)this.MemberwiseClone();
-			obj.Style = this.Style.DeepCopy();
+			obj.Style = this.Style.DeepCopy(parent);
 			return obj;
 		}
 

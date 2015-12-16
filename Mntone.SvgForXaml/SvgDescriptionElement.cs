@@ -9,13 +9,13 @@ namespace Mntone.SvgForXaml
 		internal SvgDescriptionElement(INode parent, XmlElement element)
 			: base(parent, element)
 		{
-			this._stylableHelper = new SvgStylableHelper(element);
+			this._stylableHelper = new SvgStylableHelper(this, element);
 		}
 
 		protected override void DeepCopy(SvgElement element)
 		{
 			var casted = (SvgDescriptionElement)element;
-			casted._stylableHelper = this._stylableHelper.DeepCopy();
+			casted._stylableHelper = this._stylableHelper.DeepCopy(casted);
 		}
 
 		public override string TagName => "desc";

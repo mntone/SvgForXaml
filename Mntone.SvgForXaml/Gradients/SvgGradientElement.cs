@@ -10,7 +10,7 @@ namespace Mntone.SvgForXaml.Gradients
 		protected internal SvgGradientElement(INode parent, XmlElement element)
 			: base(parent, element)
 		{
-			this._stylableHelper = new SvgStylableHelper(element);
+			this._stylableHelper = new SvgStylableHelper(this, element);
 			this._transformableHelper = new SvgTransformableHelper(element);
 
 			var gradientUnits = SvgUnitTypeHelper.Parse(element.GetAttribute("gradientUnits"));
@@ -27,7 +27,7 @@ namespace Mntone.SvgForXaml.Gradients
 		protected override void DeepCopy(SvgElement element)
 		{
 			var casted = (SvgGradientElement)element;
-			casted._stylableHelper = this._stylableHelper.DeepCopy();
+			casted._stylableHelper = this._stylableHelper.DeepCopy(casted);
 			casted._transformableHelper = this._transformableHelper.DeepCopy();
 		}
 

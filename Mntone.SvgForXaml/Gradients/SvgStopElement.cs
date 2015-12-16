@@ -5,12 +5,12 @@ using System.Xml;
 namespace Mntone.SvgForXaml.Gradients
 {
 	[System.Diagnostics.DebuggerDisplay("Stop: Offset = {this.Offset}")]
-	public sealed class SvgStopElement : SvgElement
+	public sealed class SvgStopElement : SvgElement, ISvgStylable
 	{
 		internal SvgStopElement(INode parent, XmlElement element)
 			: base(parent, element)
 		{
-			this._stylableHelper = new SvgStylableHelper(element);
+			this._stylableHelper = new SvgStylableHelper(this, element);
 
 			this.Offset = element.ParseNumberOrPercentage("offset");
 		}
@@ -18,7 +18,7 @@ namespace Mntone.SvgForXaml.Gradients
 		protected override void DeepCopy(SvgElement element)
 		{
 			var casted = (SvgStopElement)element;
-			casted._stylableHelper = this._stylableHelper.DeepCopy();
+			casted._stylableHelper = this._stylableHelper.DeepCopy(casted);
 		}
 
 		public override string TagName => "stop";

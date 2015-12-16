@@ -12,7 +12,7 @@ namespace Mntone.SvgForXaml
 		internal SvgUseElement(INode parent, XmlElement element)
 			: base(parent, element)
 		{
-			this._stylableHelper = new SvgStylableHelper(element);
+			this._stylableHelper = new SvgStylableHelper(this, element);
 			this._transformableHelper = new SvgTransformableHelper(element);
 
 			var nan = new SvgLength(SvgLength.SvgLengthType.Unknown, float.NaN);
@@ -47,7 +47,7 @@ namespace Mntone.SvgForXaml
 		{
 			var casted = (SvgUseElement)element;
 			casted.InstanceRoot = (SvgElement)this.InstanceRoot.CloneNode();
-			casted._stylableHelper = this._stylableHelper.DeepCopy();
+			casted._stylableHelper = this._stylableHelper.DeepCopy(casted);
 			casted._transformableHelper = this._transformableHelper.DeepCopy();
 		}
 

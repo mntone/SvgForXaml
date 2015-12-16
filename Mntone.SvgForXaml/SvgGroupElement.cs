@@ -10,14 +10,14 @@ namespace Mntone.SvgForXaml
 		internal SvgGroupElement(INode parent, XmlElement element)
 			: base(parent, element)
 		{
-			this._stylableHelper = new SvgStylableHelper(element);
+			this._stylableHelper = new SvgStylableHelper(this, element);
 			this._transformableHelper = new SvgTransformableHelper(element);
 		}
 
 		protected override void DeepCopy(SvgElement element)
 		{
 			var casted = (SvgGroupElement)element;
-			casted._stylableHelper = this._stylableHelper.DeepCopy();
+			casted._stylableHelper = this._stylableHelper.DeepCopy(casted);
 			casted._transformableHelper = this._transformableHelper.DeepCopy();
 		}
 

@@ -10,7 +10,7 @@ namespace Mntone.SvgForXaml.Shapes
 		internal SvgPolygonElement(INode parent, XmlElement element)
 			: base(parent, element)
 		{
-			this._stylableHelper = new SvgStylableHelper(element);
+			this._stylableHelper = new SvgStylableHelper(this, element);
 			this._transformableHelper = new SvgTransformableHelper(element);
 
 			this.Points = new SvgPointCollection(element.GetAttribute("points"));
@@ -19,7 +19,7 @@ namespace Mntone.SvgForXaml.Shapes
 		protected override void DeepCopy(SvgElement element)
 		{
 			var casted = (SvgPolygonElement)element;
-			casted._stylableHelper = this._stylableHelper.DeepCopy();
+			casted._stylableHelper = this._stylableHelper.DeepCopy(casted);
 			casted._transformableHelper = this._transformableHelper.DeepCopy();
 		}
 

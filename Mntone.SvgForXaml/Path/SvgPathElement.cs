@@ -10,7 +10,7 @@ namespace Mntone.SvgForXaml.Path
 		internal SvgPathElement(INode parent, XmlElement element)
 			: base(parent, element.GetAttributeOrNone("id", string.Empty))
 		{
-			this._stylableHelper = new SvgStylableHelper(element);
+			this._stylableHelper = new SvgStylableHelper(this, element);
 			this._transformableHelper = new SvgTransformableHelper(element);
 
 			this.Data = element.GetAttribute("d");
@@ -20,7 +20,7 @@ namespace Mntone.SvgForXaml.Path
 		protected override void DeepCopy(SvgElement element)
 		{
 			var casted = (SvgPathElement)element;
-			casted._stylableHelper = this._stylableHelper.DeepCopy();
+			casted._stylableHelper = this._stylableHelper.DeepCopy(casted);
 			casted._transformableHelper = this._transformableHelper.DeepCopy();
 		}
 
