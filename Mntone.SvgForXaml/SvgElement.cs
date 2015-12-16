@@ -27,7 +27,7 @@ namespace Mntone.SvgForXaml
 		{
 			this.ParentNode = parent;
 			this.Id = element.GetAttributeOrNone("id", string.Empty);
-			this.ChildNodes = ParseChildren(parent, element.ChildNodes);
+			this.ChildNodes = ParseChildren(this, element.ChildNodes);
 
 			if (!string.IsNullOrEmpty(this.Id))
 			{
