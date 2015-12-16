@@ -2,6 +2,7 @@
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 using Mntone.SvgForXaml.Gradients;
+using Mntone.SvgForXaml.Maskings;
 using Mntone.SvgForXaml.Path;
 using Mntone.SvgForXaml.Primitives;
 using Mntone.SvgForXaml.Shapes;
@@ -20,6 +21,7 @@ namespace Mntone.SvgForXaml
 		protected ICanvasResourceCreator ResourceCreator { get; }
 		protected Collection<IDisposable> DisposableObjects { get; }
 		protected Dictionary<SvgGradientElement, ICanvasBrush> ResourceCache { get; }
+		protected Dictionary<SvgPathElement, CanvasGeometry> PathCache { get; }
 
 		private bool _disposed = false;
 
@@ -29,6 +31,7 @@ namespace Mntone.SvgForXaml
 			this.ResourceCreator = resourceCreator;
 			this.DisposableObjects = new Collection<IDisposable>();
 			this.ResourceCache = new Dictionary<SvgGradientElement, ICanvasBrush>();
+			this.PathCache = new Dictionary<SvgPathElement, CanvasGeometry>();
 		}
 
 		public void Dispose() => this.Dispose(true);
@@ -66,9 +69,143 @@ namespace Mntone.SvgForXaml
 			}
 		}
 
+		private void RenderGeometory(CanvasDrawingSession session, CanvasGeometry geometry, SvgMatrix transform, CssStyleDeclaration style)
+		{
+			bool change = false;
+			var geometry2 = geometry;
+			try
+			{
+				using (var t = TransformSession.CreateTransformSession(session, transform))
+				{
+					var clipPath = style.ClipPath;
+					if (clipPath != null)
+					{
+						if (clipPath.Uri[0] != '#') throw new ArgumentException();
+						var clipPathElement = (SvgClipPathElement)this.TargetDocument.GetElementById(clipPath.Uri.Substring(1));
+						var clipGeometory = this.CreateClipPath(session, clipPathElement);
+						geometry2 = geometry.CombineWith(
+							clipGeometory,
+							Matrix3x2.Identity,
+							CanvasGeometryCombine.Intersect,
+							CanvasGeometry.ComputeFlatteningTolerance(session.Dpi, 1.0F, session.Transform));
+						change = true;
+					}
+
+					var area = geometry2.ComputeBounds();
+					var fill = style.Fill;
+					if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
+					{
+						var pen = this.CreatePaint(session, area, fill, style.FillOpacity);
+						session.FillGeometry(geometry2, pen);
+					}
+					var stroke = style.Stroke;
+					if (stroke != null && stroke.PaintType != SvgPaintType.None)
+					{
+						var pen = this.CreatePaint(session, area, stroke, style.StrokeOpacity);
+						var strokeWidth = style.StrokeWidth;
+						session.DrawGeometry(geometry2, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
+					}
+				}
+			}
+			finally
+			{
+				if (change) geometry2.Dispose();
+			}
+		}
+
 		protected override void RenderPath(CanvasDrawingSession session, SvgPathElement element)
 		{
-			double minX = double.MaxValue, minY = double.MaxValue, maxX = double.MinValue, maxY = double.MinValue;
+			var geometry = this.CreatePath(session, element); // NO Dispose!
+			this.RenderGeometory(session, geometry, element.Transform.Result, element.Style);
+		}
+
+		protected override void RenderRect(CanvasDrawingSession session, SvgRectElement element)
+		{
+			var x = this.LengthConverter.ConvertX(element.X);
+			var y = this.LengthConverter.ConvertY(element.Y);
+			var width = this.LengthConverter.ConvertX(element.Width);
+			var height = this.LengthConverter.ConvertY(element.Height);
+			var rx = this.LengthConverter.ConvertX(element.RoundedX);
+			var ry = this.LengthConverter.ConvertX(element.RoundedY);
+			using (var geometry = CanvasGeometry.CreateRoundedRectangle(this.ResourceCreator, x, y, width, height, rx, ry))
+			{
+				this.RenderGeometory(session, geometry, element.Transform.Result, element.Style);
+			}
+		}
+
+		protected override void RenderCircle(CanvasDrawingSession session, SvgCircleElement element)
+		{
+			var centerX = this.LengthConverter.ConvertX(element.CenterX);
+			var centerY = this.LengthConverter.ConvertY(element.CenterY);
+			var radiusX = this.LengthConverter.ConvertX(element.Radius);
+			var radiusY = this.LengthConverter.ConvertY(element.Radius);
+			using (var geometry = CanvasGeometry.CreateEllipse(this.ResourceCreator, centerX, centerY, radiusX, radiusY))
+			{
+				this.RenderGeometory(session, geometry, element.Transform.Result, element.Style);
+			}
+		}
+
+		protected override void RenderEllipse(CanvasDrawingSession session, SvgEllipseElement element)
+		{
+			var centerX = this.LengthConverter.ConvertX(element.CenterX);
+			var centerY = this.LengthConverter.ConvertY(element.CenterY);
+			var radiusX = this.LengthConverter.ConvertX(element.RadiusX);
+			var radiusY = this.LengthConverter.ConvertY(element.RadiusY);
+			using (var geometry = CanvasGeometry.CreateEllipse(this.ResourceCreator, centerX, centerY, radiusX, radiusY))
+			{
+				this.RenderGeometory(session, geometry, element.Transform.Result, element.Style);
+			}
+		}
+
+		protected override void RenderLine(CanvasDrawingSession session, SvgLineElement element)
+		{
+			var x1 = this.LengthConverter.ConvertX(element.X1);
+			var y1 = this.LengthConverter.ConvertY(element.Y1);
+			var x2 = this.LengthConverter.ConvertX(element.X2);
+			var y2 = this.LengthConverter.ConvertY(element.Y2);
+			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
+			{
+				var area = new Rect(Math.Min(x1, x2), Math.Min(y1, y2), Math.Abs(y2 - x1), Math.Abs(y2 - y1));
+				var stroke = element.Style.Stroke;
+				if (stroke != null && stroke.PaintType != SvgPaintType.None)
+				{
+					var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
+					var width = element.Style.StrokeWidth;
+					session.DrawLine(x1, y1, x2, y2, pen, width.HasValue ? this.LengthConverter.Convert(width.Value) : 1.0F);
+				}
+			}
+		}
+
+		protected override void RenderPolyline(CanvasDrawingSession session, SvgPolylineElement element)
+		{
+			var minX = element.Points.Min(p => p.X);
+			var minY = element.Points.Min(p => p.Y);
+			var maxX = element.Points.Max(p => p.X);
+			var maxY = element.Points.Max(p => p.Y);
+			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
+			{
+				var area = new Rect(minX, minY, maxX - minX, maxY - minY);
+				var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2((float)p.X, (float)p.Y)).ToArray());
+				var pen = this.CreatePaint(session, area, element.Style.Stroke, element.Style.StrokeOpacity);
+				session.DrawGeometry(geometry, pen);
+			}
+		}
+
+		protected override void RenderPolygon(CanvasDrawingSession session, SvgPolygonElement element)
+		{
+			var minX = element.Points.Min(p => p.X);
+			var minY = element.Points.Min(p => p.Y);
+			var maxX = element.Points.Max(p => p.X);
+			var maxY = element.Points.Max(p => p.Y);
+			using (var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2((float)p.X, (float)p.Y)).ToArray()))
+			{
+				this.RenderGeometory(session, geometry, element.Transform.Result, element.Style);
+			}
+		}
+
+		private CanvasGeometry CreatePath(CanvasDrawingSession session, SvgPathElement element)
+		{
+			if (this.PathCache.ContainsKey(element)) return this.PathCache[element];
 
 			var open = false;
 			var v = new Vector2(0.0F, 0.0F);
@@ -90,11 +227,6 @@ namespace Mntone.SvgForXaml
 					v.Y = casted.Y;
 					builder.BeginFigure(v);
 					open = true;
-
-					minX = Math.Min(minX, v.X);
-					minY = Math.Min(minY, v.Y);
-					maxX = Math.Max(maxX, v.X);
-					maxY = Math.Max(maxY, v.Y);
 					continue;
 				}
 				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.MoveToRelative)
@@ -106,11 +238,6 @@ namespace Mntone.SvgForXaml
 					v.Y += casted.Y;
 					builder.BeginFigure(v);
 					open = true;
-
-					minX = Math.Min(minX, v.X);
-					minY = Math.Min(minY, v.Y);
-					maxX = Math.Max(maxX, v.X);
-					maxY = Math.Max(maxY, v.Y);
 					continue;
 				}
 
@@ -245,166 +372,28 @@ namespace Mntone.SvgForXaml
 					v.Y += casted.Y;
 					builder.AddQuadraticBezier(c1, v);
 				}
-
-				minX = Math.Min(minX, v.X);
-				minY = Math.Min(minY, v.Y);
-				maxX = Math.Max(maxX, v.X);
-				maxY = Math.Max(maxY, v.Y);
 			}
 			if (open)
 			{
 				builder.EndFigure(CanvasFigureLoop.Open);
 			}
 
-			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
-			{
-				var area = new Rect(minX, minY, maxX - minX, maxY - minY);
-				var geometry = CanvasGeometry.CreatePath(builder);
-				var fill = element.Style.Fill;
-				if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
-				{
-					var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
-					session.FillGeometry(geometry, pen);
-				}
-				var stroke = element.Style.Stroke;
-				if (stroke != null && fill.PaintType != SvgPaintType.None)
-				{
-					var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
-					var width = element.Style.StrokeWidth;
-					session.DrawGeometry(geometry, pen, width.HasValue ? this.LengthConverter.Convert(width.Value) : 1.0F);
-				}
-			}
+			var geometry = CanvasGeometry.CreatePath(builder);
+			this.DisposableObjects.Add(geometry);
+			this.PathCache.Add(element, geometry);
+			return geometry;
 		}
 
-		protected override void RenderRect(CanvasDrawingSession session, SvgRectElement element)
+		private CanvasGeometry CreateClipPath(CanvasDrawingSession session, SvgClipPathElement element)
 		{
-			var x = this.LengthConverter.ConvertX(element.X);
-			var y = this.LengthConverter.ConvertY(element.Y);
-			var width = this.LengthConverter.ConvertX(element.Width);
-			var height = this.LengthConverter.ConvertY(element.Height);
-			var rx = this.LengthConverter.ConvertX(element.RoundedX);
-			var ry = this.LengthConverter.ConvertX(element.RoundedY);
-
-			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
+			var child = element.FirstChild;
+			if (child.GetType() == typeof(SvgUseElement))
 			{
-				var area = new Rect(x, y, width, height);
-				var fill = element.Style.Fill;
-				if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
-				{
-					var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
-					session.FillRoundedRectangle(x, y, width, height, rx, ry, pen);
-				}
-				var stroke = element.Style.Stroke;
-				if (stroke != null && fill.PaintType != SvgPaintType.None)
-				{
-					var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
-					var strokeWidth = element.Style.StrokeWidth;
-					session.DrawRoundedRectangle(x, y, width, height, rx, ry, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
-				}
+				child = ((SvgUseElement)child).InstanceRoot;
 			}
-		}
+			if (child.GetType() != typeof(SvgPathElement)) throw new ArgumentException();
 
-		protected override void RenderCircle(CanvasDrawingSession session, SvgCircleElement element)
-		{
-			var centerX = this.LengthConverter.ConvertX(element.CenterX);
-			var centerY = this.LengthConverter.ConvertY(element.CenterY);
-			var radiusX = this.LengthConverter.ConvertX(element.Radius);
-			var radiusY = this.LengthConverter.ConvertY(element.Radius);
-
-			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
-			{
-				var area = new Rect(centerX - radiusX, centerY - radiusY, 2.0F * radiusX, 2.0F * radiusY);
-				var fill = element.Style.Fill;
-				if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
-				{
-					var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
-					session.FillEllipse(centerX, centerY, radiusX, radiusY, pen);
-				}
-				var stroke = element.Style.Stroke;
-				if (stroke != null && stroke.PaintType != SvgPaintType.None)
-				{
-					var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
-					var strokeWidth = element.Style.StrokeWidth;
-					session.DrawEllipse(centerX, centerY, radiusX, radiusY, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
-				}
-			}
-		}
-
-		protected override void RenderEllipse(CanvasDrawingSession session, SvgEllipseElement element)
-		{
-			var centerX = this.LengthConverter.ConvertX(element.CenterX);
-			var centerY = this.LengthConverter.ConvertY(element.CenterY);
-			var radiusX = this.LengthConverter.ConvertX(element.RadiusX);
-			var radiusY = this.LengthConverter.ConvertY(element.RadiusY);
-
-			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
-			{
-				var area = new Rect(centerX - radiusX, centerY - radiusY, 2.0F * radiusX, 2.0F * radiusY);
-				var fill = element.Style.Fill;
-				if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
-				{
-					var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
-					session.FillEllipse(centerX, centerY, radiusX, radiusY, pen);
-				}
-				var stroke = element.Style.Stroke;
-				if (stroke != null && stroke.PaintType != SvgPaintType.None)
-				{
-					var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
-					var strokeWidth = element.Style.StrokeWidth;
-					session.DrawEllipse(centerX, centerY, radiusX, radiusY, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
-				}
-			}
-		}
-
-		protected override void RenderLine(CanvasDrawingSession session, SvgLineElement element)
-		{
-			var x1 = this.LengthConverter.ConvertX(element.X1);
-			var y1 = this.LengthConverter.ConvertY(element.Y1);
-			var x2 = this.LengthConverter.ConvertX(element.X2);
-			var y2 = this.LengthConverter.ConvertY(element.Y2);
-
-			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
-			{
-				var area = new Rect(Math.Min(x1, x2), Math.Min(y1, y2), Math.Abs(y2 - x1), Math.Abs(y2 - y1));
-				var stroke = element.Style.Stroke;
-				if (stroke != null && stroke.PaintType != SvgPaintType.None)
-				{
-					var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
-					var width = element.Style.StrokeWidth;
-					session.DrawLine(x1, y1, x2, y2, pen, width.HasValue ? this.LengthConverter.Convert(width.Value) : 1.0F);
-				}
-			}
-		}
-
-		protected override void RenderPolyline(CanvasDrawingSession session, SvgPolylineElement element)
-		{
-			var minX = element.Points.Min(p => p.X);
-			var minY = element.Points.Min(p => p.Y);
-			var maxX = element.Points.Max(p => p.X);
-			var maxY = element.Points.Max(p => p.Y);
-
-			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
-			{
-				var area = new Rect(minX, minY, maxX - minX, maxY - minY);
-				var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2((float)p.X, (float)p.Y)).ToArray());
-				var pen = this.CreatePaint(session, area, element.Style.Stroke, element.Style.StrokeOpacity);
-				session.DrawGeometry(geometry, pen);
-			}
-		}
-
-		protected override void RenderPolygon(CanvasDrawingSession session, SvgPolygonElement element)
-		{
-			var minX = element.Points.Min(p => p.X);
-			var minY = element.Points.Min(p => p.Y);
-			var maxX = element.Points.Max(p => p.X);
-			var maxY = element.Points.Max(p => p.Y);
-
-			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
-			{
-				var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2((float)p.X, (float)p.Y)).ToArray());
-				var pen = this.CreatePaint(session, new Rect(minX, minY, maxX - minX, maxY - minY), element.Style.Fill, element.Style.FillOpacity);
-				session.FillGeometry(geometry, pen);
-			}
+			return this.CreatePath(session, (SvgPathElement)child);
 		}
 
 		private CanvasSolidColorBrush CreateColor(CanvasDrawingSession session, SvgColor color)

@@ -72,6 +72,7 @@
     <Compile Include="Primitives\SvgAngle.cs" />
     <Compile Include="Primitives\SvgLength.cs" />
     <Compile Include="Primitives\SvgMatrix.cs" />
+    <Compile Include="Primitives\SvgIri.cs" />
     <Compile Include="Primitives\SvgTransform.cs" />
     <Compile Include="Primitives\SvgTransformCollection.cs" />
     <Compile Include="Internal\SvgTransformParser.cs" />

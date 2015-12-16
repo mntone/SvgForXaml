@@ -71,6 +71,7 @@ namespace Mntone.SvgForXaml
 		public SvgNumber? StrokeOpacity => this.GetPropertyCssValue("stroke-opacity") as SvgNumber?;
 		public SvgColor StopColor => this.GetPropertyCssValue("stop-color") as SvgColor;
 		public SvgNumber? StopOpacity => this.GetPropertyCssValue("stop-opacity") as SvgNumber?;
+		public SvgIri ClipPath => this.GetPropertyCssValue("clip-path") as SvgIri;
 
 		private void ParseText(string css)
 		{
@@ -114,6 +115,10 @@ namespace Mntone.SvgForXaml
 				case "stroke-opacity":
 				case "stop-opacity":
 					parsedValue = SvgNumber.Parse(value);
+					break;
+
+				case "clip-path":
+					parsedValue = new SvgIri(value);
 					break;
 			}
 

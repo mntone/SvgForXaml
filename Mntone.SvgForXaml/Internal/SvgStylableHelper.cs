@@ -6,7 +6,7 @@ namespace Mntone.SvgForXaml.Internal
 {
 	internal sealed class SvgStylableHelper
 	{
-		private static readonly string[] PRESENTATION_ATTRIBUTE_NAMES = { "fill", "fill-opacity", "stroke", "stroke-width", "stroke-opacity", "stop-color", "stop-opacity" };
+		private static readonly string[] PRESENTATION_ATTRIBUTE_NAMES = { "fill", "fill-opacity", "stroke", "stroke-width", "stroke-opacity", "stop-color", "stop-opacity", "clip-path" };
 
 		public SvgStylableHelper(XmlElement element)
 		{
