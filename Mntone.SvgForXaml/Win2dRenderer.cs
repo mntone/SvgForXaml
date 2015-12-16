@@ -73,6 +73,7 @@ namespace Mntone.SvgForXaml
 		{
 			bool change = false;
 			var geometry2 = geometry;
+			CanvasSolidColorBrush opacityBrush = null;
 			try
 			{
 				using (var t = TransformSession.CreateTransformSession(session, transform))
@@ -92,12 +93,27 @@ namespace Mntone.SvgForXaml
 					}
 
 					var area = geometry2.ComputeBounds();
+					
+					var opacity = style.Opacity;
+					if (opacity != null)
+					{
+						opacityBrush = this.CreateOpacity(session, opacity.Value);
+					}
+
 					var fill = style.Fill;
 					if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
 					{
 						var pen = this.CreatePaint(session, area, fill, style.FillOpacity);
-						session.FillGeometry(geometry2, pen);
+						if (opacityBrush == null)
+						{
+							session.FillGeometry(geometry2, pen);
+						}
+						else
+						{
+							session.FillGeometry(geometry2, pen, opacityBrush);
+						}
 					}
+
 					var stroke = style.Stroke;
 					if (stroke != null && stroke.PaintType != SvgPaintType.None)
 					{
@@ -110,6 +126,7 @@ namespace Mntone.SvgForXaml
 			finally
 			{
 				if (change) geometry2.Dispose();
+				if (opacityBrush != null) opacityBrush.Dispose();
 			}
 		}
 
@@ -413,6 +430,11 @@ namespace Mntone.SvgForXaml
 					: Color.FromArgb(0xff, 0, 0, 0));
 			this.DisposableObjects.Add(brush);
 			return brush;
+		}
+
+		private CanvasSolidColorBrush CreateOpacity(CanvasDrawingSession session, SvgNumber opacity)
+		{
+			return new CanvasSolidColorBrush(this.ResourceCreator, Color.FromArgb((byte)(255.0F * opacity.Value), 0, 0, 0));
 		}
 
 		private ICanvasBrush CreatePaint(CanvasDrawingSession session, Rect area, SvgPaint paint, SvgNumber? opacity)
