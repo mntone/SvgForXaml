@@ -30,7 +30,7 @@ namespace Mntone.SvgForXaml.Path
 		{
 			this.ParseMoveTo(ptr);
 			ptr.AdvanceWhiteSpace();
-			this.ParseDrawToCommands(ptr);
+			if (!ptr.IsEnd) this.ParseDrawToCommands(ptr);
 		}
 
 		private bool ParseDrawToCommands(StringPtr ptr)
