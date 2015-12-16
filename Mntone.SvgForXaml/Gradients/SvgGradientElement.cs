@@ -1,15 +1,17 @@
-﻿using Mntone.SvgForXaml.Internal;
+﻿using Mntone.SvgForXaml.Interfaces;
+using Mntone.SvgForXaml.Internal;
 using Mntone.SvgForXaml.Primitives;
 using System.Xml;
 
 namespace Mntone.SvgForXaml.Gradients
 {
-	public abstract class SvgGradientElement : SvgElement, ISvgStylable
+	public abstract class SvgGradientElement : SvgElement, ISvgStylable, ISvgTransformable
 	{
 		protected internal SvgGradientElement(INode parent, XmlElement element)
 			: base(parent, element)
 		{
 			this._stylableHelper = new SvgStylableHelper(element);
+			this._transformableHelper = new SvgTransformableHelper(element);
 
 			var gradientUnits = SvgUnitTypeHelper.Parse(element.GetAttribute("gradientUnits"));
 			if (gradientUnits == SvgUnitType.Unknown) gradientUnits = SvgUnitType.ObjectBoundingBox;
@@ -32,6 +34,12 @@ namespace Mntone.SvgForXaml.Gradients
 		public string ClassName => this._stylableHelper.ClassName;
 		public CssStyleDeclaration Style => this._stylableHelper.Style;
 		public ICssValue GetPresentationAttribute(string name) => this._stylableHelper.GetPresentationAttribute(name);
+		#endregion
+
+		#region ISvgTransformable
+		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+		private readonly SvgTransformableHelper _transformableHelper;
+		public SvgTransformCollection Transform => this._transformableHelper.Transform;
 		#endregion
 	}
 }

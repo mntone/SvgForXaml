@@ -1,4 +1,5 @@
-﻿using Mntone.SvgForXaml.Internal;
+﻿using Mntone.SvgForXaml.Interfaces;
+using Mntone.SvgForXaml.Internal;
 using System.Xml;
 
 namespace Mntone.SvgForXaml.Gradients

@@ -1,5 +1,7 @@
 ﻿using Mntone.SvgForXaml.Gradients;
+using Mntone.SvgForXaml.Interfaces;
 using Mntone.SvgForXaml.Internal;
+using Mntone.SvgForXaml.Maskings;
 using Mntone.SvgForXaml.Path;
 using Mntone.SvgForXaml.Shapes;
 using System.Collections.Generic;
@@ -48,6 +50,8 @@ namespace Mntone.SvgForXaml
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
 		public SvgElement LastChild => this.ChildNodes.Count != 0 ? this.ChildNodes[this.ChildNodes.Count - 1] : null;
+
+		public virtual INode CloneNode() => (INode)this.MemberwiseClone();
 
 		protected static IReadOnlyList<SvgElement> ParseChildren(INode parent, XmlNodeList nodes)
 		{
@@ -125,6 +129,10 @@ namespace Mntone.SvgForXaml
 
 					case "stop":
 						result.Add(new SvgStopElement(parent, elementNode));
+						break;
+
+					case "clipPath":
+						result.Add(new SvgClipPathElement(parent, elementNode));
 						break;
 
 					default:

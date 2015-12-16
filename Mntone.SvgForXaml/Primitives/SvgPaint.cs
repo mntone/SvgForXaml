@@ -1,6 +1,4 @@
-﻿using Mntone.SvgForXaml.Primitives;
-
-namespace Mntone.SvgForXaml
+﻿namespace Mntone.SvgForXaml.Primitives
 {
 	public sealed class SvgPaint : SvgColor
 	{

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Mntone.SvgForXaml.Interfaces;
+using System.Linq;
 using System.Xml;
 
 namespace Mntone.SvgForXaml.Internal

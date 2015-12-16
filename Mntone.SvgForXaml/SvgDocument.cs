@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Mntone.SvgForXaml.Interfaces;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -31,6 +32,8 @@ namespace Mntone.SvgForXaml
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
 		private IReadOnlyList<SvgElement> _ChildNodes;
+		
+		public INode CloneNode() => (INode)this.MemberwiseClone();
 
 		public SvgSvgElement RootElement { get; private set; }
 

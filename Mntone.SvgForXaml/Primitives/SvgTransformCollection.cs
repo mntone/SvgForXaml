@@ -21,7 +21,7 @@ namespace Mntone.SvgForXaml.Primitives
 				if (this._transforms.Count == 0) return SvgMatrix.Indentity;
 
 				var m = this._transforms[0].Matrix;
-				foreach (var m2 in this._transforms.Skip(1)) m = m2.Matrix * m;
+				foreach (var m2 in this._transforms.Skip(1)) m = m * m2.Matrix;
 				return m;
 			}
 		}

@@ -18,7 +18,7 @@ namespace SvgImageControlSample
 
 		private async void OnLoaded(object sender, RoutedEventArgs e)
 		{
-			var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/test4.svg"));
+			var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/test1.svg"));
 			this.InitializeAsync(file);
 		}
 

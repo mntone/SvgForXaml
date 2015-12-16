@@ -1,4 +1,4 @@
-﻿namespace Mntone.SvgForXaml
+﻿namespace Mntone.SvgForXaml.Interfaces
 {
 	public interface IElement : INode
 	{

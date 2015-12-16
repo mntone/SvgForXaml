@@ -25,6 +25,7 @@ namespace Mntone.SvgForXaml
 		}
 
 		protected abstract void RendererSvg(TSession session, SvgSvgElement element);
+		protected abstract void RendererGroup(TSession session, SvgGroupElement element);
 		protected abstract void RendererPath(TSession session, SvgPathElement element);
 		protected abstract void RendererRect(TSession session, SvgRectElement element);
 		protected abstract void RendererCircle(TSession session, SvgCircleElement element);
@@ -37,41 +38,46 @@ namespace Mntone.SvgForXaml
 		{
 			foreach (var element in elements)
 			{
-				if (element.GetType() == typeof(SvgSvgElement))
+				var target = element;
+				if (target.GetType() == typeof(SvgUseElement))
 				{
-					this.RendererSvg(session, (SvgSvgElement)element);
+					target = ((SvgUseElement)target).InstanceRoot;
 				}
-				else if (element.GetType() == typeof(SvgGroupElement))
+				if (target.GetType() == typeof(SvgSvgElement))
 				{
-					this.RendererChildren(session, element.ChildNodes);
+					this.RendererSvg(session, (SvgSvgElement)target);
 				}
-				else if (element.GetType() == typeof(SvgPathElement))
+				else if (target.GetType() == typeof(SvgGroupElement))
 				{
-					this.RendererPath(session, (SvgPathElement)element);
+					this.RendererGroup(session, (SvgGroupElement)target);
 				}
-				else if (element.GetType() == typeof(SvgRectElement))
+				else if (target.GetType() == typeof(SvgPathElement))
 				{
-					this.RendererRect(session, (SvgRectElement)element);
+					this.RendererPath(session, (SvgPathElement)target);
 				}
-				else if (element.GetType() == typeof(SvgCircleElement))
+				else if (target.GetType() == typeof(SvgRectElement))
 				{
-					this.RendererCircle(session, (SvgCircleElement)element);
+					this.RendererRect(session, (SvgRectElement)target);
 				}
-				else if (element.GetType() == typeof(SvgEllipseElement))
+				else if (target.GetType() == typeof(SvgCircleElement))
 				{
-					this.RendererEllipse(session, (SvgEllipseElement)element);
+					this.RendererCircle(session, (SvgCircleElement)target);
 				}
-				else if (element.GetType() == typeof(SvgLineElement))
+				else if (target.GetType() == typeof(SvgEllipseElement))
 				{
-					this.RendererLine(session, (SvgLineElement)element);
+					this.RendererEllipse(session, (SvgEllipseElement)target);
 				}
-				else if (element.GetType() == typeof(SvgPolylineElement))
+				else if (target.GetType() == typeof(SvgLineElement))
 				{
-					this.RendererPolyline(session, (SvgPolylineElement)element);
+					this.RendererLine(session, (SvgLineElement)target);
 				}
-				else if (element.GetType() == typeof(SvgPolygonElement))
+				else if (target.GetType() == typeof(SvgPolylineElement))
 				{
-					this.RendererPolygon(session, (SvgPolygonElement)element);
+					this.RendererPolyline(session, (SvgPolylineElement)target);
+				}
+				else if (target.GetType() == typeof(SvgPolygonElement))
+				{
+					this.RendererPolygon(session, (SvgPolygonElement)target);
 				}
 			}
 		}

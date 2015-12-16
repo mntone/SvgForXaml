@@ -1,4 +1,4 @@
-﻿namespace Mntone.SvgForXaml
+﻿namespace Mntone.SvgForXaml.Primitives
 {
 	public enum SvgPaintType : ushort
 	{

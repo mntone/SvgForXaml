@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Mntone.SvgForXaml
+namespace Mntone.SvgForXaml.Interfaces
 {
 	public interface INode
 	{
@@ -9,5 +9,7 @@ namespace Mntone.SvgForXaml
 		IReadOnlyList<SvgElement> ChildNodes { get; }
 		SvgElement FirstChild { get; }
 		SvgElement LastChild { get; }
+
+		INode CloneNode();
 	}
 }

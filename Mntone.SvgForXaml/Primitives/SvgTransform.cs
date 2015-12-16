@@ -35,15 +35,15 @@ namespace Mntone.SvgForXaml.Primitives
 		{
 			var rad = angle.ValueAsRadian;
 			var cos = Math.Cos(rad);
-			var sin = Math.Sign(rad);
+			var sin = Math.Sin(rad);
 			return new SvgTransform(SvgTransformType.Rotate, new SvgMatrix(cos, sin, -sin, cos, 0.0, 0.0));
 		}
 		internal static SvgTransform CreateRotate(SvgAngle angle, float cx, float cy)
 		{
 			var rad = angle.ValueAsRadian;
 			var cos = Math.Cos(rad);
-			var sin = Math.Sign(rad);
-			return new SvgTransform(SvgTransformType.Rotate, new SvgMatrix(cos, sin, -sin, cos, cx * cos - cy * sin - cx, cx * sin + cy * cos - cy));
+			var sin = Math.Sin(rad);
+			return new SvgTransform(SvgTransformType.Rotate, new SvgMatrix(cos, sin, -sin, cos, -cx * cos + cy * sin + cx, -cx * sin - cy * cos + cy));
 		}
 
 		internal static SvgTransform CreateSkewX(SvgAngle angle) => new SvgTransform(SvgTransformType.SkewX, new SvgMatrix(1.0, 0.0, Math.Tan(angle.ValueAsRadian), 1.0, 0.0, 0.0));

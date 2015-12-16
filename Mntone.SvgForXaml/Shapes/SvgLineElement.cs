@@ -1,16 +1,18 @@
-﻿using Mntone.SvgForXaml.Internal;
+﻿using Mntone.SvgForXaml.Interfaces;
+using Mntone.SvgForXaml.Internal;
 using Mntone.SvgForXaml.Primitives;
 using System.Xml;
 
 namespace Mntone.SvgForXaml.Shapes
 {
 	[System.Diagnostics.DebuggerDisplay("Line: 1 = ({this.X1}, {this.Y1}), 2 = ({this.X2}, {this.Y2})")]
-	public sealed class SvgLineElement : SvgElement, ISvgStylable
+	public sealed class SvgLineElement : SvgElement, ISvgStylable, ISvgTransformable
 	{
 		internal SvgLineElement(INode parent, XmlElement element)
 			: base(parent, element)
 		{
 			this._stylableHelper = new SvgStylableHelper(element);
+			this._transformableHelper = new SvgTransformableHelper(element);
 
 			this.X1 = element.ParseCoordinate("x1", 0.0F);
 			this.Y1 = element.ParseCoordinate("y1", 0.0F);
@@ -30,6 +32,12 @@ namespace Mntone.SvgForXaml.Shapes
 		public string ClassName => this._stylableHelper.ClassName;
 		public CssStyleDeclaration Style => this._stylableHelper.Style;
 		public ICssValue GetPresentationAttribute(string name) => this._stylableHelper.GetPresentationAttribute(name);
+		#endregion
+
+		#region ISvgTransformable
+		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+		private readonly SvgTransformableHelper _transformableHelper;
+		public SvgTransformCollection Transform => this._transformableHelper.Transform;
 		#endregion
 	}
 }

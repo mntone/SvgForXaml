@@ -1,4 +1,5 @@
-﻿using Mntone.SvgForXaml.Primitives;
+﻿using Mntone.SvgForXaml.Interfaces;
+using Mntone.SvgForXaml.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;

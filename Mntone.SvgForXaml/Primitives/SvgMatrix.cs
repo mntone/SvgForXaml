@@ -33,8 +33,8 @@ namespace Mntone.SvgForXaml.Primitives
 		public static SvgMatrix operator *(SvgMatrix left, SvgMatrix right)
 		{
 			return new SvgMatrix(
-				left.A * right.A + left.B * right.C,
-				left.A * right.B + left.B * right.D,
+				left.A * right.A + left.C * right.B,
+				left.B * right.A + left.D * right.B,
 				left.A * right.C + left.C * right.D,
 				left.B * right.C + left.D * right.D,
 				left.A * right.E + left.C * right.F + left.E,

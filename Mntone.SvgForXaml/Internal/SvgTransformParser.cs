@@ -1,8 +1,8 @@
-﻿using Mntone.SvgForXaml.Internal;
-using System.Collections.ObjectModel;
+﻿using Mntone.SvgForXaml.Primitives;
 using System;
+using System.Collections.ObjectModel;
 
-namespace Mntone.SvgForXaml.Primitives
+namespace Mntone.SvgForXaml.Internal
 {
 	internal sealed class SvgTransformParser
 	{
@@ -117,7 +117,7 @@ namespace Mntone.SvgForXaml.Primitives
 						if (ptr.Char == ')')
 						{
 							++ptr;
-							this.Transforms.Add(SvgTransform.CreateTranslate(tx, tx));
+							this.Transforms.Add(SvgTransform.CreateTranslate(tx, 0.0F));
 							return;
 						}
 					}

@@ -1,18 +1,24 @@
 ﻿using Mntone.SvgForXaml.Interfaces;
 using Mntone.SvgForXaml.Internal;
+using Mntone.SvgForXaml.Primitives;
 using System.Xml;
 
-namespace Mntone.SvgForXaml
+namespace Mntone.SvgForXaml.Maskings
 {
-	public sealed class SvgTitleElement : SvgElement, ISvgStylable
+	public sealed class SvgClipPathElement : SvgElement, ISvgStylable
 	{
-		internal SvgTitleElement(INode parent, XmlElement element)
+		internal SvgClipPathElement(INode parent, XmlElement element)
 			: base(parent, element)
 		{
 			this._stylableHelper = new SvgStylableHelper(element);
+
+			var clipPathUnits = SvgUnitTypeHelper.Parse(element.GetAttribute("clipPathUnits"));
+			if (clipPathUnits == SvgUnitType.Unknown) clipPathUnits = SvgUnitType.UserSpaceOnUse;
+			this.ClipPathUnits = clipPathUnits;
 		}
 
-		public override string TagName => "title";
+		public override string TagName => "clipPath";
+		public SvgUnitType ClipPathUnits { get; }
 
 		#region ISvgStylable
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]

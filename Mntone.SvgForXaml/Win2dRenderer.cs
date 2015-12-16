@@ -1,7 +1,6 @@
 ﻿using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
-using Microsoft.Graphics.Canvas.UI.Xaml;
 using Mntone.SvgForXaml.Gradients;
 using Mntone.SvgForXaml.Path;
 using Mntone.SvgForXaml.Primitives;
@@ -49,6 +48,14 @@ namespace Mntone.SvgForXaml
 		protected override void RendererSvg(CanvasDrawingSession session, SvgSvgElement element)
 		{
 			this.RendererChildren(session, element.ChildNodes);
+		}
+
+		protected override void RendererGroup(CanvasDrawingSession session, SvgGroupElement element)
+		{
+			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
+			{
+				this.RendererChildren(session, element.ChildNodes);
+			}
 		}
 
 		protected override void RendererPath(CanvasDrawingSession session, SvgPathElement element)
@@ -241,20 +248,23 @@ namespace Mntone.SvgForXaml
 				builder.EndFigure(CanvasFigureLoop.Open);
 			}
 
-			var area = new Rect(minX, minY, maxX - minX, maxY - minY);
-			var geometry = CanvasGeometry.CreatePath(builder);
-			var fill = element.Style.Fill;
-			if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
+			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
 			{
-				var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
-				session.FillGeometry(geometry, pen);
-			}
-			var stroke = element.Style.Stroke;
-			if (stroke != null && fill.PaintType != SvgPaintType.None)
-			{
-				var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
-				var width = element.Style.StrokeWidth;
-				session.DrawGeometry(geometry, pen, width.HasValue ? this.LengthConverter.Convert(width.Value) : 1.0F);
+				var area = new Rect(minX, minY, maxX - minX, maxY - minY);
+				var geometry = CanvasGeometry.CreatePath(builder);
+				var fill = element.Style.Fill;
+				if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
+				{
+					var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
+					session.FillGeometry(geometry, pen);
+				}
+				var stroke = element.Style.Stroke;
+				if (stroke != null && fill.PaintType != SvgPaintType.None)
+				{
+					var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
+					var width = element.Style.StrokeWidth;
+					session.DrawGeometry(geometry, pen, width.HasValue ? this.LengthConverter.Convert(width.Value) : 1.0F);
+				}
 			}
 		}
 
@@ -264,20 +274,25 @@ namespace Mntone.SvgForXaml
 			var y = this.LengthConverter.ConvertY(element.Y);
 			var width = this.LengthConverter.ConvertX(element.Width);
 			var height = this.LengthConverter.ConvertY(element.Height);
+			var rx = this.LengthConverter.ConvertX(element.RoundedX);
+			var ry = this.LengthConverter.ConvertX(element.RoundedY);
 
-			var area = new Rect(x, y, width, height);
-			var fill = element.Style.Fill;
-			if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
+			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
 			{
-				var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
-				session.FillRectangle(x, y, width, height, pen);
-			}
-			var stroke = element.Style.Stroke;
-			if (stroke != null && fill.PaintType != SvgPaintType.None)
-			{
-				var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
-				var strokeWidth = element.Style.StrokeWidth;
-				session.DrawRectangle(x, y, width, height, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
+				var area = new Rect(x, y, width, height);
+				var fill = element.Style.Fill;
+				if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
+				{
+					var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
+					session.FillRoundedRectangle(x, y, width, height, rx, ry, pen);
+				}
+				var stroke = element.Style.Stroke;
+				if (stroke != null && fill.PaintType != SvgPaintType.None)
+				{
+					var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
+					var strokeWidth = element.Style.StrokeWidth;
+					session.DrawRoundedRectangle(x, y, width, height, rx, ry, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
+				}
 			}
 		}
 
@@ -288,19 +303,22 @@ namespace Mntone.SvgForXaml
 			var radiusX = this.LengthConverter.ConvertX(element.Radius);
 			var radiusY = this.LengthConverter.ConvertY(element.Radius);
 
-			var area = new Rect(centerX - radiusX, centerY - radiusY, 2.0F * radiusX, 2.0F * radiusY);
-			var fill = element.Style.Fill;
-			if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
+			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
 			{
-				var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
-				session.FillEllipse(centerX, centerY, radiusX, radiusY, pen);
-			}
-			var stroke = element.Style.Stroke;
-			if (stroke != null && stroke.PaintType != SvgPaintType.None)
-			{
-				var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
-				var strokeWidth = element.Style.StrokeWidth;
-				session.DrawEllipse(centerX, centerY, radiusX, radiusY, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
+				var area = new Rect(centerX - radiusX, centerY - radiusY, 2.0F * radiusX, 2.0F * radiusY);
+				var fill = element.Style.Fill;
+				if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
+				{
+					var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
+					session.FillEllipse(centerX, centerY, radiusX, radiusY, pen);
+				}
+				var stroke = element.Style.Stroke;
+				if (stroke != null && stroke.PaintType != SvgPaintType.None)
+				{
+					var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
+					var strokeWidth = element.Style.StrokeWidth;
+					session.DrawEllipse(centerX, centerY, radiusX, radiusY, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
+				}
 			}
 		}
 
@@ -311,19 +329,22 @@ namespace Mntone.SvgForXaml
 			var radiusX = this.LengthConverter.ConvertX(element.RadiusX);
 			var radiusY = this.LengthConverter.ConvertY(element.RadiusY);
 
-			var area = new Rect(centerX - radiusX, centerY - radiusY, 2.0F * radiusX, 2.0F * radiusY);
-			var fill = element.Style.Fill;
-			if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
+			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
 			{
-				var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
-				session.FillEllipse(centerX, centerY, radiusX, radiusY, pen);
-			}
-			var stroke = element.Style.Stroke;
-			if (stroke != null && stroke.PaintType != SvgPaintType.None)
-			{
-				var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
-				var strokeWidth = element.Style.StrokeWidth;
-				session.DrawEllipse(centerX, centerY, radiusX, radiusY, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
+				var area = new Rect(centerX - radiusX, centerY - radiusY, 2.0F * radiusX, 2.0F * radiusY);
+				var fill = element.Style.Fill;
+				if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
+				{
+					var pen = this.CreatePaint(session, area, fill, element.Style.FillOpacity);
+					session.FillEllipse(centerX, centerY, radiusX, radiusY, pen);
+				}
+				var stroke = element.Style.Stroke;
+				if (stroke != null && stroke.PaintType != SvgPaintType.None)
+				{
+					var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
+					var strokeWidth = element.Style.StrokeWidth;
+					session.DrawEllipse(centerX, centerY, radiusX, radiusY, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
+				}
 			}
 		}
 
@@ -334,13 +355,16 @@ namespace Mntone.SvgForXaml
 			var x2 = this.LengthConverter.ConvertX(element.X2);
 			var y2 = this.LengthConverter.ConvertY(element.Y2);
 
-			var area = new Rect(Math.Min(x1, x2), Math.Min(y1, y2), Math.Abs(y2 - x1), Math.Abs(y2 - y1));
-			var stroke = element.Style.Stroke;
-			if (stroke != null && stroke.PaintType != SvgPaintType.None)
+			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
 			{
-				var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
-				var width = element.Style.StrokeWidth;
-				session.DrawLine(x1, y1, x2, y2, pen, width.HasValue ? this.LengthConverter.Convert(width.Value) : 1.0F);
+				var area = new Rect(Math.Min(x1, x2), Math.Min(y1, y2), Math.Abs(y2 - x1), Math.Abs(y2 - y1));
+				var stroke = element.Style.Stroke;
+				if (stroke != null && stroke.PaintType != SvgPaintType.None)
+				{
+					var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
+					var width = element.Style.StrokeWidth;
+					session.DrawLine(x1, y1, x2, y2, pen, width.HasValue ? this.LengthConverter.Convert(width.Value) : 1.0F);
+				}
 			}
 		}
 
@@ -351,10 +375,13 @@ namespace Mntone.SvgForXaml
 			var maxX = element.Points.Max(p => p.X);
 			var maxY = element.Points.Max(p => p.Y);
 
-			var area = new Rect(minX, minY, maxX - minX, maxY - minY);
-			var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2((float)p.X, (float)p.Y)).ToArray());
-			var pen = this.CreatePaint(session, area, element.Style.Stroke, element.Style.StrokeOpacity);
-			session.DrawGeometry(geometry, pen);
+			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
+			{
+				var area = new Rect(minX, minY, maxX - minX, maxY - minY);
+				var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2((float)p.X, (float)p.Y)).ToArray());
+				var pen = this.CreatePaint(session, area, element.Style.Stroke, element.Style.StrokeOpacity);
+				session.DrawGeometry(geometry, pen);
+			}
 		}
 
 		protected override void RendererPolygon(CanvasDrawingSession session, SvgPolygonElement element)
@@ -364,9 +391,12 @@ namespace Mntone.SvgForXaml
 			var maxX = element.Points.Max(p => p.X);
 			var maxY = element.Points.Max(p => p.Y);
 
-			var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2((float)p.X, (float)p.Y)).ToArray());
-			var pen = this.CreatePaint(session, new Rect(minX, minY, maxX - minX, maxY - minY), element.Style.Fill, element.Style.FillOpacity);
-			session.FillGeometry(geometry, pen);
+			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
+			{
+				var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2((float)p.X, (float)p.Y)).ToArray());
+				var pen = this.CreatePaint(session, new Rect(minX, minY, maxX - minX, maxY - minY), element.Style.Fill, element.Style.FillOpacity);
+				session.FillGeometry(geometry, pen);
+			}
 		}
 
 		private CanvasSolidColorBrush CreateColor(CanvasDrawingSession session, SvgColor color)

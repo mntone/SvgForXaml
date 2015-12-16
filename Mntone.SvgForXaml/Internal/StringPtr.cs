@@ -60,11 +60,13 @@ namespace Mntone.SvgForXaml.Internal
 
 		public static StringPtr operator +(StringPtr left, int right)
 		{
-			return new StringPtr(left.Target, left.Index + right);
+			left.Index += right;
+			return left;
 		}
 		public static StringPtr operator -(StringPtr left, int right)
 		{
-			return new StringPtr(left.Target, left.Index + right);
+			left.Index -= right;
+			return left;
 		}
 		public static StringPtr operator ++(StringPtr left)
 		{
