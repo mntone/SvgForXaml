@@ -178,18 +178,20 @@ namespace Mntone.SvgForXaml
 
 		protected override void RenderPolyline(CanvasDrawingSession session, SvgPolylineElement element)
 		{
-			var builder = new CanvasPathBuilder(this.ResourceCreator);
-			var begin = element.Points.First();
-			builder.BeginFigure(begin.X, begin.Y);
-			foreach (var point in element.Points.Skip(1))
+			using (var builder = new CanvasPathBuilder(this.ResourceCreator))
 			{
-				builder.AddLine(point.X, point.Y);
-			}
-			builder.EndFigure(CanvasFigureLoop.Open);
+				var begin = element.Points.First();
+				builder.BeginFigure(begin.X, begin.Y);
+				foreach (var point in element.Points.Skip(1))
+				{
+					builder.AddLine(point.X, point.Y);
+				}
+				builder.EndFigure(CanvasFigureLoop.Open);
 
-			using (var geometry = CanvasGeometry.CreatePath(builder))
-			{
-				this.RenderGeometory(session, geometry, element.Transform.Result, element.Style);
+				using (var geometry = CanvasGeometry.CreatePath(builder))
+				{
+					this.RenderGeometory(session, geometry, element.Transform.Result, element.Style);
+				}
 			}
 		}
 
@@ -204,179 +206,188 @@ namespace Mntone.SvgForXaml
 		private CanvasGeometry CreatePath(CanvasDrawingSession session, SvgPathElement element)
 		{
 			if (this.PathCache.ContainsKey(element)) return this.PathCache[element];
-
+			
 			var open = false;
 			var v = new Vector2(0.0F, 0.0F);
-			var builder = new CanvasPathBuilder(this.ResourceCreator);
-			foreach (var segment in element.Segments)
+
+			CanvasGeometry geometry;
+			using (var builder = new CanvasPathBuilder(this.ResourceCreator))
 			{
-				if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.ClosePath)
+				var fillRule = element.Style.FillRule;
+				if (fillRule.HasValue && fillRule.Value.Value != SvgFillRuleType.EvenOdd)
 				{
-					builder.EndFigure(CanvasFigureLoop.Closed);
-					open = false;
-					continue;
+					builder.SetFilledRegionDetermination(CanvasFilledRegionDetermination.Winding);
 				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.MoveToAbsolute)
+				foreach (var segment in element.Segments)
 				{
-					if (open) builder.EndFigure(CanvasFigureLoop.Open);
+					if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.ClosePath)
+					{
+						builder.EndFigure(CanvasFigureLoop.Closed);
+						open = false;
+						continue;
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.MoveToAbsolute)
+					{
+						if (open) builder.EndFigure(CanvasFigureLoop.Open);
 
-					var casted = (SvgPathSegmentMoveToAbsolute)segment;
-					v.X = casted.X;
-					v.Y = casted.Y;
-					builder.BeginFigure(v);
-					open = true;
-					continue;
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.MoveToRelative)
-				{
-					if (open) builder.EndFigure(CanvasFigureLoop.Open);
+						var casted = (SvgPathSegmentMoveToAbsolute)segment;
+						v.X = casted.X;
+						v.Y = casted.Y;
+						builder.BeginFigure(v);
+						open = true;
+						continue;
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.MoveToRelative)
+					{
+						if (open) builder.EndFigure(CanvasFigureLoop.Open);
 
-					var casted = (SvgPathSegmentMoveToRelative)segment;
-					v.X += casted.X;
-					v.Y += casted.Y;
-					builder.BeginFigure(v);
-					open = true;
-					continue;
+						var casted = (SvgPathSegmentMoveToRelative)segment;
+						v.X += casted.X;
+						v.Y += casted.Y;
+						builder.BeginFigure(v);
+						open = true;
+						continue;
+					}
+
+					if (!open)
+					{
+						builder.BeginFigure(v);
+						open = true;
+					}
+					if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToAbsolute)
+					{
+						var casted = (SvgPathSegmentLineToAbsolute)segment;
+						v.X = casted.X;
+						v.Y = casted.Y;
+						builder.AddLine(v);
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToRelative)
+					{
+						var casted = (SvgPathSegmentLineToRelative)segment;
+						v.X += casted.X;
+						v.Y += casted.Y;
+						builder.AddLine(v);
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicAbsolute)
+					{
+						var casted = (SvgPathSegmentCurveToCubicAbsolute)segment;
+						v.X = casted.X;
+						v.Y = casted.Y;
+						builder.AddCubicBezier(new Vector2(casted.X1, casted.Y1), new Vector2(casted.X2, casted.Y2), v);
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicRelative)
+					{
+						var casted = (SvgPathSegmentCurveToCubicRelative)segment;
+						var c1 = v;
+						c1.X += casted.X1;
+						c1.Y += casted.Y1;
+						var c2 = v;
+						c2.X += casted.X2;
+						c2.Y += casted.Y2;
+						v.X += casted.X;
+						v.Y += casted.Y;
+						builder.AddCubicBezier(c1, c2, v);
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticAbsolute)
+					{
+						var casted = (SvgPathSegmentCurveToQuadraticAbsolute)segment;
+						v.X = casted.X;
+						v.Y = casted.Y;
+						builder.AddQuadraticBezier(new Vector2(casted.X1, casted.Y1), v);
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticRelative)
+					{
+						var casted = (SvgPathSegmentCurveToQuadraticRelative)segment;
+						var c1 = v;
+						c1.X += casted.X1;
+						c1.Y += casted.Y1;
+						v.X += casted.X;
+						v.Y += casted.Y;
+						builder.AddQuadraticBezier(c1, v);
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.ArcAbsolute)
+					{
+						var casted = (SvgPathSegmentArcAbsolute)segment;
+						var size = casted.LargeArcFlag ? CanvasArcSize.Large : CanvasArcSize.Small;
+						var sweepDirection = casted.SweepFlag ? CanvasSweepDirection.Clockwise : CanvasSweepDirection.CounterClockwise;
+						builder.AddArc(new Vector2(casted.X, casted.Y), casted.RadiusX, casted.RadiusY, casted.Angle, sweepDirection, size);
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.ArcRelative)
+					{
+						var casted = (SvgPathSegmentArcRelative)segment;
+						v.X += casted.X;
+						v.Y += casted.Y;
+						var size = casted.LargeArcFlag ? CanvasArcSize.Large : CanvasArcSize.Small;
+						var sweepDirection = casted.SweepFlag ? CanvasSweepDirection.Clockwise : CanvasSweepDirection.CounterClockwise;
+						builder.AddArc(v, casted.RadiusX, casted.RadiusY, casted.Angle, sweepDirection, size);
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToHorizontalAbsolute)
+					{
+						var casted = (SvgPathSegmentLineToHorizontalAbsolute)segment;
+						v.X = casted.X;
+						builder.AddLine(v);
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToHorizontalRelative)
+					{
+						var casted = (SvgPathSegmentLineToHorizontalRelative)segment;
+						v.X += casted.X;
+						builder.AddLine(v);
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToVerticalAbsolute)
+					{
+						var casted = (SvgPathSegmentLineToVerticalAbsolute)segment;
+						v.Y = casted.Y;
+						builder.AddLine(v);
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToVerticalRelative)
+					{
+						var casted = (SvgPathSegmentLineToVerticalRelative)segment;
+						v.Y += casted.Y;
+						builder.AddLine(v);
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicSmoothAbsolute)
+					{
+						var casted = (SvgPathSegmentCurveToCubicSmoothAbsolute)segment;
+						var c1 = v;
+						v.X = casted.X;
+						v.Y = casted.Y;
+						builder.AddCubicBezier(c1, new Vector2(casted.X2, casted.Y2), v);
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicSmoothRelative)
+					{
+						var casted = (SvgPathSegmentCurveToCubicSmoothRelative)segment;
+						var c1 = v;
+						var c2 = v;
+						c2.X += casted.X2;
+						c2.Y += casted.Y2;
+						v.X += casted.X;
+						v.Y += casted.Y;
+						builder.AddCubicBezier(c1, c2, v);
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticSmoothAbsolute)
+					{
+						var casted = (SvgPathSegmentCurveToQuadraticSmoothAbsolute)segment;
+						var c1 = v;
+						v.X = casted.X;
+						v.Y = casted.Y;
+						builder.AddQuadraticBezier(c1, v);
+					}
+					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticSmoothRelative)
+					{
+						var casted = (SvgPathSegmentCurveToQuadraticSmoothRelative)segment;
+						var c1 = v;
+						v.X += casted.X;
+						v.Y += casted.Y;
+						builder.AddQuadraticBezier(c1, v);
+					}
+				}
+				if (open)
+				{
+					builder.EndFigure(CanvasFigureLoop.Open);
 				}
 
-				if (!open)
-				{
-					builder.BeginFigure(v);
-					open = true;
-				}
-				if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToAbsolute)
-				{
-					var casted = (SvgPathSegmentLineToAbsolute)segment;
-					v.X = casted.X;
-					v.Y = casted.Y;
-					builder.AddLine(v);
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToRelative)
-				{
-					var casted = (SvgPathSegmentLineToRelative)segment;
-					v.X += casted.X;
-					v.Y += casted.Y;
-					builder.AddLine(v);
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicAbsolute)
-				{
-					var casted = (SvgPathSegmentCurveToCubicAbsolute)segment;
-					v.X = casted.X;
-					v.Y = casted.Y;
-					builder.AddCubicBezier(new Vector2(casted.X1, casted.Y1), new Vector2(casted.X2, casted.Y2), v);
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicRelative)
-				{
-					var casted = (SvgPathSegmentCurveToCubicRelative)segment;
-					var c1 = v;
-					c1.X += casted.X1;
-					c1.Y += casted.Y1;
-					var c2 = v;
-					c2.X += casted.X2;
-					c2.Y += casted.Y2;
-					v.X += casted.X;
-					v.Y += casted.Y;
-					builder.AddCubicBezier(c1, c2, v);
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticAbsolute)
-				{
-					var casted = (SvgPathSegmentCurveToQuadraticAbsolute)segment;
-					v.X = casted.X;
-					v.Y = casted.Y;
-					builder.AddQuadraticBezier(new Vector2(casted.X1, casted.Y1), v);
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticRelative)
-				{
-					var casted = (SvgPathSegmentCurveToQuadraticRelative)segment;
-					var c1 = v;
-					c1.X += casted.X1;
-					c1.Y += casted.Y1;
-					v.X += casted.X;
-					v.Y += casted.Y;
-					builder.AddQuadraticBezier(c1, v);
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.ArcAbsolute)
-				{
-					var casted = (SvgPathSegmentArcAbsolute)segment;
-					var size = casted.LargeArcFlag ? CanvasArcSize.Large : CanvasArcSize.Small;
-					var sweepDirection = casted.SweepFlag ? CanvasSweepDirection.Clockwise : CanvasSweepDirection.CounterClockwise;
-					builder.AddArc(new Vector2(casted.X, casted.Y), casted.RadiusX, casted.RadiusY, casted.Angle, sweepDirection, size);
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.ArcRelative)
-				{
-					var casted = (SvgPathSegmentArcRelative)segment;
-					v.X += casted.X;
-					v.Y += casted.Y;
-					var size = casted.LargeArcFlag ? CanvasArcSize.Large : CanvasArcSize.Small;
-					var sweepDirection = casted.SweepFlag ? CanvasSweepDirection.Clockwise : CanvasSweepDirection.CounterClockwise;
-					builder.AddArc(v, casted.RadiusX, casted.RadiusY, casted.Angle, sweepDirection, size);
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToHorizontalAbsolute)
-				{
-					var casted = (SvgPathSegmentLineToHorizontalAbsolute)segment;
-					v.X = casted.X;
-					builder.AddLine(v);
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToHorizontalRelative)
-				{
-					var casted = (SvgPathSegmentLineToHorizontalRelative)segment;
-					v.X += casted.X;
-					builder.AddLine(v);
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToVerticalAbsolute)
-				{
-					var casted = (SvgPathSegmentLineToVerticalAbsolute)segment;
-					v.Y = casted.Y;
-					builder.AddLine(v);
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToVerticalRelative)
-				{
-					var casted = (SvgPathSegmentLineToVerticalRelative)segment;
-					v.Y += casted.Y;
-					builder.AddLine(v);
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicSmoothAbsolute)
-				{
-					var casted = (SvgPathSegmentCurveToCubicSmoothAbsolute)segment;
-					var c1 = v;
-					v.X = casted.X;
-					v.Y = casted.Y;
-					builder.AddCubicBezier(c1, new Vector2(casted.X2, casted.Y2), v);
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicSmoothRelative)
-				{
-					var casted = (SvgPathSegmentCurveToCubicSmoothRelative)segment;
-					var c1 = v;
-					var c2 = v;
-					c2.X += casted.X2;
-					c2.Y += casted.Y2;
-					v.X += casted.X;
-					v.Y += casted.Y;
-					builder.AddCubicBezier(c1, c2, v);
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticSmoothAbsolute)
-				{
-					var casted = (SvgPathSegmentCurveToQuadraticSmoothAbsolute)segment;
-					var c1 = v;
-					v.X = casted.X;
-					v.Y = casted.Y;
-					builder.AddQuadraticBezier(c1, v);
-				}
-				else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticSmoothRelative)
-				{
-					var casted = (SvgPathSegmentCurveToQuadraticSmoothRelative)segment;
-					var c1 = v;
-					v.X += casted.X;
-					v.Y += casted.Y;
-					builder.AddQuadraticBezier(c1, v);
-				}
+				geometry = CanvasGeometry.CreatePath(builder);
 			}
-			if (open)
-			{
-				builder.EndFigure(CanvasFigureLoop.Open);
-			}
-
-			var geometry = CanvasGeometry.CreatePath(builder);
 			this.DisposableObjects.Add(geometry);
 			this.PathCache.Add(element, geometry);
 			return geometry;

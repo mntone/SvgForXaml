@@ -43,6 +43,10 @@ namespace Mntone.SvgForXaml
 				{
 					value = c.Value.Item2;
 				}
+				else if (target.GetType() == typeof(SvgIri))
+				{
+					value = new SvgIri(((SvgIri)c.Value.Item2).Uri);
+				}
 				else
 				{
 					throw new InvalidOperationException();
@@ -78,6 +82,7 @@ namespace Mntone.SvgForXaml
 
 		public SvgPaint Fill => this.GetPropertyCssValue("fill") as SvgPaint;
 		public SvgNumber? FillOpacity => this.GetPropertyCssValue("fill-opacity") as SvgNumber?;
+		public SvgFillRule? FillRule => this.GetPropertyCssValue("fill-rule") as SvgFillRule?;
 		public SvgPaint Stroke => this.GetPropertyCssValue("stroke") as SvgPaint;
 		public SvgLength? StrokeWidth => this.GetPropertyCssValue("stroke-width") as SvgLength?;
 		public SvgNumber? StrokeOpacity => this.GetPropertyCssValue("stroke-opacity") as SvgNumber?;
@@ -131,6 +136,11 @@ namespace Mntone.SvgForXaml
 
 				case "clip-path":
 					parsedValue = new SvgIri(value);
+					break;
+
+				case "fill-rule":
+				case "clip-rule":
+					parsedValue = new SvgFillRule(presentation ? value : value.ToLower());
 					break;
 			}
 

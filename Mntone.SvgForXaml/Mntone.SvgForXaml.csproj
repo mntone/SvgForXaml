@@ -70,6 +70,8 @@
     <Compile Include="Path\SvgPathSegmentMoveTo.cs" />
     <Compile Include="Path\SvgPathSegmentParser.cs" />
     <Compile Include="Primitives\SvgAngle.cs" />
+    <Compile Include="Primitives\SvgFillRule.cs" />
+    <Compile Include="Primitives\SvgFillRuleType.cs" />
     <Compile Include="Primitives\SvgLength.cs" />
     <Compile Include="Primitives\SvgMatrix.cs" />
     <Compile Include="Primitives\SvgIri.cs" />
