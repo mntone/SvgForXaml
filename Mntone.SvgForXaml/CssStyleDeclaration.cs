@@ -8,6 +8,8 @@ namespace Mntone.SvgForXaml
 {
 	public sealed class CssStyleDeclaration
 	{
+		private static readonly string[] NON_INHERIT_PROPERTIES = { "fill", "stroke" };
+
 		private readonly ISvgStylable _parent;
 		private readonly List<string> _items;
 		private readonly Dictionary<string, Tuple<string, ICssValue>> _cache;
@@ -68,10 +70,13 @@ namespace Mntone.SvgForXaml
 		{
 			if (!this._cache.ContainsKey(propertyName))
 			{
-				var target = ((INode)this._parent)?.ParentNode as ISvgStylable;
-				if (target != null)
+				if (!NON_INHERIT_PROPERTIES.Any(p => p == propertyName))
 				{
-					return target.Style.GetPropertyValuePrivate(propertyName);
+					var target = ((INode)this._parent)?.ParentNode as ISvgStylable;
+					if (target != null)
+					{
+						return target.Style.GetPropertyValuePrivate(propertyName);
+					}
 				}
 				return null;
 			}
