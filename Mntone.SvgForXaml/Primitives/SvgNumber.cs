@@ -38,7 +38,7 @@ namespace Mntone.SvgForXaml.Primitives
 				return false;
 			}
 
-			result = float.Parse(numberText);
+			result = float.Parse(numberText, System.Globalization.CultureInfo.InvariantCulture);
 			return true;
 		}
 

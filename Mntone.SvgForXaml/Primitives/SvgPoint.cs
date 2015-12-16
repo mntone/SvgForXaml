@@ -17,7 +17,7 @@ namespace Mntone.SvgForXaml.Primitives
 
 		internal static SvgPoint Parse(string attributeValue)
 		{
-			var s = attributeValue.Split(new[] { ',' }).Select(t => float.Parse(t)).ToArray();
+			var s = attributeValue.Split(new[] { ',' }).Select(t => float.Parse(t, System.Globalization.CultureInfo.InvariantCulture)).ToArray();
 			return new SvgPoint(s[0], s[1]);
 		}
 

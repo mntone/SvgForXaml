@@ -54,7 +54,7 @@ namespace Mntone.SvgForXaml.Internal
 			}
 
 			if (percentage) numberOrPercentageText = numberOrPercentageText.Substring(0, numberOrPercentageText.Length - 1);
-			result = float.Parse(numberOrPercentageText);
+			result = float.Parse(numberOrPercentageText, System.Globalization.CultureInfo.InvariantCulture);
 			if (percentage) result /= 100.0F;
 			return true;
 		}

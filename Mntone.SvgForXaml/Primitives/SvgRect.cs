@@ -23,7 +23,7 @@ namespace Mntone.SvgForXaml.Primitives
 		{
 			if (string.IsNullOrWhiteSpace(attributeValue)) return null;
 
-			var s = attributeValue.Split(new[] { ' ' }).Select(t => float.Parse(t)).ToArray();
+			var s = attributeValue.Split(new[] { ' ' }).Select(t => float.Parse(t, System.Globalization.CultureInfo.InvariantCulture)).ToArray();
 			return new SvgRect(s[0], s[1], s[2], s[3]);
 		}
 

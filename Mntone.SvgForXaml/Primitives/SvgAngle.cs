@@ -82,7 +82,7 @@ namespace Mntone.SvgForXaml.Primitives
 			var ptr = new StringPtr(angleText);
 			ptr.AdvanceNumber();
 
-			var value = float.Parse(angleText.Substring(0, ptr.Index));
+			var value = float.Parse(angleText.Substring(0, ptr.Index), System.Globalization.CultureInfo.InvariantCulture);
 			if (ptr.Index != angleText.Length)
 			{
 				var unit = angleText.Substring(ptr.Index).ToLower();
@@ -102,7 +102,7 @@ namespace Mntone.SvgForXaml.Primitives
 			var ptr = new StringPtr(angleText);
 			ptr.AdvanceNumber();
 
-			var value = float.Parse(angleText.Substring(0, ptr.Index));
+			var value = float.Parse(angleText.Substring(0, ptr.Index), System.Globalization.CultureInfo.InvariantCulture);
 			if (ptr.Index != angleText.Length)
 			{
 				var unit = angleText.Substring(ptr.Index);

@@ -101,7 +101,7 @@ namespace Mntone.SvgForXaml.Primitives
 			var ptr = new StringPtr(lengthText);
 			ptr.AdvanceNumber();
 
-			var value = float.Parse(lengthText.Substring(0, ptr.Index));
+			var value = float.Parse(lengthText.Substring(0, ptr.Index), System.Globalization.CultureInfo.InvariantCulture);
 			if (ptr.Index != lengthText.Length)
 			{
 				var unit = lengthText.Substring(ptr.Index);

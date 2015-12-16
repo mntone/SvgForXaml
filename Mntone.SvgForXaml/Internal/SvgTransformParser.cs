@@ -285,7 +285,7 @@ namespace Mntone.SvgForXaml.Internal
 			if (begin == ptr.Index) return null;
 
 			var numberText = ptr.Target.Substring(begin, ptr.Index - begin);
-			return float.Parse(numberText);
+			return float.Parse(numberText, System.Globalization.CultureInfo.InvariantCulture);
 		}
 
 		private bool ParseCommaOrWhitespace(StringPtr ptr)
