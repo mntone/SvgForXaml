@@ -6,7 +6,7 @@ namespace Mntone.SvgForXaml.Interfaces
 	{
 		SvgDocument OwnerDocument { get; }
 		INode ParentNode { get; }
-		IReadOnlyList<SvgElement> ChildNodes { get; }
+		IReadOnlyCollection<SvgElement> ChildNodes { get; }
 		SvgElement FirstChild { get; }
 		SvgElement LastChild { get; }
 

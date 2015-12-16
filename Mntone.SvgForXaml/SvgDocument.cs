@@ -1,6 +1,7 @@
 ﻿using Mntone.SvgForXaml.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -23,7 +24,7 @@ namespace Mntone.SvgForXaml
 		INode INode.ParentNode => null;
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		IReadOnlyList<SvgElement> INode.ChildNodes => this._ChildNodes;
+		IReadOnlyCollection<SvgElement> INode.ChildNodes => this._ChildNodes;
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
 		SvgElement INode.FirstChild => this.RootElement;
@@ -32,7 +33,7 @@ namespace Mntone.SvgForXaml
 		SvgElement INode.LastChild => this.RootElement;
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		private IReadOnlyList<SvgElement> _ChildNodes;
+		private IReadOnlyCollection<SvgElement> _ChildNodes;
 
 		public INode CloneNode(bool deep = false)
 		{
@@ -75,7 +76,7 @@ namespace Mntone.SvgForXaml
 			var svgDocument = new SvgDocument();
 			var rootElement = new SvgSvgElement(svgDocument, document.DocumentElement);
 
-			var childNodes = new List<SvgElement>(1);
+			var childNodes = new Collection<SvgElement>();
 			childNodes.Add(rootElement);
 			svgDocument._ChildNodes = childNodes;
 			svgDocument.RootElement = rootElement;

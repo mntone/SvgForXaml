@@ -35,7 +35,7 @@ namespace Mntone.SvgForXaml
 		protected abstract void RenderPolyline(TSession session, SvgPolylineElement element);
 		protected abstract void RenderPolygon(TSession session, SvgPolygonElement element);
 
-		protected virtual void RenderChildren(TSession session, IReadOnlyList<SvgElement> elements)
+		protected virtual void RenderChildren(TSession session, IReadOnlyCollection<SvgElement> elements)
 		{
 			foreach (var element in elements) this.RenderChild(session, element);
 		}

@@ -5,6 +5,8 @@ using Mntone.SvgForXaml.Maskings;
 using Mntone.SvgForXaml.Path;
 using Mntone.SvgForXaml.Shapes;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Xml;
 
 namespace Mntone.SvgForXaml
@@ -43,13 +45,13 @@ namespace Mntone.SvgForXaml
 		public INode ParentNode { get; }
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)]
-		public IReadOnlyList<SvgElement> ChildNodes { get; private set; }
+		public IReadOnlyCollection<SvgElement> ChildNodes { get; private set; }
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		public SvgElement FirstChild => this.ChildNodes.Count != 0 ? this.ChildNodes[0] : null;
+		public SvgElement FirstChild => this.ChildNodes.FirstOrDefault();
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		public SvgElement LastChild => this.ChildNodes.Count != 0 ? this.ChildNodes[this.ChildNodes.Count - 1] : null;
+		public SvgElement LastChild => this.ChildNodes.LastOrDefault();
 
 		public virtual INode CloneNode(bool deep = false)
 		{
@@ -76,7 +78,7 @@ namespace Mntone.SvgForXaml
 
 		protected static IReadOnlyList<SvgElement> ParseChildren(INode parent, XmlNodeList nodes)
 		{
-			var result = new List<SvgElement>();
+			var result = new Collection<SvgElement>();
 			foreach (var node in nodes)
 			{
 				var elementNode = node as XmlElement;
