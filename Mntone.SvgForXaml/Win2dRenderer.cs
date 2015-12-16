@@ -93,7 +93,7 @@ namespace Mntone.SvgForXaml
 					}
 
 					var area = geometry2.ComputeBounds();
-					
+
 					var opacity = style.Opacity;
 					if (opacity != null)
 					{
@@ -223,7 +223,7 @@ namespace Mntone.SvgForXaml
 		private CanvasGeometry CreatePath(CanvasDrawingSession session, SvgPathElement element)
 		{
 			if (this.PathCache.ContainsKey(element)) return this.PathCache[element];
-			
+
 			var open = false;
 			var v = new Vector2(0.0F, 0.0F);
 
@@ -327,7 +327,7 @@ namespace Mntone.SvgForXaml
 						var casted = (SvgPathSegmentArcAbsolute)segment;
 						var size = casted.LargeArcFlag ? CanvasArcSize.Large : CanvasArcSize.Small;
 						var sweepDirection = casted.SweepFlag ? CanvasSweepDirection.Clockwise : CanvasSweepDirection.CounterClockwise;
-						builder.AddArc(new Vector2(casted.X, casted.Y), casted.RadiusX, casted.RadiusY, casted.Angle, sweepDirection, size);
+						builder.AddArc(new Vector2(casted.X, casted.Y), casted.RadiusX, casted.RadiusY, 180.0F * casted.Angle / (float)Math.PI, sweepDirection, size);
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.ArcRelative)
 					{
@@ -336,7 +336,7 @@ namespace Mntone.SvgForXaml
 						v.Y += casted.Y;
 						var size = casted.LargeArcFlag ? CanvasArcSize.Large : CanvasArcSize.Small;
 						var sweepDirection = casted.SweepFlag ? CanvasSweepDirection.Clockwise : CanvasSweepDirection.CounterClockwise;
-						builder.AddArc(v, casted.RadiusX, casted.RadiusY, casted.Angle, sweepDirection, size);
+						builder.AddArc(v, casted.RadiusX, casted.RadiusY, 180.0F * casted.Angle / (float)Math.PI, sweepDirection, size);
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToHorizontalAbsolute)
 					{
