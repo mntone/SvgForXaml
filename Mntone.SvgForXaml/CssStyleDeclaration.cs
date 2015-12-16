@@ -31,11 +31,12 @@ namespace Mntone.SvgForXaml
 			foreach (var c in this._cache)
 			{
 				ICssValue value;
-				if (c.GetType() == typeof(SvgPaint) || c.GetType() == typeof(SvgColor))
+				var target = c.Value.Item2;
+				if (target.GetType() == typeof(SvgPaint) || target.GetType() == typeof(SvgColor))
 				{
 					value = ((SvgColor)c.Value.Item2).Clone();
 				}
-				else if (c.GetType() == typeof(SvgNumber) || c.GetType() == typeof(SvgLength))
+				else if (target.GetType() == typeof(SvgNumber) || target.GetType() == typeof(SvgLength))
 				{
 					value = c.Value.Item2;
 				}
