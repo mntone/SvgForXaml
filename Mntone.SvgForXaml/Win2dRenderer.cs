@@ -178,26 +178,24 @@ namespace Mntone.SvgForXaml
 
 		protected override void RenderPolyline(CanvasDrawingSession session, SvgPolylineElement element)
 		{
-			var minX = element.Points.Min(p => p.X);
-			var minY = element.Points.Min(p => p.Y);
-			var maxX = element.Points.Max(p => p.X);
-			var maxY = element.Points.Max(p => p.Y);
-			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
+			var builder = new CanvasPathBuilder(this.ResourceCreator);
+			var begin = element.Points.First();
+			builder.BeginFigure(begin.X, begin.Y);
+			foreach (var point in element.Points.Skip(1))
 			{
-				var area = new Rect(minX, minY, maxX - minX, maxY - minY);
-				var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2((float)p.X, (float)p.Y)).ToArray());
-				var pen = this.CreatePaint(session, area, element.Style.Stroke, element.Style.StrokeOpacity);
-				session.DrawGeometry(geometry, pen);
+				builder.AddLine(point.X, point.Y);
+			}
+			builder.EndFigure(CanvasFigureLoop.Open);
+
+			using (var geometry = CanvasGeometry.CreatePath(builder))
+			{
+				this.RenderGeometory(session, geometry, element.Transform.Result, element.Style);
 			}
 		}
 
 		protected override void RenderPolygon(CanvasDrawingSession session, SvgPolygonElement element)
 		{
-			var minX = element.Points.Min(p => p.X);
-			var minY = element.Points.Min(p => p.Y);
-			var maxX = element.Points.Max(p => p.X);
-			var maxY = element.Points.Max(p => p.Y);
-			using (var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2((float)p.X, (float)p.Y)).ToArray()))
+			using (var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2(p.X, p.Y)).ToArray()))
 			{
 				this.RenderGeometory(session, geometry, element.Transform.Result, element.Style);
 			}

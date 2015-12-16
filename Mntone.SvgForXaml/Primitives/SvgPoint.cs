@@ -6,18 +6,18 @@ namespace Mntone.SvgForXaml.Primitives
 	[System.Diagnostics.DebuggerDisplay("({this.X}, {this.Y})")]
 	public struct SvgPoint : IEquatable<SvgPoint>
 	{
-		internal SvgPoint(double x, double y)
+		internal SvgPoint(float x, float y)
 		{
 			this.X = x;
 			this.Y = y;
 		}
 
-		public double X { get; }
-		public double Y { get; }
+		public float X { get; }
+		public float Y { get; }
 
 		internal static SvgPoint Parse(string attributeValue)
 		{
-			var s = attributeValue.Split(new[] { ',' }).Select(t => double.Parse(t)).ToArray();
+			var s = attributeValue.Split(new[] { ',' }).Select(t => float.Parse(t)).ToArray();
 			return new SvgPoint(s[0], s[1]);
 		}
 
