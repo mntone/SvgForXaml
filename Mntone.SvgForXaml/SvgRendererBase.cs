@@ -16,71 +16,71 @@ namespace Mntone.SvgForXaml
 			this.LengthConverter = new SvgLengthConverter();
 		}
 
-		public virtual void Renderer(float width, float height, TSession session)
+		public virtual void Render(float width, float height, TSession session)
 		{
 			this.LengthConverter.CanvasSize = new SvgPoint(width, height);
 
 			var root = this.TargetDocument.RootElement;
-			this.RendererSvg(session, root);
+			this.RenderSvg(session, root);
 		}
 
-		protected abstract void RendererSvg(TSession session, SvgSvgElement element);
-		protected abstract void RendererGroup(TSession session, SvgGroupElement element);
-		protected abstract void RendererUse(TSession session, SvgUseElement element);
-		protected abstract void RendererPath(TSession session, SvgPathElement element);
-		protected abstract void RendererRect(TSession session, SvgRectElement element);
-		protected abstract void RendererCircle(TSession session, SvgCircleElement element);
-		protected abstract void RendererEllipse(TSession session, SvgEllipseElement element);
-		protected abstract void RendererLine(TSession session, SvgLineElement element);
-		protected abstract void RendererPolyline(TSession session, SvgPolylineElement element);
-		protected abstract void RendererPolygon(TSession session, SvgPolygonElement element);
+		protected abstract void RenderSvg(TSession session, SvgSvgElement element);
+		protected abstract void RenderGroup(TSession session, SvgGroupElement element);
+		protected abstract void RenderUse(TSession session, SvgUseElement element);
+		protected abstract void RenderPath(TSession session, SvgPathElement element);
+		protected abstract void RenderRect(TSession session, SvgRectElement element);
+		protected abstract void RenderCircle(TSession session, SvgCircleElement element);
+		protected abstract void RenderEllipse(TSession session, SvgEllipseElement element);
+		protected abstract void RenderLine(TSession session, SvgLineElement element);
+		protected abstract void RenderPolyline(TSession session, SvgPolylineElement element);
+		protected abstract void RenderPolygon(TSession session, SvgPolygonElement element);
 
-		protected virtual void RendererChildren(TSession session, IReadOnlyList<SvgElement> elements)
+		protected virtual void RenderChildren(TSession session, IReadOnlyList<SvgElement> elements)
 		{
-			foreach (var element in elements) this.RendererChild(session, element);
+			foreach (var element in elements) this.RenderChild(session, element);
 		}
 
-		protected virtual void RendererChild(TSession session, SvgElement element)
+		protected virtual void RenderChild(TSession session, SvgElement element)
 		{
 			if (element.GetType() == typeof(SvgSvgElement))
 			{
-				this.RendererSvg(session, (SvgSvgElement)element);
+				this.RenderSvg(session, (SvgSvgElement)element);
 			}
 			else if (element.GetType() == typeof(SvgGroupElement))
 			{
-				this.RendererGroup(session, (SvgGroupElement)element);
+				this.RenderGroup(session, (SvgGroupElement)element);
 			}
 			else if (element.GetType() == typeof(SvgUseElement))
 			{
-				this.RendererUse(session, (SvgUseElement)element);
+				this.RenderUse(session, (SvgUseElement)element);
 			}
 			else if (element.GetType() == typeof(SvgPathElement))
 			{
-				this.RendererPath(session, (SvgPathElement)element);
+				this.RenderPath(session, (SvgPathElement)element);
 			}
 			else if (element.GetType() == typeof(SvgRectElement))
 			{
-				this.RendererRect(session, (SvgRectElement)element);
+				this.RenderRect(session, (SvgRectElement)element);
 			}
 			else if (element.GetType() == typeof(SvgCircleElement))
 			{
-				this.RendererCircle(session, (SvgCircleElement)element);
+				this.RenderCircle(session, (SvgCircleElement)element);
 			}
 			else if (element.GetType() == typeof(SvgEllipseElement))
 			{
-				this.RendererEllipse(session, (SvgEllipseElement)element);
+				this.RenderEllipse(session, (SvgEllipseElement)element);
 			}
 			else if (element.GetType() == typeof(SvgLineElement))
 			{
-				this.RendererLine(session, (SvgLineElement)element);
+				this.RenderLine(session, (SvgLineElement)element);
 			}
 			else if (element.GetType() == typeof(SvgPolylineElement))
 			{
-				this.RendererPolyline(session, (SvgPolylineElement)element);
+				this.RenderPolyline(session, (SvgPolylineElement)element);
 			}
 			else if (element.GetType() == typeof(SvgPolygonElement))
 			{
-				this.RendererPolygon(session, (SvgPolygonElement)element);
+				this.RenderPolygon(session, (SvgPolygonElement)element);
 			}
 		}
 	}

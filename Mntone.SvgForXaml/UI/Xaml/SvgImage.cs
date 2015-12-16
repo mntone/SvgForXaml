@@ -150,7 +150,7 @@ namespace Mntone.SvgForXaml.UI.Xaml
 					}
 				}
 
-				this._renderer.Renderer((float)this._canvasControl.Width, (float)this._canvasControl.Height, args.DrawingSession);
+				this._renderer.Render((float)this._canvasControl.Width, (float)this._canvasControl.Height, args.DrawingSession);
 			}
 		}
 	}

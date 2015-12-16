@@ -45,28 +45,28 @@ namespace Mntone.SvgForXaml
 			this._disposed = true;
 		}
 
-		protected override void RendererSvg(CanvasDrawingSession session, SvgSvgElement element)
+		protected override void RenderSvg(CanvasDrawingSession session, SvgSvgElement element)
 		{
-			this.RendererChildren(session, element.ChildNodes);
+			this.RenderChildren(session, element.ChildNodes);
 		}
 
-		protected override void RendererGroup(CanvasDrawingSession session, SvgGroupElement element)
-		{
-			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
-			{
-				this.RendererChildren(session, element.ChildNodes);
-			}
-		}
-
-		protected override void RendererUse(CanvasDrawingSession session, SvgUseElement element)
+		protected override void RenderGroup(CanvasDrawingSession session, SvgGroupElement element)
 		{
 			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
 			{
-				this.RendererChild(session, element.InstanceRoot);
+				this.RenderChildren(session, element.ChildNodes);
 			}
 		}
 
-		protected override void RendererPath(CanvasDrawingSession session, SvgPathElement element)
+		protected override void RenderUse(CanvasDrawingSession session, SvgUseElement element)
+		{
+			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
+			{
+				this.RenderChild(session, element.InstanceRoot);
+			}
+		}
+
+		protected override void RenderPath(CanvasDrawingSession session, SvgPathElement element)
 		{
 			double minX = double.MaxValue, minY = double.MaxValue, maxX = double.MinValue, maxY = double.MinValue;
 
@@ -276,7 +276,7 @@ namespace Mntone.SvgForXaml
 			}
 		}
 
-		protected override void RendererRect(CanvasDrawingSession session, SvgRectElement element)
+		protected override void RenderRect(CanvasDrawingSession session, SvgRectElement element)
 		{
 			var x = this.LengthConverter.ConvertX(element.X);
 			var y = this.LengthConverter.ConvertY(element.Y);
@@ -304,7 +304,7 @@ namespace Mntone.SvgForXaml
 			}
 		}
 
-		protected override void RendererCircle(CanvasDrawingSession session, SvgCircleElement element)
+		protected override void RenderCircle(CanvasDrawingSession session, SvgCircleElement element)
 		{
 			var centerX = this.LengthConverter.ConvertX(element.CenterX);
 			var centerY = this.LengthConverter.ConvertY(element.CenterY);
@@ -330,7 +330,7 @@ namespace Mntone.SvgForXaml
 			}
 		}
 
-		protected override void RendererEllipse(CanvasDrawingSession session, SvgEllipseElement element)
+		protected override void RenderEllipse(CanvasDrawingSession session, SvgEllipseElement element)
 		{
 			var centerX = this.LengthConverter.ConvertX(element.CenterX);
 			var centerY = this.LengthConverter.ConvertY(element.CenterY);
@@ -356,7 +356,7 @@ namespace Mntone.SvgForXaml
 			}
 		}
 
-		protected override void RendererLine(CanvasDrawingSession session, SvgLineElement element)
+		protected override void RenderLine(CanvasDrawingSession session, SvgLineElement element)
 		{
 			var x1 = this.LengthConverter.ConvertX(element.X1);
 			var y1 = this.LengthConverter.ConvertY(element.Y1);
@@ -376,7 +376,7 @@ namespace Mntone.SvgForXaml
 			}
 		}
 
-		protected override void RendererPolyline(CanvasDrawingSession session, SvgPolylineElement element)
+		protected override void RenderPolyline(CanvasDrawingSession session, SvgPolylineElement element)
 		{
 			var minX = element.Points.Min(p => p.X);
 			var minY = element.Points.Min(p => p.Y);
@@ -392,7 +392,7 @@ namespace Mntone.SvgForXaml
 			}
 		}
 
-		protected override void RendererPolygon(CanvasDrawingSession session, SvgPolygonElement element)
+		protected override void RenderPolygon(CanvasDrawingSession session, SvgPolygonElement element)
 		{
 			var minX = element.Points.Min(p => p.X);
 			var minY = element.Points.Min(p => p.Y);

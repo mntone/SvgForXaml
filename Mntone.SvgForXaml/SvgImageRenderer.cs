@@ -75,7 +75,7 @@ namespace Mntone.SvgForXaml
 				using (var session = offScreen.CreateDrawingSession())
 				{
 					session.Clear(Colors.Transparent);
-					renderer.Renderer(width, height, session);
+					renderer.Render(width, height, session);
 				}
 				offScreen.SaveAsync(stream.AsRandomAccessStream(), (CanvasBitmapFileFormat)settings.Format, settings.Quality).AsTask().GetAwaiter().GetResult();
 			}
