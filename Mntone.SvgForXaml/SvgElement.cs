@@ -43,7 +43,7 @@ namespace Mntone.SvgForXaml
 		public INode ParentNode { get; }
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)]
-		public IReadOnlyList<SvgElement> ChildNodes { get; }
+		public IReadOnlyList<SvgElement> ChildNodes { get; private set; }
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
 		public SvgElement FirstChild => this.ChildNodes.Count != 0 ? this.ChildNodes[0] : null;
@@ -51,7 +51,28 @@ namespace Mntone.SvgForXaml
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
 		public SvgElement LastChild => this.ChildNodes.Count != 0 ? this.ChildNodes[this.ChildNodes.Count - 1] : null;
 
-		public virtual INode CloneNode() => (INode)this.MemberwiseClone();
+		public virtual INode CloneNode(bool deep = false)
+		{
+			var shallow = (SvgElement)this.MemberwiseClone();
+			if (deep)
+			{
+				if (this.ChildNodes != null)
+				{
+					var deepChildren = new List<SvgElement>();
+					foreach (var child in this.ChildNodes)
+					{
+						var deepChild = child.CloneNode(deep);
+						deepChildren.Add((SvgElement)deepChild);
+					}
+					shallow.ChildNodes = deepChildren;
+				}
+
+				this.DeepCopy(shallow);
+			}
+			return shallow;
+		}
+
+		protected virtual void DeepCopy(SvgElement element) { }
 
 		protected static IReadOnlyList<SvgElement> ParseChildren(INode parent, XmlNodeList nodes)
 		{

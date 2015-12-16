@@ -1,17 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Mntone.SvgForXaml.Primitives
 {
 	public sealed class SvgTransformCollection : IReadOnlyCollection<SvgTransform>
 	{
-		private readonly Collection<SvgTransform> _transforms;
+		private readonly ICollection<SvgTransform> _transforms;
 
-		internal SvgTransformCollection(Collection<SvgTransform> transforms)
+		internal SvgTransformCollection(ICollection<SvgTransform> transforms)
 		{
 			this._transforms = transforms;
+		}
+
+		internal void Add(SvgTransform transfrom) => this._transforms.Add(transfrom);
+
+		internal SvgTransformCollection DeepCopy()
+		{
+			return new SvgTransformCollection(this._transforms.Select(t => new SvgTransform(t)).ToList());
 		}
 
 		internal SvgMatrix Result
@@ -20,7 +26,7 @@ namespace Mntone.SvgForXaml.Primitives
 			{
 				if (this._transforms.Count == 0) return SvgMatrix.Indentity;
 
-				var m = this._transforms[0].Matrix;
+				var m = this._transforms.First().Matrix;
 				foreach (var m2 in this._transforms.Skip(1)) m = m * m2.Matrix;
 				return m;
 			}

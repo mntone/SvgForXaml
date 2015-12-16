@@ -12,11 +12,17 @@ namespace Mntone.SvgForXaml
 			this._stylableHelper = new SvgStylableHelper(element);
 		}
 
+		protected override void DeepCopy(SvgElement element)
+		{
+			var casted = (SvgTitleElement)element;
+			casted._stylableHelper = this._stylableHelper.DeepCopy();
+		}
+
 		public override string TagName => "title";
 
 		#region ISvgStylable
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		private readonly SvgStylableHelper _stylableHelper;
+		private SvgStylableHelper _stylableHelper;
 		public string ClassName => this._stylableHelper.ClassName;
 		public CssStyleDeclaration Style => this._stylableHelper.Style;
 		public ICssValue GetPresentationAttribute(string name) => this._stylableHelper.GetPresentationAttribute(name);

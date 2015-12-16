@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using Mntone.SvgForXaml;
+﻿using Mntone.SvgForXaml.DemoApp.Internal;
+using System.Reflection;
 
 [assembly: AssemblyTitle(AssemblyInfo.QualifiedName)]
 [assembly: AssemblyDescription("")]
@@ -13,9 +13,9 @@ using Mntone.SvgForXaml;
 [assembly: AssemblyVersion(AssemblyInfo.Version)]
 [assembly: AssemblyFileVersion(AssemblyInfo.Version)]
 
-namespace Mntone.SvgForXaml.DemoApp
+namespace Mntone.SvgForXaml.DemoApp.Internal
 {
-	public static class AssemblyInfo
+	internal static class AssemblyInfo
 	{
 		public const string Name = "Mntone.SvgForXaml.DemoApp";
 		public const string QualifiedName = "Svg for Xaml Demo app";

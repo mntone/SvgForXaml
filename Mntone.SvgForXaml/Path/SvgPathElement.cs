@@ -17,13 +17,20 @@ namespace Mntone.SvgForXaml.Path
 			this.Segments = SvgPathSegmentParser.Parse(this.Data);
 		}
 
+		protected override void DeepCopy(SvgElement element)
+		{
+			var casted = (SvgPathElement)element;
+			casted._stylableHelper = this._stylableHelper.DeepCopy();
+			casted._transformableHelper = this._transformableHelper.DeepCopy();
+		}
+
 		public override string TagName => "path";
 		public string Data { get; }
 		public SvgPathSegmentCollection Segments { get; }
 
 		#region ISvgStylable
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		private readonly SvgStylableHelper _stylableHelper;
+		private SvgStylableHelper _stylableHelper;
 		public string ClassName => this._stylableHelper.ClassName;
 		public CssStyleDeclaration Style => this._stylableHelper.Style;
 		public ICssValue GetPresentationAttribute(string name) => this._stylableHelper.GetPresentationAttribute(name);
@@ -31,7 +38,7 @@ namespace Mntone.SvgForXaml.Path
 
 		#region ISvgTransformable
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		private readonly SvgTransformableHelper _transformableHelper;
+		private SvgTransformableHelper _transformableHelper;
 		public SvgTransformCollection Transform => this._transformableHelper.Transform;
 		#endregion
 	}

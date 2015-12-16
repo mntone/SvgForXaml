@@ -24,13 +24,20 @@ namespace Mntone.SvgForXaml.Gradients
 			this.SpreadMethod = spreadMethod;
 		}
 
+		protected override void DeepCopy(SvgElement element)
+		{
+			var casted = (SvgGradientElement)element;
+			casted._stylableHelper = this._stylableHelper.DeepCopy();
+			casted._transformableHelper = this._transformableHelper.DeepCopy();
+		}
+
 		public SvgUnitType GradientUnits { get; }
 		public SvgTransformCollection GradientTransform { get; }
 		public SvgSpreadMethodType SpreadMethod { get; }
 
 		#region ISvgStylable
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		private readonly SvgStylableHelper _stylableHelper;
+		private SvgStylableHelper _stylableHelper;
 		public string ClassName => this._stylableHelper.ClassName;
 		public CssStyleDeclaration Style => this._stylableHelper.Style;
 		public ICssValue GetPresentationAttribute(string name) => this._stylableHelper.GetPresentationAttribute(name);
@@ -38,7 +45,7 @@ namespace Mntone.SvgForXaml.Gradients
 
 		#region ISvgTransformable
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		private readonly SvgTransformableHelper _transformableHelper;
+		private SvgTransformableHelper _transformableHelper;
 		public SvgTransformCollection Transform => this._transformableHelper.Transform;
 		#endregion
 	}

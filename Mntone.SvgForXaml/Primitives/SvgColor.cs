@@ -170,6 +170,8 @@ namespace Mntone.SvgForXaml.Primitives
 			this.RgbColor = Parse(color);
 		}
 
+		internal SvgColor Clone() => (SvgColor)this.MemberwiseClone();
+
 		public RgbColor RgbColor { get; protected set; }
 
 		protected static RgbColor Parse(string color)

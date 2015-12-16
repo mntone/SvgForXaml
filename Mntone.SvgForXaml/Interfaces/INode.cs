@@ -10,6 +10,6 @@ namespace Mntone.SvgForXaml.Interfaces
 		SvgElement FirstChild { get; }
 		SvgElement LastChild { get; }
 
-		INode CloneNode();
+		INode CloneNode(bool deep = false);
 	}
 }

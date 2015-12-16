@@ -100,7 +100,7 @@
     <Compile Include="Primitives\SvgRect.cs" />
     <Compile Include="Shapes\SvgRectElement.cs" />
     <Compile Include="Primitives\SvgPaintType.cs" />
-    <Compile Include="Primitives\SvgRendererBase.cs" />
+    <Compile Include="SvgRendererBase.cs" />
     <Compile Include="SvgSvgElement.cs" />
     <Compile Include="SvgSymbolElement.cs" />
     <Compile Include="SvgTitleElement.cs" />

@@ -58,6 +58,14 @@ namespace Mntone.SvgForXaml
 			}
 		}
 
+		protected override void RendererUse(CanvasDrawingSession session, SvgUseElement element)
+		{
+			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
+			{
+				this.RendererChild(session, element.InstanceRoot);
+			}
+		}
+
 		protected override void RendererPath(CanvasDrawingSession session, SvgPathElement element)
 		{
 			double minX = double.MaxValue, minY = double.MaxValue, maxX = double.MinValue, maxY = double.MinValue;

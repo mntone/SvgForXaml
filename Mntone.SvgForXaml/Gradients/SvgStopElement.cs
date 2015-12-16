@@ -15,12 +15,18 @@ namespace Mntone.SvgForXaml.Gradients
 			this.Offset = element.ParseNumberOrPercentage("offset");
 		}
 
+		protected override void DeepCopy(SvgElement element)
+		{
+			var casted = (SvgStopElement)element;
+			casted._stylableHelper = this._stylableHelper.DeepCopy();
+		}
+
 		public override string TagName => "stop";
 		public float Offset { get; }
 
 		#region ISvgStylable
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		private readonly SvgStylableHelper _stylableHelper;
+		private SvgStylableHelper _stylableHelper;
 		public string ClassName => this._stylableHelper.ClassName;
 		public CssStyleDeclaration Style => this._stylableHelper.Style;
 		public ICssValue GetPresentationAttribute(string name) => this._stylableHelper.GetPresentationAttribute(name);

@@ -5,7 +5,7 @@ using System.Xml;
 
 namespace Mntone.SvgForXaml.Shapes
 {
-	[System.Diagnostics.DebuggerDisplay("Ellipse: Center = ({this.CenterX}, {this.CenterY}), RadiusX = {this.RadiusX}, RadiusY = {this.RadiusY}")]
+	[System.Diagnostics.DebuggerDisplay("Ellipse: Center = ({this.CenterX.ValueAsString}, {this.CenterY.ValueAsString}), RadiusX = {this.RadiusX.ValueAsString}, RadiusY = {this.RadiusY.ValueAsString}")]
 	public sealed class SvgEllipseElement : SvgElement, ISvgStylable
 	{
 		internal SvgEllipseElement(INode parent, XmlElement element)
@@ -20,6 +20,13 @@ namespace Mntone.SvgForXaml.Shapes
 			this.RadiusY = element.ParseCoordinate("ry", 0.0F);
 		}
 
+		protected override void DeepCopy(SvgElement element)
+		{
+			var casted = (SvgEllipseElement)element;
+			casted._stylableHelper = this._stylableHelper.DeepCopy();
+			casted._transformableHelper = this._transformableHelper.DeepCopy();
+		}
+
 		public override string TagName => "ellipse";
 		public SvgLength CenterX { get; }
 		public SvgLength CenterY { get; }
@@ -28,7 +35,7 @@ namespace Mntone.SvgForXaml.Shapes
 
 		#region ISvgStylable
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		private readonly SvgStylableHelper _stylableHelper;
+		private SvgStylableHelper _stylableHelper;
 		public string ClassName => this._stylableHelper.ClassName;
 		public CssStyleDeclaration Style => this._stylableHelper.Style;
 		public ICssValue GetPresentationAttribute(string name) => this._stylableHelper.GetPresentationAttribute(name);
@@ -36,7 +43,7 @@ namespace Mntone.SvgForXaml.Shapes
 
 		#region ISvgTransformable
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		private readonly SvgTransformableHelper _transformableHelper;
+		private SvgTransformableHelper _transformableHelper;
 		public SvgTransformCollection Transform => this._transformableHelper.Transform;
 		#endregion
 	}

@@ -1,4 +1,5 @@
 ﻿using Mntone.SvgForXaml.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -32,8 +33,16 @@ namespace Mntone.SvgForXaml
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
 		private IReadOnlyList<SvgElement> _ChildNodes;
-		
-		public INode CloneNode() => (INode)this.MemberwiseClone();
+
+		public INode CloneNode(bool deep = false)
+		{
+			var shallow = (SvgDocument)this.MemberwiseClone();
+			if (deep)
+			{
+				throw new NotImplementedException();
+			}
+			return shallow;
+		}
 
 		public SvgSvgElement RootElement { get; private set; }
 

@@ -26,6 +26,7 @@ namespace Mntone.SvgForXaml
 
 		protected abstract void RendererSvg(TSession session, SvgSvgElement element);
 		protected abstract void RendererGroup(TSession session, SvgGroupElement element);
+		protected abstract void RendererUse(TSession session, SvgUseElement element);
 		protected abstract void RendererPath(TSession session, SvgPathElement element);
 		protected abstract void RendererRect(TSession session, SvgRectElement element);
 		protected abstract void RendererCircle(TSession session, SvgCircleElement element);
@@ -36,49 +37,50 @@ namespace Mntone.SvgForXaml
 
 		protected virtual void RendererChildren(TSession session, IReadOnlyList<SvgElement> elements)
 		{
-			foreach (var element in elements)
+			foreach (var element in elements) this.RendererChild(session, element);
+		}
+
+		protected virtual void RendererChild(TSession session, SvgElement element)
+		{
+			if (element.GetType() == typeof(SvgSvgElement))
 			{
-				var target = element;
-				if (target.GetType() == typeof(SvgUseElement))
-				{
-					target = ((SvgUseElement)target).InstanceRoot;
-				}
-				if (target.GetType() == typeof(SvgSvgElement))
-				{
-					this.RendererSvg(session, (SvgSvgElement)target);
-				}
-				else if (target.GetType() == typeof(SvgGroupElement))
-				{
-					this.RendererGroup(session, (SvgGroupElement)target);
-				}
-				else if (target.GetType() == typeof(SvgPathElement))
-				{
-					this.RendererPath(session, (SvgPathElement)target);
-				}
-				else if (target.GetType() == typeof(SvgRectElement))
-				{
-					this.RendererRect(session, (SvgRectElement)target);
-				}
-				else if (target.GetType() == typeof(SvgCircleElement))
-				{
-					this.RendererCircle(session, (SvgCircleElement)target);
-				}
-				else if (target.GetType() == typeof(SvgEllipseElement))
-				{
-					this.RendererEllipse(session, (SvgEllipseElement)target);
-				}
-				else if (target.GetType() == typeof(SvgLineElement))
-				{
-					this.RendererLine(session, (SvgLineElement)target);
-				}
-				else if (target.GetType() == typeof(SvgPolylineElement))
-				{
-					this.RendererPolyline(session, (SvgPolylineElement)target);
-				}
-				else if (target.GetType() == typeof(SvgPolygonElement))
-				{
-					this.RendererPolygon(session, (SvgPolygonElement)target);
-				}
+				this.RendererSvg(session, (SvgSvgElement)element);
+			}
+			else if (element.GetType() == typeof(SvgGroupElement))
+			{
+				this.RendererGroup(session, (SvgGroupElement)element);
+			}
+			else if (element.GetType() == typeof(SvgUseElement))
+			{
+				this.RendererUse(session, (SvgUseElement)element);
+			}
+			else if (element.GetType() == typeof(SvgPathElement))
+			{
+				this.RendererPath(session, (SvgPathElement)element);
+			}
+			else if (element.GetType() == typeof(SvgRectElement))
+			{
+				this.RendererRect(session, (SvgRectElement)element);
+			}
+			else if (element.GetType() == typeof(SvgCircleElement))
+			{
+				this.RendererCircle(session, (SvgCircleElement)element);
+			}
+			else if (element.GetType() == typeof(SvgEllipseElement))
+			{
+				this.RendererEllipse(session, (SvgEllipseElement)element);
+			}
+			else if (element.GetType() == typeof(SvgLineElement))
+			{
+				this.RendererLine(session, (SvgLineElement)element);
+			}
+			else if (element.GetType() == typeof(SvgPolylineElement))
+			{
+				this.RendererPolyline(session, (SvgPolylineElement)element);
+			}
+			else if (element.GetType() == typeof(SvgPolygonElement))
+			{
+				this.RendererPolygon(session, (SvgPolygonElement)element);
 			}
 		}
 	}

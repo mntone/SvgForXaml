@@ -17,6 +17,12 @@ namespace Mntone.SvgForXaml.Primitives
 			this.Matrix = matrix;
 			this.Angle = angle;
 		}
+		internal SvgTransform(SvgTransform value)
+		{
+			this.Type = value.Type;
+			this.Matrix = value.Matrix;
+			this.Angle = value.Angle;
+		}
 
 		public SvgTransformType Type { get; }
 		public SvgMatrix Matrix { get; }

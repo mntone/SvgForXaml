@@ -20,8 +20,15 @@ namespace Mntone.SvgForXaml.Internal
 			}
 		}
 
+		internal SvgStylableHelper DeepCopy()
+		{
+			var obj = (SvgStylableHelper)this.MemberwiseClone();
+			obj.Style = this.Style.DeepCopy();
+			return obj;
+		}
+
 		public string ClassName { get; }
-		public CssStyleDeclaration Style { get; }
+		public CssStyleDeclaration Style { get; private set; }
 
 		public ICssValue GetPresentationAttribute(string name)
 		{

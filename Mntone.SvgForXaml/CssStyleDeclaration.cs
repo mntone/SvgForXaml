@@ -11,11 +11,41 @@ namespace Mntone.SvgForXaml
 		private readonly List<string> _items;
 		private readonly Dictionary<string, Tuple<string, ICssValue>> _cache;
 
+		private CssStyleDeclaration(List<string> items, Dictionary<string, Tuple<string, ICssValue>> cache)
+		{
+			this._items = items;
+			this._cache = cache;
+		}
+
 		internal CssStyleDeclaration(string css)
 		{
 			this._items = new List<string>();
 			this._cache = new Dictionary<string, Tuple<string, ICssValue>>();
 			this.ParseText(css);
+		}
+
+		internal CssStyleDeclaration DeepCopy()
+		{
+			var item = new List<string>(this._items);
+			var cache = new Dictionary<string, Tuple<string, ICssValue>>();
+			foreach (var c in this._cache)
+			{
+				ICssValue value;
+				if (c.GetType() == typeof(SvgPaint) || c.GetType() == typeof(SvgColor))
+				{
+					value = ((SvgColor)c.Value.Item2).Clone();
+				}
+				else if (c.GetType() == typeof(SvgNumber) || c.GetType() == typeof(SvgLength))
+				{
+					value = c.Value.Item2;
+				}
+				else
+				{
+					throw new InvalidOperationException();
+				}
+				cache.Add(c.Key, Tuple.Create(c.Value.Item1, value));
+			}
+			return new CssStyleDeclaration(item, cache);
 		}
 
 		public string GetPropertyValue(string propertyName) => this.GetPropertyValuePrivate(propertyName)?.Item1;
@@ -62,6 +92,7 @@ namespace Mntone.SvgForXaml
 		private Tuple<string, ICssValue> ParseValue(string name, string value, string priority, bool presentation)
 		{
 			var important = priority == "important";
+			if (!presentation) name = name.ToLower();
 
 			ICssValue parsedValue = null;
 			switch (name)
