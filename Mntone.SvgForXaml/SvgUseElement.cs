@@ -21,8 +21,7 @@ namespace Mntone.SvgForXaml
 			this.Width = element.ParseLength("width", nan);
 			this.Height = element.ParseLength("height", nan);
 			this.Href = element.GetAttribute("xlink:href").Substring(1);
-
-			// TODO: deep copy and parent is "g"
+			
 			var child = (SvgElement)this.OwnerDocument.GetElementById(this.Href).CloneNode(true);
 			if (child.GetType() == typeof(SvgSymbolElement))
 			{
