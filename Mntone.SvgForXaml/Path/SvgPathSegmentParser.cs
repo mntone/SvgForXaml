@@ -298,23 +298,23 @@ namespace Mntone.SvgForXaml.Path
 
 		private void ParseQllipticalArcArgumentSequence(StringPtr ptr, bool abs)
 		{
-			var nonNegativeNumber = ParseNonNegativeNumber(ptr);
+			var nonNegativeNumber = this.ParseNonNegativeNumber(ptr);
 			if (nonNegativeNumber == null) return;
 			this.ParseCommaOrWhitespace(ptr);
 
-			var nonNegativeNumber2 = ParseNonNegativeNumber(ptr).Value;
+			var nonNegativeNumber2 = this.ParseNonNegativeNumber(ptr).Value;
 			this.ParseCommaOrWhitespace(ptr);
 
-			var number = ParseNumber(ptr).Value;
+			var number = this.ParseNumber(ptr).Value;
 			if (this.ParseCommaOrWhitespace(ptr))
 			{
-				var flag = ParseFlag(ptr);
+				var flag = this.ParseFlag(ptr);
 				this.ParseCommaOrWhitespace(ptr);
 
-				var flag2 = ParseFlag(ptr);
+				var flag2 = this.ParseFlag(ptr);
 				this.ParseCommaOrWhitespace(ptr);
 
-				var coordinate = ParseCoordinatePair(ptr);
+				var coordinate = this.ParseCoordinatePair(ptr);
 
 				this.Segments.Add(SvgPathSegmentArcBase.Create(coordinate.Item1, coordinate.Item2, nonNegativeNumber.Value, nonNegativeNumber2, number, flag, flag2, abs));
 
@@ -329,11 +329,11 @@ namespace Mntone.SvgForXaml.Path
 
 		private Tuple<float, float> ParseCoordinatePair(StringPtr ptr)
 		{
-			var x = ParseCoordinate(ptr);
+			var x = this.ParseCoordinate(ptr);
 			if (!x.HasValue) return null;
 
 			this.ParseCommaOrWhitespace(ptr);
-			var y = ParseCoordinate(ptr);
+			var y = this.ParseCoordinate(ptr);
 			if (!y.HasValue) return null;
 
 			return Tuple.Create(x.Value, y.Value);
