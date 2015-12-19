@@ -68,7 +68,7 @@ namespace Mntone.SvgForXaml
 
 			var width = viewPort.Value.Width;
 			var height = viewPort.Value.Height;
-			using (var device = CanvasDevice.GetSharedDevice())
+			var device = CanvasDevice.GetSharedDevice();
 			using (var offScreen = new CanvasRenderTarget(device, width, height, settings.Scaling * 96.0F))
 			{
 				using (var renderer = new Win2dRenderer(offScreen, svg))
