@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>3f262c3f-e1de-471f-8ea7-3786be33564e</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Mntone.SvgForXaml.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CssStyleDeclaration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gradients\SvgGradientElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gradients\SvgLinearGradientElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gradients\SvgRadialGradientElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gradients\SvgSpreadMethodType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gradients\SvgStopElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ICssValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\INode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ISvgStylable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ISvgTransformable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internal\StringPtr.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internal\SvgHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internal\SvgStylableHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internal\SvgTransformableHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internal\SvgTransformParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Maskings\SvgClipPathElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegmentArc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegmentClosePath.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegmentCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegmentCurveToCubic.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegmentCurveToCubicSmooth.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegmentCurveToQuadratic.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegmentCurveToQuadraticSmooth.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegmentLineTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegmentLineToHorizontal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegmentLineToVertical.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegmentMoveTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegmentParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\RgbColor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgAngle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgColor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgFillRule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgFillRuleType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgIri.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgLength.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgMatrix.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgNumber.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgPaint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgPaintType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgPoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgPointCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgRect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgTransform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgTransformCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgUnitType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\SvgCircleElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\SvgEllipseElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\SvgLineElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\SvgPolygonElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\SvgPolylineElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\SvgRectElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SvgDefinitionsElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SvgDescriptionElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SvgDocument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SvgElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SvgGroupElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SvgImageRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SvgLengthConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SvgRendererBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SvgSvgElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SvgSymbolElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SvgTitleElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SvgUseElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TransformSession.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Xaml\SvgImage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Win2dRenderer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Themes\Generic.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)UI\Xaml\SvgImage.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)project.json" />
+  </ItemGroup>
+</Project>
