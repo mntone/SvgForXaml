@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
-using System.Xml;
+using Windows.Data.Xml.Dom;
 
 namespace Mntone.SvgForXaml
 {
@@ -58,17 +58,13 @@ namespace Mntone.SvgForXaml
 			return this._idCache[id];
 		}
 
-		public static SvgDocument Parse(byte[] document) => Parse(Encoding.UTF8.GetString(document));
-		public static SvgDocument Parse(byte[] document, Encoding encoding) => Parse(encoding.GetString(document));
+		public static SvgDocument Parse(byte[] document) => Parse(Encoding.UTF8.GetString(document, 0, document.Length));
+		public static SvgDocument Parse(byte[] document, Encoding encoding) => Parse(encoding.GetString(document, 0, document.Length));
 		public static SvgDocument Parse(string document)
 		{
-			using (var sr = new StringReader(document))
-			using (var reader = XmlReader.Create(sr, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Ignore }))
-			{
-				var xml = new XmlDocument();
-				xml.Load(reader);
-				return Parse(xml);
-			}
+			var xml = new XmlDocument();
+			xml.LoadXml(document, new XmlLoadSettings { ProhibitDtd = false });
+			return Parse(xml);
 		}
 
 		public static SvgDocument Parse(XmlDocument document)

@@ -1,31 +1,25 @@
 ﻿using Mntone.SvgForXaml.Primitives;
-using System.Xml;
+using Windows.Data.Xml.Dom;
 
 namespace Mntone.SvgForXaml.Internal
 {
 	internal static class SvgHelper
 	{
-		public static string GetAttributeOrNone(this XmlElement element, string attributeName, string noneValue)
-		{
-			if (!element.HasAttribute(attributeName)) return noneValue;
-			return element.GetAttribute(attributeName);
-		}
-
 		public static SvgNumber ParseNumber(this XmlElement element, string attributeName)
 		{
 			return SvgNumber.Parse(element.GetAttribute(attributeName));
 		}
 		public static SvgNumber ParseNumber(this XmlElement element, string attributeName, float defaultValue)
 		{
-			var hasAttribute = element.HasAttribute(attributeName);
-			if (!hasAttribute) return defaultValue;
+			var attribute = element.GetAttribute(attributeName);
+			if (string.IsNullOrEmpty(attribute)) return defaultValue;
 
 			return element.ParseNumber(attributeName);
 		}
 		public static SvgNumber ParseNumber(this XmlElement element, string attributeName, SvgNumber defaultValue)
 		{
-			var hasAttribute = element.HasAttribute(attributeName);
-			if (!hasAttribute) return defaultValue;
+			var attribute = element.GetAttribute(attributeName);
+			if (string.IsNullOrEmpty(attribute)) return defaultValue;
 
 			return element.ParseNumber(attributeName);
 		}
@@ -65,15 +59,15 @@ namespace Mntone.SvgForXaml.Internal
 		}
 		public static SvgLength ParseLength(this XmlElement element, string attributeName, float defaultValue)
 		{
-			var hasAttribute = element.HasAttribute(attributeName);
-			if (!hasAttribute) return defaultValue;
+			var attribute = element.GetAttribute(attributeName);
+			if (string.IsNullOrEmpty(attribute)) return defaultValue;
 
 			return element.ParseLength(attributeName);
 		}
 		public static SvgLength ParseLength(this XmlElement element, string attributeName, SvgLength defaultValue)
 		{
-			var hasAttribute = element.HasAttribute(attributeName);
-			if (!hasAttribute) return defaultValue;
+			var attribute = element.GetAttribute(attributeName);
+			if (string.IsNullOrEmpty(attribute)) return defaultValue;
 
 			return element.ParseLength(attributeName);
 		}
@@ -81,8 +75,8 @@ namespace Mntone.SvgForXaml.Internal
 		{
 			result = 0.0F;
 
-			var hasAttribute = element.HasAttribute(attributeName);
-			if (!hasAttribute) return false;
+			var attribute = element.GetAttribute(attributeName);
+			if (string.IsNullOrEmpty(attribute)) return false;
 
 			var lengthText = element.GetAttribute(attributeName);
 			return SvgLength.TryParse(lengthText, true, out result);

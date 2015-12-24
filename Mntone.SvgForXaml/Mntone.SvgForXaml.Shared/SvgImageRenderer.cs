@@ -3,7 +3,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.System.Threading;
-using Windows.Foundation;
 using Windows.UI;
 using System.IO;
 using Windows.Storage;

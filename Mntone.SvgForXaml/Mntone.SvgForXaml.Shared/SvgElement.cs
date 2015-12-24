@@ -7,7 +7,7 @@ using Mntone.SvgForXaml.Shapes;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Xml;
+using Windows.Data.Xml.Dom;
 
 namespace Mntone.SvgForXaml
 {
@@ -26,7 +26,7 @@ namespace Mntone.SvgForXaml
 		protected internal SvgElement(INode parent, XmlElement element)
 		{
 			this.ParentNode = parent;
-			this.Id = element.GetAttributeOrNone("id", string.Empty);
+			this.Id = element.GetAttribute("id");
 			this.ChildNodes = ParseChildren(this, element.ChildNodes);
 
 			if (!string.IsNullOrEmpty(this.Id))
@@ -84,7 +84,7 @@ namespace Mntone.SvgForXaml
 				var elementNode = node as XmlElement;
 				if (elementNode == null) continue;
 
-				switch (elementNode.Name)
+				switch (elementNode.TagName)
 				{
 					case "svg":
 						result.Add(new SvgSvgElement(parent, elementNode));
@@ -159,7 +159,7 @@ namespace Mntone.SvgForXaml
 						break;
 
 					default:
-						System.Diagnostics.Debug.WriteLine($"Not supported tag: {elementNode.Name}");
+						System.Diagnostics.Debug.WriteLine($"Not supported tag: {elementNode.TagName}");
 						break;
 				}
 			}

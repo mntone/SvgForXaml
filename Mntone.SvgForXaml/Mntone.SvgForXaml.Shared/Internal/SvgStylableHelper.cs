@@ -1,6 +1,6 @@
 ﻿using Mntone.SvgForXaml.Interfaces;
 using System.Linq;
-using System.Xml;
+using Windows.Data.Xml.Dom;
 
 namespace Mntone.SvgForXaml.Internal
 {
@@ -22,7 +22,7 @@ namespace Mntone.SvgForXaml.Internal
 
 		public SvgStylableHelper(ISvgStylable parent, XmlElement element)
 		{
-			this.ClassName = element.GetAttributeOrNone("class", string.Empty);
+			this.ClassName = element.GetAttribute("class");
 			this.Style = new CssStyleDeclaration(parent, element.GetAttribute("style"));
 
 			foreach (var pn in PRESENTATION_ATTRIBUTE_NAMES)

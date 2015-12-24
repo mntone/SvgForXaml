@@ -3,7 +3,7 @@ using Mntone.SvgForXaml.Internal;
 using Mntone.SvgForXaml.Primitives;
 using Mntone.SvgForXaml.Shapes;
 using System;
-using System.Xml;
+using Windows.Data.Xml.Dom;
 
 namespace Mntone.SvgForXaml
 {

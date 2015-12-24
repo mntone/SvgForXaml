@@ -1,7 +1,7 @@
 ﻿using Mntone.SvgForXaml.Interfaces;
 using Mntone.SvgForXaml.Internal;
 using Mntone.SvgForXaml.Primitives;
-using System.Xml;
+using Windows.Data.Xml.Dom;
 
 namespace Mntone.SvgForXaml.Gradients
 {

@@ -1,6 +1,6 @@
 ﻿using Mntone.SvgForXaml.Interfaces;
 using Mntone.SvgForXaml.Internal;
-using System.Xml;
+using Windows.Data.Xml.Dom;
 
 namespace Mntone.SvgForXaml
 {

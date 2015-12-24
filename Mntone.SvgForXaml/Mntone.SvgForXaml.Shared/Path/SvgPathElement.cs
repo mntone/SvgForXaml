@@ -1,14 +1,14 @@
 ﻿using Mntone.SvgForXaml.Interfaces;
 using Mntone.SvgForXaml.Internal;
 using Mntone.SvgForXaml.Primitives;
-using System.Xml;
+using Windows.Data.Xml.Dom;
 
 namespace Mntone.SvgForXaml.Path
 {
 	public sealed class SvgPathElement : SvgElement, ISvgStylable, ISvgTransformable
 	{
 		internal SvgPathElement(INode parent, XmlElement element)
-			: base(parent, element.GetAttributeOrNone("id", string.Empty))
+			: base(parent, element.GetAttribute("id"))
 		{
 			this._stylableHelper = new SvgStylableHelper(this, element);
 			this._transformableHelper = new SvgTransformableHelper(element);

@@ -10,9 +10,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Numerics;
 using Windows.Foundation;
 using Windows.UI;
+
+#if WINDOWS_UWP
+using System.Numerics;
+#else
+using Microsoft.Graphics.Canvas.Numerics;
+#endif
 
 namespace Mntone.SvgForXaml
 {
@@ -86,7 +91,7 @@ namespace Mntone.SvgForXaml
 						var clipGeometory = this.CreateClipPath(session, clipPathElement);
 						geometry2 = geometry.CombineWith(
 							clipGeometory,
-							Matrix3x2.Identity,
+							new Matrix3x2 { M11 = 1.0F, M12 = 0.0F, M21 = 0.0F, M22 = 1.0F, M31 = 0.0F, M32 = 0.0F },
 							CanvasGeometryCombine.Intersect,
 							CanvasGeometry.ComputeFlatteningTolerance(session.Dpi, 1.0F, session.Transform));
 						change = true;
@@ -214,7 +219,7 @@ namespace Mntone.SvgForXaml
 
 		protected override void RenderPolygon(CanvasDrawingSession session, SvgPolygonElement element)
 		{
-			using (var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2(p.X, p.Y)).ToArray()))
+			using (var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2 { X = p.X, Y = p.Y }).ToArray()))
 			{
 				this.RenderGeometory(session, geometry, element.Transform.Result, element.Style);
 			}
@@ -225,7 +230,7 @@ namespace Mntone.SvgForXaml
 			if (this.PathCache.ContainsKey(element)) return this.PathCache[element];
 
 			var open = false;
-			var v = new Vector2(0.0F, 0.0F);
+			var v = new Vector2 { X = 0.0F, Y = 0.0F };
 
 			CanvasGeometry geometry;
 			using (var builder = new CanvasPathBuilder(this.ResourceCreator))
@@ -290,7 +295,7 @@ namespace Mntone.SvgForXaml
 						var casted = (SvgPathSegmentCurveToCubicAbsolute)segment;
 						v.X = casted.X;
 						v.Y = casted.Y;
-						builder.AddCubicBezier(new Vector2(casted.X1, casted.Y1), new Vector2(casted.X2, casted.Y2), v);
+						builder.AddCubicBezier(new Vector2 { X = casted.X1, Y = casted.Y1 }, new Vector2 { X = casted.X2, Y = casted.Y2 }, v);
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicRelative)
 					{
@@ -310,7 +315,7 @@ namespace Mntone.SvgForXaml
 						var casted = (SvgPathSegmentCurveToQuadraticAbsolute)segment;
 						v.X = casted.X;
 						v.Y = casted.Y;
-						builder.AddQuadraticBezier(new Vector2(casted.X1, casted.Y1), v);
+						builder.AddQuadraticBezier(new Vector2 { X = casted.X1, Y = casted.Y1 }, v);
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticRelative)
 					{
@@ -327,7 +332,7 @@ namespace Mntone.SvgForXaml
 						var casted = (SvgPathSegmentArcAbsolute)segment;
 						var size = casted.LargeArcFlag ? CanvasArcSize.Large : CanvasArcSize.Small;
 						var sweepDirection = casted.SweepFlag ? CanvasSweepDirection.Clockwise : CanvasSweepDirection.CounterClockwise;
-						builder.AddArc(new Vector2(casted.X, casted.Y), casted.RadiusX, casted.RadiusY, 180.0F * casted.Angle / (float)Math.PI, sweepDirection, size);
+						builder.AddArc(new Vector2 { X = casted.X, Y = casted.Y }, casted.RadiusX, casted.RadiusY, 180.0F * casted.Angle / (float)Math.PI, sweepDirection, size);
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.ArcRelative)
 					{
@@ -368,7 +373,7 @@ namespace Mntone.SvgForXaml
 						var c1 = v;
 						v.X = casted.X;
 						v.Y = casted.Y;
-						builder.AddCubicBezier(c1, new Vector2(casted.X2, casted.Y2), v);
+						builder.AddCubicBezier(c1, new Vector2 { X = casted.X2, Y = casted.Y2 }, v);
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicSmoothRelative)
 					{
@@ -486,7 +491,7 @@ namespace Mntone.SvgForXaml
 			{
 				m = new SvgMatrix(area.Width, 0.0, 0.0, area.Height, area.X, area.Y) * m;
 			}
-			var transform = new Matrix3x2((float)m.A, (float)m.B, (float)m.C, (float)m.D, (float)m.E, (float)m.F);
+			var transform = new Matrix3x2 { M11 = (float)m.A, M12 = (float)m.B, M21 = (float)m.C, M22 = (float)m.D, M31 = (float)m.E, M32 = (float)m.F };
 
 			var x1 = this.LengthConverter.ConvertX(element.X1);
 			var y1 = this.LengthConverter.ConvertY(element.Y1);
@@ -495,8 +500,8 @@ namespace Mntone.SvgForXaml
 			var spreadMethod = GetSpreadMethod(element.SpreadMethod);
 			var brush = new CanvasLinearGradientBrush(this.ResourceCreator, stops, spreadMethod, CanvasAlphaMode.Straight)
 			{
-				StartPoint = new Vector2(x1, y1),
-				EndPoint = new Vector2(x2, y2),
+				StartPoint = new Vector2 { X = x1, Y = y1 },
+				EndPoint = new Vector2 { X = x2, Y = y2 },
 				Transform = transform,
 			};
 			this.DisposableObjects.Add(brush);
@@ -524,7 +529,7 @@ namespace Mntone.SvgForXaml
 			{
 				m = new SvgMatrix(area.Width, 0.0, 0.0, area.Height, area.X, area.Y) * m;
 			}
-			var transform = new Matrix3x2((float)m.A, (float)m.B, (float)m.C, (float)m.D, (float)m.E, (float)m.F);
+			var transform = new Matrix3x2 { M11 = (float)m.A, M12 = (float)m.B, M21 = (float)m.C, M22 = (float)m.D, M31 = (float)m.E, M32 = (float)m.F };
 
 			var centerX = this.LengthConverter.ConvertX(element.CenterX);
 			var centerY = this.LengthConverter.ConvertY(element.CenterY);
@@ -535,8 +540,8 @@ namespace Mntone.SvgForXaml
 			var spreadMethod = GetSpreadMethod(element.SpreadMethod);
 			var brush = new CanvasRadialGradientBrush(this.ResourceCreator, stops, spreadMethod, CanvasAlphaMode.Straight)
 			{
-				OriginOffset = new Vector2(focusX - centerX, focusY - centerY),
-				Center = new Vector2(centerX, centerY),
+				OriginOffset = new Vector2 { X = focusX - centerX, Y = focusY - centerY },
+				Center = new Vector2 { X = centerX, Y = centerY },
 				RadiusX = radiusX,
 				RadiusY = radiusY,
 				Transform = transform,

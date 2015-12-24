@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Numerics;
 using System.Threading.Tasks;
-using System.Xml;
+using Windows.Data.Xml.Dom;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -46,10 +46,10 @@ namespace Mntone.SvgForXaml.UI.Xaml
 			if (file == null) throw new ArgumentNullException(nameof(file));
 
 			using (var stream = await WindowsRuntimeStorageExtensions.OpenStreamForReadAsync(file))
-			using (var reader = XmlReader.Create(stream, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Ignore }))
+			using (var reader = new StreamReader(stream))
 			{
 				var xml = new XmlDocument();
-				xml.Load(reader);
+				xml.LoadXml(reader.ReadToEnd(), new XmlLoadSettings { ProhibitDtd = false });
 				var svgDocument = SvgDocument.Parse(xml);
 
 				this.Content = svgDocument;
@@ -80,7 +80,7 @@ namespace Mntone.SvgForXaml.UI.Xaml
 				this._renderer = null;
 			}
 
-			if (svg != null)
+			if (svg != null && this._canvasControl != null)
 			{
 				this._renderer = new Win2dRenderer(this._canvasControl, svg);
 				this._canvasControl?.Invalidate();

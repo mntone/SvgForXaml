@@ -1,5 +1,5 @@
 ﻿using Mntone.SvgForXaml.Primitives;
-using System.Xml;
+using Windows.Data.Xml.Dom;
 
 namespace Mntone.SvgForXaml.Internal
 {
