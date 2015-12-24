@@ -452,12 +452,12 @@
     <Content Include="Assets\SplashScreen.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mntone.SvgForXaml\Mntone.SvgForXaml.WindowsUniversal\Mntone.SvgForXaml.WindowsUniversal.csproj">
+    <ProjectReference Include="..\..\Mntone.SvgForXaml\Mntone.SvgForXaml.WindowsUniversal\Mntone.SvgForXaml.WindowsUniversal.csproj">
       <Project>{b1e3a656-f9ef-4491-92df-4e6ba970e3e4}</Project>
       <Name>Mntone.SvgForXaml.WindowsUniversal</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Mntone.SvgForXaml.DemoApp\Mntone.SvgForXaml.DemoApp.Shared\Mntone.SvgForXaml.DemoApp.Shared.projitems" Label="Shared" />
+  <Import Project="..\Mntone.SvgForXaml.DemoApp.Shared\Mntone.SvgForXaml.DemoApp.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mntone.SvgForXaml.DemoApp.WindowsUniversal", "Mntone.SvgForXaml.DemoApp.WindowsUniversal\Mntone.SvgForXaml.DemoApp.WindowsUniversal.csproj", "{75B440FE-2CC7-42AE-AF3B-9514A148E6A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mntone.SvgForXaml.DemoApp.WindowsUniversal", "Mntone.SvgForXaml.DemoApp\Mntone.SvgForXaml.DemoApp.WindowsUniversal\Mntone.SvgForXaml.DemoApp.WindowsUniversal.csproj", "{75B440FE-2CC7-42AE-AF3B-9514A148E6A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mntone.SvgForXaml.WindowsUniversal", "Mntone.SvgForXaml\Mntone.SvgForXaml.WindowsUniversal\Mntone.SvgForXaml.WindowsUniversal.csproj", "{B1E3A656-F9EF-4491-92DF-4E6BA970E3E4}"
 EndProject
