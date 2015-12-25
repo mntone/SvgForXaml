@@ -1,6 +1,6 @@
 # Svg for Xaml Library
 
-[![License](https://img.shields.io/github/license/mntone/SvgForXaml.svg?style=flat-square)](https://github.com/mntone/SvgForXaml/blob/master/LICENSE.txt)
+[![NuGet](https://img.shields.io/nuget/v/Mntone.SvgForXaml.svg?style=flat-square)](https://www.nuget.org/packages/Mntone.SvgForXaml/) [![Downloads](https://img.shields.io/nuget/dt/Mntone.SvgForXaml.svg?style=flat-square)](https://www.nuget.org/packages/Mntone.SvgForXaml/) [![License](https://img.shields.io/github/license/mntone/SvgForXaml.svg?style=flat-square)](https://github.com/mntone/SvgForXaml/blob/master/LICENSE.txt)
 
 Draw images from svg file with Win2D.
 
