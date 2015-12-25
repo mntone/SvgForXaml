@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+	<metadata>
+		<id>Mntone.SvgForXaml</id>
+		<title>Svg for Xaml Library</title>
+		<version>0.9.0.0</version>
+		<authors>mntone</authors>
+		<owners>mntone</owners>
+		<description>Show svg image on xaml UI.</description>
+		<projectUrl>https://github.com/mntone/SvgForXaml</projectUrl>
+		<licenseUrl>https://github.com/mntone/SvgForXaml/blob/master/LICENSE.txt</licenseUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<copyright>Copyright (C) 2015- mntone</copyright>
+		<language>en-US</language>
+		<tags>UWP WinRT WindowsRuntime SVG Win2D</tags>
+		<dependencies>
+			<group targetFramework="win81">
+				<dependency id="Win2D.win81" version="[1.11.0,]" />
+			</group>
+			<group targetFramework="wpa81">
+				<dependency id="Win2D.win81" version="[1.11.0,]" />
+			</group>
+			<group targetFramework="uap10.0">
+				<dependency id="Win2D.uwp" version="[1.11.0,]" />
+			</group>
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="Mntone.SvgForXaml.Windows\bin\x86\Release\Mntone.SvgForXaml.dll" target="lib\win81\x86" />
+		<file src="Mntone.SvgForXaml.Windows\bin\x86\Release\Mntone.SvgForXaml.pri" target="lib\win81\x86" />
+		<file src="Mntone.SvgForXaml.Windows\bin\x86\Release\Mntone.SvgForXaml.xr.xml" target="lib\win81\x86\Mntone.SvgForXaml" />
+		<file src="Mntone.SvgForXaml.Windows\bin\x86\Release\Themes\Generic.xbf" target="lib\win81\x86\Mntone.SvgForXaml\Themes" />
+		<file src="Mntone.SvgForXaml.Windows\bin\x86\Release\UI\Xaml\SvgImage.xbf" target="lib\win81\x86\Mntone.SvgForXaml\UI\Xaml" />
+
+		<file src="Mntone.SvgForXaml.Windows\bin\x64\Release\Mntone.SvgForXaml.dll" target="lib\win81\x64" />
+		<file src="Mntone.SvgForXaml.Windows\bin\x64\Release\Mntone.SvgForXaml.pri" target="lib\win81\x64" />
+		<file src="Mntone.SvgForXaml.Windows\bin\x64\Release\Mntone.SvgForXaml.xr.xml" target="lib\win81\x64\Mntone.SvgForXaml" />
+		<file src="Mntone.SvgForXaml.Windows\bin\x64\Release\Themes\Generic.xbf" target="lib\win81\x64\Mntone.SvgForXaml\Themes" />
+		<file src="Mntone.SvgForXaml.Windows\bin\x64\Release\UI\Xaml\SvgImage.xbf" target="lib\win81\x64\Mntone.SvgForXaml\UI\Xaml" />
+
+		<file src="Mntone.SvgForXaml.Windows\bin\ARM\Release\Mntone.SvgForXaml.dll" target="lib\win81\ARM" />
+		<file src="Mntone.SvgForXaml.Windows\bin\ARM\Release\Mntone.SvgForXaml.pri" target="lib\win81\ARM" />
+		<file src="Mntone.SvgForXaml.Windows\bin\ARM\Release\Mntone.SvgForXaml.xr.xml" target="lib\win81\ARM\Mntone.SvgForXaml" />
+		<file src="Mntone.SvgForXaml.Windows\bin\ARM\Release\Themes\Generic.xbf" target="lib\win81\ARM\Mntone.SvgForXaml\Themes" />
+		<file src="Mntone.SvgForXaml.Windows\bin\ARM\Release\UI\Xaml\SvgImage.xbf" target="lib\win81\ARM\Mntone.SvgForXaml\UI\Xaml" />
+
+
+		<file src="Mntone.SvgForXaml.WindowsPhone\bin\x86\Release\Mntone.SvgForXaml.dll" target="lib\wpa81\x86" />
+		<file src="Mntone.SvgForXaml.WindowsPhone\bin\x86\Release\Mntone.SvgForXaml.pri" target="lib\wpa81\x86" />
+		<file src="Mntone.SvgForXaml.WindowsPhone\bin\x86\Release\Mntone.SvgForXaml.xr.xml" target="lib\wpa81\x86\Mntone.SvgForXaml" />
+		<file src="Mntone.SvgForXaml.WindowsPhone\bin\x86\Release\Themes\Generic.xbf" target="lib\wpa81\x86\Mntone.SvgForXaml\Themes" />
+		<file src="Mntone.SvgForXaml.WindowsPhone\bin\x86\Release\UI\Xaml\SvgImage.xbf" target="lib\wpa81\x86\Mntone.SvgForXaml\UI\Xaml" />
+
+		<file src="Mntone.SvgForXaml.WindowsPhone\bin\ARM\Release\Mntone.SvgForXaml.dll" target="lib\wpa81\ARM" />
+		<file src="Mntone.SvgForXaml.WindowsPhone\bin\ARM\Release\Mntone.SvgForXaml.pri" target="lib\wpa81\ARM" />
+		<file src="Mntone.SvgForXaml.WindowsPhone\bin\ARM\Release\Mntone.SvgForXaml.xr.xml" target="lib\wpa81\ARM\Mntone.SvgForXaml" />
+		<file src="Mntone.SvgForXaml.WindowsPhone\bin\ARM\Release\Themes\Generic.xbf" target="lib\wpa81\ARM\Mntone.SvgForXaml\Themes" />
+		<file src="Mntone.SvgForXaml.WindowsPhone\bin\ARM\Release\UI\Xaml\SvgImage.xbf" target="lib\wpa81\ARM\Mntone.SvgForXaml\UI\Xaml" />
+		
+		<file src="Mntone.SvgForXaml.WindowsUniversal\bin\Release\Mntone.SvgForXaml.dll" target="lib\uap10.0" />
+		<file src="Mntone.SvgForXaml.WindowsUniversal\bin\Release\Mntone.SvgForXaml.pri" target="lib\uap10.0" />
+		<file src="Mntone.SvgForXaml.WindowsUniversal\bin\Release\Mntone.SvgForXaml.xr.xml" target="lib\uap10.0\Mntone.SvgForXaml" />
+		<file src="Mntone.SvgForXaml.WindowsUniversal\bin\Release\Themes\Generic.xbf" target="lib\uap10.0\Mntone.SvgForXaml\Themes" />
+		<file src="Mntone.SvgForXaml.WindowsUniversal\bin\Release\UI\Xaml\SvgImage.xbf" target="lib\uap10.0\Mntone.SvgForXaml\UI\Xaml" />
+
+		<file src="nuget-build\win81\Mntone.SvgForXaml.targets" target="build\win81" />
+		<file src="nuget-build\wpa81\Mntone.SvgForXaml.targets" target="build\wpa81" />
+		<file src="nuget-build\uap10.0\Mntone.SvgForXaml.targets" target="build\uap10.0" />
+	</files>
+</package>

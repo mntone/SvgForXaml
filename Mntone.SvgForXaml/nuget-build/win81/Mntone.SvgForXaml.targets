@@ -1,0 +1,18 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="CheckAnyCPU" Condition="'$(Platform)' != 'Win32' AND '$(Platform)' != 'x86' AND '$(Platform)' != 'x64' AND '$(Platform)' != 'ARM'" BeforeTargets="BeforeBuild">
+		<Error Text="Svg for Xaml Library does not support the $(Platform) target platform." />
+	</Target>
+	<Target Name="CheckJS" Condition=" '$(MSBuildProjectExtension)' == '.jsproj' " BeforeTargets="BeforeBuild">
+		<Error Text="Svg for Xaml Library does not support the JavaScript target project." />
+	</Target>
+	<PropertyGroup Condition="'$(TargetPlatformIdentifier)' != 'UAP'">
+		<Mntone-Platform Condition="'$(Platform)' == 'Win32'">x86</Mntone-Platform>
+		<Mntone-Platform Condition="'$(Platform)' != 'Win32'">$(Platform)</Mntone-Platform>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(TargetPlatformIdentifier)' != 'UAP'">
+		<Reference Include="Mntone.SvgForXaml">
+			<HintPath>$(MSBuildThisFileDirectory)..\..\lib\win81\$(Mntone-Platform)\Mntone.SvgForXaml.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+</Project>
