@@ -49,6 +49,8 @@ namespace Mntone.SvgForXaml
 
 		internal void AddIdCache(string id, SvgElement element)
 		{
+			if (this._idCache.ContainsKey(id)) return;
+
 			this._idCache.Add(id, element);
 		}
 
