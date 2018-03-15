@@ -334,9 +334,11 @@ namespace Mntone.SvgForXaml
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.ArcAbsolute)
 					{
 						var casted = (SvgPathSegmentArcAbsolute)segment;
+						v.X = casted.X;
+						v.Y = casted.Y;
 						var size = casted.LargeArcFlag ? CanvasArcSize.Large : CanvasArcSize.Small;
 						var sweepDirection = casted.SweepFlag ? CanvasSweepDirection.Clockwise : CanvasSweepDirection.CounterClockwise;
-						builder.AddArc(new Vector2 { X = casted.X, Y = casted.Y }, casted.RadiusX, casted.RadiusY, 180.0F * casted.Angle / (float)Math.PI, sweepDirection, size);
+						builder.AddArc(v, casted.RadiusX, casted.RadiusY, 180.0F * casted.Angle / (float)Math.PI, sweepDirection, size);
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.ArcRelative)
 					{
