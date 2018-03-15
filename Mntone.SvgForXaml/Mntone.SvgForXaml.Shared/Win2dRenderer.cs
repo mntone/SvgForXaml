@@ -189,7 +189,7 @@ namespace Mntone.SvgForXaml
 			var y2 = this.LengthConverter.ConvertY(element.Y2);
 			using (var t = TransformSession.CreateTransformSession(session, element.Transform.Result))
 			{
-				var area = new Rect(Math.Min(x1, x2), Math.Min(y1, y2), Math.Abs(y2 - x1), Math.Abs(y2 - y1));
+				var area = new Rect(Math.Min(x1, x2), Math.Min(y1, y2), Math.Abs(x2 - x1), Math.Abs(y2 - y1));
 				var stroke = element.Style.Stroke;
 				if (stroke != null && stroke.PaintType != SvgPaintType.None)
 				{
