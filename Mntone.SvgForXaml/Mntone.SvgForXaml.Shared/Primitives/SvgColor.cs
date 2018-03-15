@@ -133,6 +133,7 @@ namespace Mntone.SvgForXaml.Primitives
 				["plum"] = new RgbColor(221, 160, 221),
 				["powderblue"] = new RgbColor(176, 224, 230),
 				["purple"] = new RgbColor(128, 0, 128),
+				["rebeccapurple"] = new RgbColor(102, 51, 153),
 				["red"] = new RgbColor(255, 0, 0),
 				["rosybrown"] = new RgbColor(188, 143, 143),
 				["royalblue"] = new RgbColor(65, 105, 225),
