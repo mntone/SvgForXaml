@@ -266,5 +266,10 @@ namespace Mntone.SvgForXaml.Primitives
 		{
 			throw new NotImplementedException();
 		}
+
+		internal Windows.UI.Color ToPlatformColor(byte alpha)
+		{
+			return Windows.UI.Color.FromArgb(alpha, this.RgbColor.Red, this.RgbColor.Green, this.RgbColor.Blue);
+		}
 	}
 }

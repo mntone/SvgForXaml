@@ -436,9 +436,7 @@ namespace Mntone.SvgForXaml
 		private CanvasSolidColorBrush CreateColor(CanvasDrawingSession session, SvgColor color)
 		{
 			var brush = new CanvasSolidColorBrush(this.ResourceCreator,
-				color != null
-					? Color.FromArgb(0xff, color.RgbColor.Red, color.RgbColor.Green, color.RgbColor.Blue)
-					: Color.FromArgb(0xff, 0, 0, 0));
+				color != null ? color.ToPlatformColor(0xff) : Color.FromArgb(0xff, 0, 0, 0));
 			this.DisposableObjects.Add(brush);
 			return brush;
 		}
@@ -455,9 +453,7 @@ namespace Mntone.SvgForXaml
 				var alpha = (byte)(255.0F * (opacity?.Value ?? 1.0F));
 				var brush = new CanvasSolidColorBrush(
 					this.ResourceCreator,
-					paint != null
-						? Color.FromArgb(alpha, paint.RgbColor.Red, paint.RgbColor.Green, paint.RgbColor.Blue)
-						: Color.FromArgb(alpha, 0, 0, 0));
+					paint != null ? paint.ToPlatformColor(alpha) : Color.FromArgb(alpha, 0, 0, 0));
 				this.DisposableObjects.Add(brush);
 				return brush;
 			}
@@ -487,7 +483,7 @@ namespace Mntone.SvgForXaml
 				var stop = new CanvasGradientStop()
 				{
 					Position = s.Offset,
-					Color = Color.FromArgb(alpha, s.Style.StopColor.RgbColor.Red, s.Style.StopColor.RgbColor.Green, s.Style.StopColor.RgbColor.Blue)
+					Color = s.Style.StopColor.ToPlatformColor(alpha)
 				};
 				return stop;
 			}).ToArray();
@@ -525,7 +521,7 @@ namespace Mntone.SvgForXaml
 				var stop = new CanvasGradientStop()
 				{
 					Position = s.Offset,
-					Color = Color.FromArgb(alpha, s.Style.StopColor.RgbColor.Red, s.Style.StopColor.RgbColor.Green, s.Style.StopColor.RgbColor.Blue)
+					Color = s.Style.StopColor.ToPlatformColor(alpha)
 				};
 				return stop;
 			}).ToArray();
