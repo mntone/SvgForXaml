@@ -125,10 +125,9 @@ namespace Mntone.SvgForXaml.Path
 			if (coordinate == null) return;
 			this.Segments.Add(SvgPathSegmentMoveToBase.Create(coordinate.Item1, coordinate.Item2, abs));
 
-			if (this.ParseCommaOrWhitespace(ptr))
-			{
-				this.ParseLineToArgumentSequence(ptr, abs);
-			}
+			this.ParseCommaOrWhitespace(ptr);
+			if (ptr.IsEnd) return;
+			this.ParseLineToArgumentSequence(ptr, abs);
 		}
 
 		private void ParseClosePath(StringPtr ptr)
@@ -151,10 +150,9 @@ namespace Mntone.SvgForXaml.Path
 			if (coordinate == null) return;
 			this.Segments.Add(SvgPathSegmentLineToBase.Create(coordinate.Item1, coordinate.Item2, abs));
 
-			if (this.ParseCommaOrWhitespace(ptr))
-			{
-				this.ParseLineToArgumentSequence(ptr, abs);
-			}
+			this.ParseCommaOrWhitespace(ptr);
+			if (ptr.IsEnd) return;
+			this.ParseLineToArgumentSequence(ptr, abs);
 		}
 
 		private void ParseHorizontalLineTo(StringPtr ptr)
@@ -171,10 +169,9 @@ namespace Mntone.SvgForXaml.Path
 			if (!coordinate.HasValue) return;
 			this.Segments.Add(SvgPathSegmentLineToHorizontalBase.Create(coordinate.Value, abs));
 
-			if (this.ParseCommaOrWhitespace(ptr))
-			{
-				this.ParseHorizontalLineToArgumentSequence(ptr, abs);
-			}
+			this.ParseCommaOrWhitespace(ptr);
+			if (ptr.IsEnd) return;
+			this.ParseHorizontalLineToArgumentSequence(ptr, abs);
 		}
 
 		private void ParseVerticalLineTo(StringPtr ptr)
@@ -191,10 +188,9 @@ namespace Mntone.SvgForXaml.Path
 			if (!coordinate.HasValue) return;
 			this.Segments.Add(SvgPathSegmentLineToVerticalBase.Create(coordinate.Value, abs));
 
-			if (this.ParseCommaOrWhitespace(ptr))
-			{
-				this.ParseVerticalLineToArgumentSequence(ptr, abs);
-			}
+			this.ParseCommaOrWhitespace(ptr);
+			if (ptr.IsEnd) return;
+			this.ParseVerticalLineToArgumentSequence(ptr, abs);
 		}
 
 		private void ParseCurveTo(StringPtr ptr)
@@ -217,10 +213,9 @@ namespace Mntone.SvgForXaml.Path
 			var coordinate3 = ParseCoordinatePair(ptr);
 			this.Segments.Add(SvgPathSegmentCurveToCubicBase.Create(coordinate.Item1, coordinate.Item2, coordinate2.Item1, coordinate2.Item2, coordinate3.Item1, coordinate3.Item2, abs));
 
-			if (this.ParseCommaOrWhitespace(ptr))
-			{
-				this.ParseCurveToArgumentSequence(ptr, abs);
-			}
+			this.ParseCommaOrWhitespace(ptr);
+			if (ptr.IsEnd) return;
+			this.ParseCurveToArgumentSequence(ptr, abs);
 		}
 
 		private void ParseSmoothCurveTo(StringPtr ptr)
@@ -240,10 +235,9 @@ namespace Mntone.SvgForXaml.Path
 			var coordinate2 = ParseCoordinatePair(ptr);
 			this.Segments.Add(SvgPathSegmentCurveToCubicSmoothBase.Create(coordinate.Item1, coordinate.Item2, coordinate2.Item1, coordinate2.Item2, abs));
 
-			if (this.ParseCommaOrWhitespace(ptr))
-			{
-				this.ParseSmoothCurveToArgumentSequence(ptr, abs);
-			}
+			this.ParseCommaOrWhitespace(ptr);
+			if (ptr.IsEnd) return;
+			this.ParseSmoothCurveToArgumentSequence(ptr, abs);
 		}
 
 		private void ParseQuadraticBezierCurveTo(StringPtr ptr)
@@ -263,10 +257,9 @@ namespace Mntone.SvgForXaml.Path
 			var coordinate2 = ParseCoordinatePair(ptr);
 			this.Segments.Add(SvgPathSegmentCurveToQuadraticBase.Create(coordinate.Item1, coordinate.Item2, coordinate2.Item1, coordinate2.Item2, abs));
 
-			if (this.ParseCommaOrWhitespace(ptr))
-			{
-				this.ParseQuadraticBezierCurveToArgumentSequence(ptr, abs);
-			}
+			this.ParseCommaOrWhitespace(ptr);
+			if (ptr.IsEnd) return;
+			this.ParseQuadraticBezierCurveToArgumentSequence(ptr, abs);
 		}
 
 		private void ParseSmoothQuadraticBezierCurveTo(StringPtr ptr)
@@ -282,10 +275,9 @@ namespace Mntone.SvgForXaml.Path
 			var coordinate = ParseCoordinatePair(ptr);
 			this.Segments.Add(SvgPathSegmentCurveToQuadraticSmoothBase.Create(coordinate.Item1, coordinate.Item2, abs));
 
-			if (this.ParseCommaOrWhitespace(ptr))
-			{
-				this.ParseSmoothQuadraticBezierCurveToArgumentSequence(ptr, abs);
-			}
+			this.ParseCommaOrWhitespace(ptr);
+			if (ptr.IsEnd) return;
+			this.ParseSmoothQuadraticBezierCurveToArgumentSequence(ptr, abs);
 		}
 
 		private void ParseQllipticalArc(StringPtr ptr)
@@ -318,10 +310,9 @@ namespace Mntone.SvgForXaml.Path
 
 				this.Segments.Add(SvgPathSegmentArcBase.Create(coordinate.Item1, coordinate.Item2, nonNegativeNumber.Value, nonNegativeNumber2, number, flag, flag2, abs));
 
-				if (this.ParseCommaOrWhitespace(ptr))
-				{
-					this.ParseQllipticalArcArgumentSequence(ptr, abs);
-				}
+				this.ParseCommaOrWhitespace(ptr);
+				if (ptr.IsEnd) return;
+				this.ParseQllipticalArcArgumentSequence(ptr, abs);
 				return;
 			}
 			throw new ArgumentException("pathData");
