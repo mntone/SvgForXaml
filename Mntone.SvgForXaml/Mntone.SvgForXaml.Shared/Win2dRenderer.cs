@@ -496,16 +496,23 @@ namespace Mntone.SvgForXaml
 			}).ToArray();
 
 			var m = element.GradientTransform.Result;
-			if (element.GradientUnits == SvgUnitType.ObjectBoundingBox)
-			{
-				m = new SvgMatrix(area.Width, 0.0, 0.0, area.Height, area.X, area.Y) * m;
-			}
 			var transform = new Matrix3x2 { M11 = (float)m.A, M12 = (float)m.B, M21 = (float)m.C, M22 = (float)m.D, M31 = (float)m.E, M32 = (float)m.F };
 
-			var x1 = this.LengthConverter.ConvertX(element.X1);
-			var y1 = this.LengthConverter.ConvertY(element.Y1);
-			var x2 = this.LengthConverter.ConvertX(element.X2);
-			var y2 = this.LengthConverter.ConvertY(element.Y2);
+			float x1, y1, x2, y2;
+			if (element.GradientUnits != SvgUnitType.UserSpaceOnUse)
+			{
+				x1 = this.LengthConverter.ConvertXForOBBU(element.X1, (float)area.X, (float)area.Width);
+				y1 = this.LengthConverter.ConvertYForOBBU(element.Y1, (float)area.Y, (float)area.Height);
+				x2 = this.LengthConverter.ConvertXForOBBU(element.X2, (float)area.X, (float)area.Width);
+				y2 = this.LengthConverter.ConvertYForOBBU(element.Y2, (float)area.Y, (float)area.Height);
+			}
+			else
+			{
+				x1 = this.LengthConverter.ConvertX(element.X1);
+				y1 = this.LengthConverter.ConvertY(element.Y1);
+				x2 = this.LengthConverter.ConvertX(element.X2);
+				y2 = this.LengthConverter.ConvertY(element.Y2);
+			}
 			var spreadMethod = GetSpreadMethod(element.SpreadMethod);
 			var brush = new CanvasLinearGradientBrush(this.ResourceCreator, stops, spreadMethod, CanvasAlphaMode.Straight)
 			{

@@ -13,7 +13,7 @@ namespace Mntone.SvgForXaml.Gradients
 		{
 			this.X1 = element.ParseCoordinate("x1", 0.0F);
 			this.Y1 = element.ParseCoordinate("y1", 0.0F);
-			this.X2 = element.ParseCoordinate("x2", 100.0F);
+			this.X2 = element.ParseCoordinate("x2", 1.0F);
 			this.Y2 = element.ParseCoordinate("y2", 0.0F);
 		}
 
