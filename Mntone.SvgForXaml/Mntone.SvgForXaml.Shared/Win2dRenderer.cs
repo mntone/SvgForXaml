@@ -150,7 +150,7 @@ namespace Mntone.SvgForXaml
 			var width = this.LengthConverter.ConvertX(element.Width);
 			var height = this.LengthConverter.ConvertY(element.Height);
 			var rx = this.LengthConverter.ConvertX(element.RoundedX);
-			var ry = this.LengthConverter.ConvertX(element.RoundedY);
+			var ry = this.LengthConverter.ConvertY(element.RoundedY);
 			using (var geometry = CanvasGeometry.CreateRoundedRectangle(this.ResourceCreator, x, y, width, height, rx, ry))
 			{
 				this.RenderGeometory(session, geometry, element.Transform.Result, element.Style);
