@@ -480,7 +480,7 @@ namespace Mntone.SvgForXaml
 				var stop = new CanvasGradientStop()
 				{
 					Position = s.Offset,
-					Color = s.Style.StopColor.ToPlatformColor(alpha)
+					Color = s.Style.StopColor?.ToPlatformColor(alpha) ?? Color.FromArgb(alpha, 0, 0, 0)
 				};
 				return stop;
 			}).ToArray();
@@ -518,7 +518,7 @@ namespace Mntone.SvgForXaml
 				var stop = new CanvasGradientStop()
 				{
 					Position = s.Offset,
-					Color = s.Style.StopColor.ToPlatformColor(alpha)
+					Color = s.Style.StopColor?.ToPlatformColor(alpha) ?? Color.FromArgb(alpha, 0, 0, 0)
 				};
 				return stop;
 			}).ToArray();
