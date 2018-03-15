@@ -25,6 +25,7 @@ namespace Mntone.SvgForXaml
 	{
 		protected ICanvasResourceCreator ResourceCreator { get; }
 		protected Collection<IDisposable> DisposableObjects { get; }
+		protected Dictionary<int, CanvasSolidColorBrush> SolidResourceCache { get; }
 		protected Dictionary<SvgGradientElement, ICanvasBrush> ResourceCache { get; }
 		protected Dictionary<SvgPathElement, CanvasGeometry> PathCache { get; }
 
@@ -35,6 +36,7 @@ namespace Mntone.SvgForXaml
 		{
 			this.ResourceCreator = resourceCreator;
 			this.DisposableObjects = new Collection<IDisposable>();
+			this.SolidResourceCache = new Dictionary<int, CanvasSolidColorBrush>();
 			this.ResourceCache = new Dictionary<SvgGradientElement, ICanvasBrush>();
 			this.PathCache = new Dictionary<SvgPathElement, CanvasGeometry>();
 		}
@@ -435,8 +437,12 @@ namespace Mntone.SvgForXaml
 
 		private CanvasSolidColorBrush CreateColor(CanvasDrawingSession session, SvgColor color)
 		{
+			var code = (int)(0xff000000 | (uint)(color.RgbColor.Red << 16 | color.RgbColor.Green << 8 | color.RgbColor.Blue));
+			if (this.SolidResourceCache.ContainsKey(code)) return this.SolidResourceCache[code];
+
 			var brush = new CanvasSolidColorBrush(this.ResourceCreator, color?.ToPlatformColor(0xff) ?? Color.FromArgb(0xff, 0, 0, 0));
 			this.DisposableObjects.Add(brush);
+			this.SolidResourceCache.Add(code, brush);
 			return brush;
 		}
 
@@ -450,8 +456,12 @@ namespace Mntone.SvgForXaml
 			if (paint == null || paint.PaintType == SvgPaintType.RgbColor)
 			{
 				var alpha = (byte)(255.0F * (opacity?.Value ?? 1.0F));
+				var code = paint == null ? alpha << 24 : alpha << 24 | paint.RgbColor.Red << 16 | paint.RgbColor.Green << 8 | paint.RgbColor.Blue;
+				if (this.SolidResourceCache.ContainsKey(code)) return this.SolidResourceCache[code];
+
 				var brush = new CanvasSolidColorBrush(this.ResourceCreator, paint?.ToPlatformColor(alpha) ?? Color.FromArgb(alpha, 0, 0, 0));
 				this.DisposableObjects.Add(brush);
+				this.SolidResourceCache.Add(code, brush);
 				return brush;
 			}
 			if (paint.PaintType == SvgPaintType.Uri && paint.Uri[0] == '#')
