@@ -230,6 +230,7 @@ namespace Mntone.SvgForXaml
 			if (this.PathCache.ContainsKey(element)) return this.PathCache[element];
 
 			var open = false;
+			var startPoint = new Vector2 { X = 0.0F, Y = 0.0F };
 			var v = new Vector2 { X = 0.0F, Y = 0.0F };
 
 			CanvasGeometry geometry;
@@ -245,6 +246,7 @@ namespace Mntone.SvgForXaml
 					if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.ClosePath)
 					{
 						builder.EndFigure(CanvasFigureLoop.Closed);
+						v = startPoint;
 						open = false;
 						continue;
 					}
@@ -255,6 +257,7 @@ namespace Mntone.SvgForXaml
 						var casted = (SvgPathSegmentMoveToAbsolute)segment;
 						v.X = casted.X;
 						v.Y = casted.Y;
+						startPoint = v;
 						builder.BeginFigure(v);
 						open = true;
 						continue;
@@ -266,6 +269,7 @@ namespace Mntone.SvgForXaml
 						var casted = (SvgPathSegmentMoveToRelative)segment;
 						v.X += casted.X;
 						v.Y += casted.Y;
+						startPoint = v;
 						builder.BeginFigure(v);
 						open = true;
 						continue;
