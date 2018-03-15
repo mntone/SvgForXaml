@@ -86,28 +86,25 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="Microsoft.Graphics.Canvas, Version=255.255.255.255, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Win2D.win81.1.11.0\lib\win\Microsoft.Graphics.Canvas.winmd</HintPath>
+      <HintPath>..\..\packages\Win2D.win81.1.9.0\lib\win\Microsoft.Graphics.Canvas.winmd</HintPath>
       <Private>True</Private>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="..\Mntone.SvgForXaml.Shared\Mntone.SvgForXaml.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
-  <Import Project="..\..\packages\Win2D.win81.1.11.0\build\win\Win2D.win81.targets" Condition="Exists('..\..\packages\Win2D.win81.1.11.0\build\win\Win2D.win81.targets')" />
+  <Import Project="..\..\packages\Win2D.win81.1.9.0\build\win\Win2D.win81.targets" Condition="Exists('..\..\packages\Win2D.win81.1.9.0\build\win\Win2D.win81.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Win2D.win81.1.11.0\build\win\Win2D.win81.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Win2D.win81.1.11.0\build\win\Win2D.win81.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Win2D.win81.1.9.0\build\win\Win2D.win81.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Win2D.win81.1.9.0\build\win\Win2D.win81.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

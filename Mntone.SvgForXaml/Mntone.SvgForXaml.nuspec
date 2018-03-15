@@ -10,18 +10,18 @@
 		<projectUrl>https://github.com/mntone/SvgForXaml</projectUrl>
 		<licenseUrl>https://github.com/mntone/SvgForXaml/blob/master/LICENSE.txt</licenseUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<copyright>Copyright (C) 2015- mntone</copyright>
+		<copyright>Copyright (C) 2015-2018 mntone</copyright>
 		<language>en-US</language>
 		<tags>UWP WinRT WindowsRuntime SVG Win2D</tags>
 		<dependencies>
 			<group targetFramework="win81">
-				<dependency id="Win2D.win81" version="[1.11.0,]" />
+				<dependency id="Win2D.win81" version="[1.9.0,]" />
 			</group>
 			<group targetFramework="wpa81">
-				<dependency id="Win2D.win81" version="[1.11.0,]" />
+				<dependency id="Win2D.win81" version="[1.9.0,]" />
 			</group>
 			<group targetFramework="uap10.0">
-				<dependency id="Win2D.uwp" version="[1.11.0,]" />
+				<dependency id="Win2D.uwp" version="[1.9.0,]" />
 			</group>
 		</dependencies>
 	</metadata>
