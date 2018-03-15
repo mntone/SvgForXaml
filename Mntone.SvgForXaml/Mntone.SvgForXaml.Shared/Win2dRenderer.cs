@@ -435,8 +435,7 @@ namespace Mntone.SvgForXaml
 
 		private CanvasSolidColorBrush CreateColor(CanvasDrawingSession session, SvgColor color)
 		{
-			var brush = new CanvasSolidColorBrush(this.ResourceCreator,
-				color != null ? color.ToPlatformColor(0xff) : Color.FromArgb(0xff, 0, 0, 0));
+			var brush = new CanvasSolidColorBrush(this.ResourceCreator, color?.ToPlatformColor(0xff) ?? Color.FromArgb(0xff, 0, 0, 0));
 			this.DisposableObjects.Add(brush);
 			return brush;
 		}
@@ -451,9 +450,7 @@ namespace Mntone.SvgForXaml
 			if (paint == null || paint.PaintType == SvgPaintType.RgbColor)
 			{
 				var alpha = (byte)(255.0F * (opacity?.Value ?? 1.0F));
-				var brush = new CanvasSolidColorBrush(
-					this.ResourceCreator,
-					paint != null ? paint.ToPlatformColor(alpha) : Color.FromArgb(alpha, 0, 0, 0));
+				var brush = new CanvasSolidColorBrush(this.ResourceCreator, paint?.ToPlatformColor(alpha) ?? Color.FromArgb(alpha, 0, 0, 0));
 				this.DisposableObjects.Add(brush);
 				return brush;
 			}
