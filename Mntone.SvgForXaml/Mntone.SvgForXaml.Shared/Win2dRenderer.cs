@@ -541,18 +541,27 @@ namespace Mntone.SvgForXaml
 			}).ToArray();
 
 			var m = element.GradientTransform.Result;
-			if (element.GradientUnits == SvgUnitType.ObjectBoundingBox)
-			{
-				m = new SvgMatrix(area.Width, 0.0, 0.0, area.Height, area.X, area.Y) * m;
-			}
 			var transform = new Matrix3x2 { M11 = (float)m.A, M12 = (float)m.B, M21 = (float)m.C, M22 = (float)m.D, M31 = (float)m.E, M32 = (float)m.F };
 
-			var centerX = this.LengthConverter.ConvertX(element.CenterX);
-			var centerY = this.LengthConverter.ConvertY(element.CenterY);
-			var focusX = this.LengthConverter.ConvertX(element.FocusX);
-			var focusY = this.LengthConverter.ConvertY(element.FocusY);
-			var radiusX = this.LengthConverter.ConvertX(element.Radius);
-			var radiusY = this.LengthConverter.ConvertY(element.Radius);
+			float centerX, centerY, focusX, focusY, radiusX, radiusY;
+			if (element.GradientUnits != SvgUnitType.UserSpaceOnUse)
+			{
+				centerX = this.LengthConverter.ConvertXForOBBU(element.CenterX, (float)area.X, (float)area.Width);
+				centerY = this.LengthConverter.ConvertYForOBBU(element.CenterY, (float)area.Y, (float)area.Height);
+				focusX  = this.LengthConverter.ConvertXForOBBU(element.FocusX, (float)area.X, (float)area.Width);
+				focusY  = this.LengthConverter.ConvertYForOBBU(element.FocusY, (float)area.Y, (float)area.Height);
+				radiusX = this.LengthConverter.ConvertXForOBBU(element.Radius, (float)area.X, (float)area.Width);
+				radiusY = this.LengthConverter.ConvertYForOBBU(element.Radius, (float)area.Y, (float)area.Height);
+			}
+			else
+			{
+				centerX = this.LengthConverter.ConvertX(element.CenterX);
+				centerY = this.LengthConverter.ConvertY(element.CenterY);
+				focusX = this.LengthConverter.ConvertX(element.FocusX);
+				focusY = this.LengthConverter.ConvertY(element.FocusY);
+				radiusX = this.LengthConverter.ConvertX(element.Radius);
+				radiusY = this.LengthConverter.ConvertY(element.Radius);
+			}
 			var spreadMethod = GetSpreadMethod(element.SpreadMethod);
 			var brush = new CanvasRadialGradientBrush(this.ResourceCreator, stops, spreadMethod, CanvasAlphaMode.Straight)
 			{
