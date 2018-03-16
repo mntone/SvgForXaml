@@ -83,8 +83,9 @@ namespace Mntone.SvgForXaml
 			{
 				var elementNode = node as XmlElement;
 				if (elementNode == null) continue;
+				if (elementNode.NamespaceUri != null && (string)elementNode.NamespaceUri != "http://www.w3.org/2000/svg") continue;
 
-				switch (elementNode.TagName)
+				switch ((string)elementNode.LocalName)
 				{
 					case "svg":
 						result.Add(new SvgSvgElement(parent, elementNode));

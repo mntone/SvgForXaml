@@ -20,8 +20,8 @@ namespace Mntone.SvgForXaml
 			this.Y = element.ParseCoordinate("y", nan);
 			this.Width = element.ParseLength("width", nan);
 			this.Height = element.ParseLength("height", nan);
-			this.Href = element.GetAttribute("xlink:href").Substring(1);
 			
+			this.Href = element.GetAttributeNS("http://www.w3.org/1999/xlink", "href").Substring(1);
 			var child = (SvgElement)this.OwnerDocument.GetElementById(this.Href).CloneNode(true);
 			if (child.GetType() == typeof(SvgSymbolElement))
 			{
