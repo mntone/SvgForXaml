@@ -128,6 +128,7 @@ namespace Mntone.SvgForXaml
 
 				case "stroke-width":
 					parsedValue = SvgLength.Parse(value, presentation);
+					if (((SvgLength)parsedValue).Value < 0.0F) return null;
 					break;
 
 				case "stop-color":
