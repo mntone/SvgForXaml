@@ -125,8 +125,8 @@ namespace Mntone.SvgForXaml
 					if (stroke != null && stroke.PaintType != SvgPaintType.None)
 					{
 						var pen = this.CreatePaint(session, area, stroke, style.StrokeOpacity);
-						var strokeWidth = style.StrokeWidth;
-						session.DrawGeometry(geometry2, pen, strokeWidth.HasValue ? this.LengthConverter.Convert(strokeWidth.Value) : 1.0F);
+						var strokeWidth = this.LengthConverter.Convert(style.StrokeWidth, 1.0F);
+						session.DrawGeometry(geometry2, pen, strokeWidth);
 					}
 				}
 			}
@@ -194,8 +194,8 @@ namespace Mntone.SvgForXaml
 				if (stroke != null && stroke.PaintType != SvgPaintType.None)
 				{
 					var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
-					var width = element.Style.StrokeWidth;
-					session.DrawLine(x1, y1, x2, y2, pen, width.HasValue ? this.LengthConverter.Convert(width.Value) : 1.0F);
+					var strokeWidth = this.LengthConverter.Convert(element.Style.StrokeWidth, 1.0F);
+					session.DrawLine(x1, y1, x2, y2, pen, strokeWidth);
 				}
 			}
 		}

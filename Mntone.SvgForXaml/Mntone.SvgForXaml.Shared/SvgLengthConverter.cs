@@ -64,5 +64,7 @@ namespace Mntone.SvgForXaml
 			}
 			return length.ValueAsPixel;
 		}
+		public float Convert(SvgLength? length, float initValue)
+			=> length.HasValue ? this.Convert(length.Value) : initValue;
 	}
 }
