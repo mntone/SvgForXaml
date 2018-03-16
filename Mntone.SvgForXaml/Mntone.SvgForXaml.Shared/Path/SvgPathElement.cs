@@ -5,6 +5,7 @@ using Windows.Data.Xml.Dom;
 
 namespace Mntone.SvgForXaml.Path
 {
+	[System.Diagnostics.DebuggerDisplay("Path: {this.Data}")]
 	public sealed class SvgPathElement : SvgElement, ISvgStylable, ISvgTransformable
 	{
 		internal SvgPathElement(INode parent, XmlElement element)

@@ -20,6 +20,7 @@
 			: new SvgPathSegmentCurveToQuadraticRelative(x1, y1, x, y);
 	}
 
+	[System.Diagnostics.DebuggerDisplay("Q{this.X1},{this.Y1} {this.X},{this.Y}")]
 	public sealed class SvgPathSegmentCurveToQuadraticAbsolute : SvgPathSegmentCurveToQuadraticBase
 	{
 		public SvgPathSegmentCurveToQuadraticAbsolute(float x1, float y1, float x, float y) : base(x1, y1, x, y) { }
@@ -28,6 +29,7 @@
 		public override sealed char PathSegmentTypeAsLetter => 'Q';
 	}
 
+	[System.Diagnostics.DebuggerDisplay("q{this.X1},{this.Y1} {this.X},{this.Y}")]
 	public sealed class SvgPathSegmentCurveToQuadraticRelative : SvgPathSegmentCurveToQuadraticBase
 	{
 		public SvgPathSegmentCurveToQuadraticRelative(float x1, float y1, float x, float y) : base(x1, y1, x, y) { }

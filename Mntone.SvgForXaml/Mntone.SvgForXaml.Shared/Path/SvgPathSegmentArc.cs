@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Mntone.SvgForXaml.Path
+﻿namespace Mntone.SvgForXaml.Path
 {
 	public abstract class SvgPathSegmentArcBase : SvgPathSegment
 	{
@@ -28,6 +26,7 @@ namespace Mntone.SvgForXaml.Path
 			: new SvgPathSegmentArcRelative(x, y, radiusX, radiusY, angle, largeArcFlag, sweepFlag);
 	}
 
+	[System.Diagnostics.DebuggerDisplay("A{this.RadiusX},{this.RadiusY} {this.Angle} {this.LargeArcFlag ? 1 : 0},{this.SweepFlag ? 1 : 0} {this.X},{this.Y}")]
 	public sealed class SvgPathSegmentArcAbsolute : SvgPathSegmentArcBase
 	{
 		public SvgPathSegmentArcAbsolute(float x, float y, float r1, float r2, float angle, bool largeArcFlag, bool sweepFlag)
@@ -38,6 +37,7 @@ namespace Mntone.SvgForXaml.Path
 		public override sealed char PathSegmentTypeAsLetter => 'A';
 	}
 
+	[System.Diagnostics.DebuggerDisplay("a{this.RadiusX},{this.RadiusY} {this.Angle} {this.LargeArcFlag ? 1 : 0},{this.SweepFlag ? 1 : 0} {this.X},{this.Y}")]
 	public sealed class SvgPathSegmentArcRelative : SvgPathSegmentArcBase
 	{
 		public SvgPathSegmentArcRelative(float x, float y, float r1, float r2, float angle, bool largeArcFlag, bool sweepFlag)

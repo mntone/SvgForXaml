@@ -11,6 +11,7 @@
 			: new SvgPathSegmentLineToVerticalRelative(y);
 	}
 
+	[System.Diagnostics.DebuggerDisplay("V{this.Y}")]
 	public sealed class SvgPathSegmentLineToVerticalAbsolute : SvgPathSegmentLineToVerticalBase
 	{
 		public SvgPathSegmentLineToVerticalAbsolute(float y) : base(y) { }
@@ -19,6 +20,7 @@
 		public override sealed char PathSegmentTypeAsLetter => 'V';
 	}
 
+	[System.Diagnostics.DebuggerDisplay("v{this.Y}")]
 	public sealed class SvgPathSegmentLineToVerticalRelative : SvgPathSegmentLineToVerticalBase
 	{
 		public SvgPathSegmentLineToVerticalRelative(float y) : base(y) { }

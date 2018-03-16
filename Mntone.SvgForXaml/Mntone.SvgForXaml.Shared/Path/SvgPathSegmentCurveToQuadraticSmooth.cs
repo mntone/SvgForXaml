@@ -12,6 +12,7 @@
 			: new SvgPathSegmentCurveToQuadraticSmoothRelative(x, y);
 	}
 
+	[System.Diagnostics.DebuggerDisplay("T{this.X},{this.Y}")]
 	public sealed class SvgPathSegmentCurveToQuadraticSmoothAbsolute : SvgPathSegmentCurveToQuadraticSmoothBase
 	{
 		public SvgPathSegmentCurveToQuadraticSmoothAbsolute(float x, float y) : base(x, y) { }
@@ -20,6 +21,7 @@
 		public override sealed char PathSegmentTypeAsLetter => 'T';
 	}
 
+	[System.Diagnostics.DebuggerDisplay("t{this.X},{this.Y}")]
 	public sealed class SvgPathSegmentCurveToQuadraticSmoothRelative : SvgPathSegmentCurveToQuadraticSmoothBase
 	{
 		public SvgPathSegmentCurveToQuadraticSmoothRelative(float x, float y) : base(x, y) { }

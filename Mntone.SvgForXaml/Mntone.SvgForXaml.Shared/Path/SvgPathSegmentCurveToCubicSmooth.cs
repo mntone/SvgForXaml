@@ -20,6 +20,7 @@
 			: new SvgPathSegmentCurveToCubicSmoothRelative(x2, y2, x, y);
 	}
 
+	[System.Diagnostics.DebuggerDisplay("S{this.X2},{this.Y2} {this.X},{this.Y}")]
 	public sealed class SvgPathSegmentCurveToCubicSmoothAbsolute : SvgPathSegmentCurveToCubicSmoothBase
 	{
 		public SvgPathSegmentCurveToCubicSmoothAbsolute(float x2, float y2, float x, float y) : base(x2, y2, x, y) { }
@@ -28,6 +29,7 @@
 		public override sealed char PathSegmentTypeAsLetter => 'S';
 	}
 
+	[System.Diagnostics.DebuggerDisplay("s{this.X2},{this.Y2} {this.X},{this.Y}")]
 	public sealed class SvgPathSegmentCurveToCubicSmoothRelative : SvgPathSegmentCurveToCubicSmoothBase
 	{
 		public SvgPathSegmentCurveToCubicSmoothRelative(float x2, float y2, float x, float y) : base(x2, y2, x, y) { }

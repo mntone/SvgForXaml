@@ -11,6 +11,7 @@
 			: new SvgPathSegmentLineToHorizontalRelative(x);
 	}
 
+	[System.Diagnostics.DebuggerDisplay("H{this.X}")]
 	public sealed class SvgPathSegmentLineToHorizontalAbsolute : SvgPathSegmentLineToHorizontalBase
 	{
 		public SvgPathSegmentLineToHorizontalAbsolute(float x) : base(x) { }
@@ -19,6 +20,7 @@
 		public override sealed char PathSegmentTypeAsLetter => 'H';
 	}
 
+	[System.Diagnostics.DebuggerDisplay("h{this.X}")]
 	public sealed class SvgPathSegmentLineToHorizontalRelative : SvgPathSegmentLineToHorizontalBase
 	{
 		public SvgPathSegmentLineToHorizontalRelative(float x) : base(x) { }

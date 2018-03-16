@@ -12,6 +12,7 @@
 			: new SvgPathSegmentMoveToRelative(x, y);
 	}
 
+	[System.Diagnostics.DebuggerDisplay("M{this.X},{this.Y}")]
 	public sealed class SvgPathSegmentMoveToAbsolute : SvgPathSegmentMoveToBase
 	{
 		public SvgPathSegmentMoveToAbsolute(float x, float y) : base(x, y) { }
@@ -20,6 +21,7 @@
 		public override sealed char PathSegmentTypeAsLetter => 'M';
 	}
 
+	[System.Diagnostics.DebuggerDisplay("m{this.X},{this.Y}")]
 	public sealed class SvgPathSegmentMoveToRelative : SvgPathSegmentMoveToBase
 	{
 		public SvgPathSegmentMoveToRelative(float x, float y) : base(x, y) { }
