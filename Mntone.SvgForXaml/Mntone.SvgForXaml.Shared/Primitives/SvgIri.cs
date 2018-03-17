@@ -7,12 +7,12 @@ namespace Mntone.SvgForXaml.Primitives
 	{
 		public SvgIri(string iri)
 		{
-			if (iri.StartsWith("url("))
+			if (iri.StartsWith("url(") && iri[iri.Length - 1] == ')')
 			{
 				this.Uri = iri.Substring(4, iri.Length - 5);
 				return;
 			}
-			throw new ArgumentException();
+			throw new ArgumentException(nameof(iri));
 		}
 
 		public string Uri { get; }
