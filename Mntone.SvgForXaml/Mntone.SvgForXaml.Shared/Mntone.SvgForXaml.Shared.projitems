@@ -54,6 +54,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgPoint.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgPointCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgRect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgStrokeLineCap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgStrokeLineCapType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgStrokeLineJoin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgStrokeLineJoinType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgTransform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgTransformCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgUnitType.cs" />

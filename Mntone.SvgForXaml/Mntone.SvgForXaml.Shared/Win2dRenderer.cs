@@ -126,7 +126,10 @@ namespace Mntone.SvgForXaml
 					{
 						var pen = this.CreatePaint(session, area, stroke, style.StrokeOpacity);
 						var strokeWidth = this.LengthConverter.Convert(style.StrokeWidth, 1.0F);
-						session.DrawGeometry(geometry2, pen, strokeWidth);
+						using (var strokeStyle = this.CreateStrokeStyle(style))
+						{
+							session.DrawGeometry(geometry2, pen, strokeWidth, strokeStyle);
+						}
 					}
 				}
 			}
@@ -195,7 +198,10 @@ namespace Mntone.SvgForXaml
 				{
 					var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
 					var strokeWidth = this.LengthConverter.Convert(element.Style.StrokeWidth, 1.0F);
-					session.DrawLine(x1, y1, x2, y2, pen, strokeWidth);
+					using (var strokeStyle = this.CreateStrokeStyle(element.Style))
+					{
+						session.DrawLine(x1, y1, x2, y2, pen, strokeWidth, strokeStyle);
+					}
 				}
 			}
 		}
@@ -576,6 +582,18 @@ namespace Mntone.SvgForXaml
 			return brush;
 		}
 
+		private CanvasStrokeStyle CreateStrokeStyle(CssStyleDeclaration style)
+		{
+			var lineCap = GetStrokeLineCap(style.StrokeLineCap);
+			return new CanvasStrokeStyle()
+			{
+				StartCap = lineCap,
+				EndCap = lineCap,
+				LineJoin = GetStrokeLineJoin(style.StrokeLineJoin),
+				MiterLimit = style.StrokeMiterLimit?.Value ?? 4.0F,
+			};
+		}
+
 		private static CanvasEdgeBehavior GetSpreadMethod(SvgSpreadMethodType spreadMethod)
 		{
 			switch (spreadMethod)
@@ -584,6 +602,31 @@ namespace Mntone.SvgForXaml
 				case SvgSpreadMethodType.Repeat: return CanvasEdgeBehavior.Wrap;
 			}
 			return CanvasEdgeBehavior.Clamp;
+		}
+
+		private static CanvasCapStyle GetStrokeLineCap(SvgStrokeLineCap? strokeLineCap)
+			=> strokeLineCap.HasValue ? GetStrokeLineCap(strokeLineCap.Value.Value) : CanvasCapStyle.Flat;
+		private static CanvasCapStyle GetStrokeLineCap(SvgStrokeLineCapType strokeLineCap)
+		{
+			switch (strokeLineCap)
+			{
+				case SvgStrokeLineCapType.Round: return CanvasCapStyle.Round;
+				case SvgStrokeLineCapType.Square: return CanvasCapStyle.Square;
+			}
+			return CanvasCapStyle.Flat;
+		}
+
+		private static CanvasLineJoin GetStrokeLineJoin(SvgStrokeLineJoin? strokeLineJoin)
+			=> strokeLineJoin.HasValue ? GetStrokeLineJoin(strokeLineJoin.Value.Value) : CanvasLineJoin.MiterOrBevel;
+		private static CanvasLineJoin GetStrokeLineJoin(SvgStrokeLineJoinType strokeLineCap)
+		{
+			switch (strokeLineCap)
+			{
+				case SvgStrokeLineJoinType.Miter: return CanvasLineJoin.MiterOrBevel;
+				case SvgStrokeLineJoinType.Round: return CanvasLineJoin.Round;
+				case SvgStrokeLineJoinType.Bevel: return CanvasLineJoin.Bevel;
+			}
+			return CanvasLineJoin.MiterOrBevel;
 		}
 	}
 }

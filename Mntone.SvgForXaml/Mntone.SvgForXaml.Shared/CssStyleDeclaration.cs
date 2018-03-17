@@ -41,7 +41,10 @@ namespace Mntone.SvgForXaml
 				{
 					value = ((SvgColor)c.Value.Item2).Clone();
 				}
-				else if (target.GetType() == typeof(SvgNumber) || target.GetType() == typeof(SvgLength))
+				else if (target.GetType() == typeof(SvgNumber)
+					|| target.GetType() == typeof(SvgLength)
+					|| target.GetType() == typeof(SvgStrokeLineCap)
+					|| target.GetType() == typeof(SvgStrokeLineJoin))
 				{
 					value = c.Value.Item2;
 				}
@@ -90,6 +93,9 @@ namespace Mntone.SvgForXaml
 		public SvgFillRule? FillRule => this.GetPropertyCssValue("fill-rule") as SvgFillRule?;
 		public SvgPaint Stroke => this.GetPropertyCssValue("stroke") as SvgPaint;
 		public SvgLength? StrokeWidth => this.GetPropertyCssValue("stroke-width") as SvgLength?;
+		public SvgStrokeLineCap? StrokeLineCap => this.GetPropertyCssValue("stroke-linecap") as SvgStrokeLineCap?;
+		public SvgStrokeLineJoin? StrokeLineJoin => this.GetPropertyCssValue("stroke-linejoin") as SvgStrokeLineJoin?;
+		public SvgNumber? StrokeMiterLimit => this.GetPropertyCssValue("stroke-miterlimit") as SvgNumber?;
 		public SvgNumber? StrokeOpacity => this.GetPropertyCssValue("stroke-opacity") as SvgNumber?;
 		public SvgColor StopColor => this.GetPropertyCssValue("stop-color") as SvgColor;
 		public SvgNumber? StopOpacity => this.GetPropertyCssValue("stop-opacity") as SvgNumber?;
@@ -129,6 +135,22 @@ namespace Mntone.SvgForXaml
 				case "stroke-width":
 					parsedValue = SvgLength.Parse(value, presentation);
 					if (((SvgLength)parsedValue).Value < 0.0F) return null;
+					break;
+
+				case "stroke-linecap":
+					parsedValue = new SvgStrokeLineCap(value);
+					break;
+
+				case "stroke-linejoin":
+					parsedValue = new SvgStrokeLineJoin(value);
+					break;
+
+				case "stroke-miterlimit":
+					parsedValue = SvgNumber.Parse(value);
+					break;
+
+				case "stroke-miterlimit":
+					parsedValue = SvgNumber.Parse(value);
 					break;
 
 				case "stop-color":
