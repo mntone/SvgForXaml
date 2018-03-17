@@ -8,6 +8,7 @@ namespace Mntone.SvgForXaml.Internal
 	{
 		private static readonly string[] PRESENTATION_ATTRIBUTE_NAMES =
 		{
+			"color",
 			"fill",
 			"fill-opacity",
 			"fill-rule",

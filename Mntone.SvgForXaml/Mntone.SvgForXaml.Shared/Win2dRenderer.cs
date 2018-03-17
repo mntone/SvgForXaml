@@ -110,7 +110,7 @@ namespace Mntone.SvgForXaml
 					var fill = style.Fill;
 					if (fill == null || fill != null && fill.PaintType != SvgPaintType.None)
 					{
-						var pen = this.CreatePaint(session, area, fill, style.FillOpacity);
+						var pen = this.CreatePaint(session, area, fill, style.FillOpacity, style);
 						if (opacityBrush == null)
 						{
 							session.FillGeometry(geometry2, pen);
@@ -124,7 +124,7 @@ namespace Mntone.SvgForXaml
 					var stroke = style.Stroke;
 					if (stroke != null && stroke.PaintType != SvgPaintType.None)
 					{
-						var pen = this.CreatePaint(session, area, stroke, style.StrokeOpacity);
+						var pen = this.CreatePaint(session, area, stroke, style.StrokeOpacity, style);
 						var strokeWidth = this.LengthConverter.Convert(style.StrokeWidth, 1.0F);
 						using (var strokeStyle = this.CreateStrokeStyle(style))
 						{
@@ -196,7 +196,7 @@ namespace Mntone.SvgForXaml
 				var stroke = element.Style.Stroke;
 				if (stroke != null && stroke.PaintType != SvgPaintType.None)
 				{
-					var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity);
+					var pen = this.CreatePaint(session, area, stroke, element.Style.StrokeOpacity, element.Style);
 					var strokeWidth = this.LengthConverter.Convert(element.Style.StrokeWidth, 1.0F);
 					using (var strokeStyle = this.CreateStrokeStyle(element.Style))
 					{
@@ -457,7 +457,7 @@ namespace Mntone.SvgForXaml
 			return new CanvasSolidColorBrush(this.ResourceCreator, Color.FromArgb((byte)(255.0F * opacity.Value), 0, 0, 0));
 		}
 
-		private ICanvasBrush CreatePaint(CanvasDrawingSession session, Rect area, SvgPaint paint, SvgNumber? opacity)
+		private ICanvasBrush CreatePaint(CanvasDrawingSession session, Rect area, SvgPaint paint, SvgNumber? opacity, CssStyleDeclaration style)
 		{
 			if (paint == null || paint.PaintType == SvgPaintType.RgbColor)
 			{
@@ -466,6 +466,18 @@ namespace Mntone.SvgForXaml
 				if (this.SolidResourceCache.ContainsKey(code)) return this.SolidResourceCache[code];
 
 				var brush = new CanvasSolidColorBrush(this.ResourceCreator, paint?.ToPlatformColor(alpha) ?? Color.FromArgb(alpha, 0, 0, 0));
+				this.DisposableObjects.Add(brush);
+				this.SolidResourceCache.Add(code, brush);
+				return brush;
+			}
+			if (paint.PaintType == SvgPaintType.CurrentColor)
+			{
+				var color = style.Color;
+				var alpha = (byte)(255.0F * (opacity?.Value ?? 1.0F));
+				var code = alpha << 24 | color.RgbColor.Red << 16 | color.RgbColor.Green << 8 | color.RgbColor.Blue;
+				if (this.SolidResourceCache.ContainsKey(code)) return this.SolidResourceCache[code];
+
+				var brush = new CanvasSolidColorBrush(this.ResourceCreator, color.ToPlatformColor(alpha));
 				this.DisposableObjects.Add(brush);
 				this.SolidResourceCache.Add(code, brush);
 				return brush;

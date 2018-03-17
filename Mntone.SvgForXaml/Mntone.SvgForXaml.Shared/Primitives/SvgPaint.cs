@@ -13,7 +13,7 @@
 			{
 				this.PaintType = SvgPaintType.None;
 			}
-			else if (paint == "currentColor")
+			else if (string.Compare(paint, "currentColor", System.StringComparison.OrdinalIgnoreCase) == 0)
 			{
 				this.PaintType = SvgPaintType.CurrentColor;
 			}

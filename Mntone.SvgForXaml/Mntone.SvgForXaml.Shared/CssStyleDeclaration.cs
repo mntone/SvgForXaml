@@ -88,6 +88,7 @@ namespace Mntone.SvgForXaml
 
 		public string this[ulong index] => this._items[(int)index];
 
+		public SvgColor Color => this.GetPropertyCssValue("color") as SvgColor;
 		public SvgPaint Fill => this.GetPropertyCssValue("fill") as SvgPaint;
 		public SvgNumber? FillOpacity => this.GetPropertyCssValue("fill-opacity") as SvgNumber?;
 		public SvgFillRule? FillRule => this.GetPropertyCssValue("fill-rule") as SvgFillRule?;
@@ -153,6 +154,7 @@ namespace Mntone.SvgForXaml
 					parsedValue = SvgNumber.Parse(value);
 					break;
 
+				case "color":
 				case "stop-color":
 					parsedValue = new SvgColor(value);
 					break;
