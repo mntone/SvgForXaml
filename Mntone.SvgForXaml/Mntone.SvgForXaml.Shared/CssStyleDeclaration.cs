@@ -98,7 +98,7 @@ namespace Mntone.SvgForXaml
 		public SvgStrokeLineJoin? StrokeLineJoin => this.GetPropertyCssValue("stroke-linejoin") as SvgStrokeLineJoin?;
 		public SvgNumber? StrokeMiterLimit => this.GetPropertyCssValue("stroke-miterlimit") as SvgNumber?;
 		public SvgNumber? StrokeOpacity => this.GetPropertyCssValue("stroke-opacity") as SvgNumber?;
-		public SvgColor StopColor => this.GetPropertyCssValue("stop-color") as SvgColor;
+		public SvgStopColor StopColor => this.GetPropertyCssValue("stop-color") as SvgStopColor;
 		public SvgNumber? StopOpacity => this.GetPropertyCssValue("stop-opacity") as SvgNumber?;
 		public SvgIri ClipPath => this.GetPropertyCssValue("clip-path") as SvgIri;
 		public SvgNumber? Opacity => this.GetPropertyCssValue("opacity") as SvgNumber?;
@@ -151,8 +151,11 @@ namespace Mntone.SvgForXaml
 					break;
 
 				case "color":
-				case "stop-color":
 					parsedValue = new SvgColor(value);
+					break;
+
+				case "stop-color":
+					parsedValue = new SvgStopColor(value);
 					break;
 
 				case "fill-opacity":
