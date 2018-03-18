@@ -239,6 +239,8 @@ namespace Mntone.SvgForXaml
 
 			var open = false;
 			var startPoint = new Vector2 { X = 0.0F, Y = 0.0F };
+			var prevC1 = new Vector2 { X = 0.0F, Y = 0.0F };
+			var prevC2 = new Vector2 { X = 0.0F, Y = 0.0F };
 			var v = new Vector2 { X = 0.0F, Y = 0.0F };
 
 			CanvasGeometry geometry;
@@ -288,6 +290,20 @@ namespace Mntone.SvgForXaml
 						builder.BeginFigure(v);
 						open = true;
 					}
+					if (segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToCubicAbsolute
+						&& segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToCubicRelative
+						&& segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToCubicSmoothAbsolute
+						&& segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToCubicSmoothRelative)
+					{
+						prevC2 = v;
+					}
+					if (segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToQuadraticAbsolute
+						&& segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToQuadraticRelative
+						&& segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToQuadraticSmoothAbsolute
+						&& segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToQuadraticSmoothRelative)
+					{
+						prevC1 = v;
+					}
 					if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToAbsolute)
 					{
 						var casted = (SvgPathSegmentLineToAbsolute)segment;
@@ -305,9 +321,11 @@ namespace Mntone.SvgForXaml
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicAbsolute)
 					{
 						var casted = (SvgPathSegmentCurveToCubicAbsolute)segment;
+						var c2 = new Vector2 { X = casted.X2, Y = casted.Y2 };
 						v.X = casted.X;
 						v.Y = casted.Y;
-						builder.AddCubicBezier(new Vector2 { X = casted.X1, Y = casted.Y1 }, new Vector2 { X = casted.X2, Y = casted.Y2 }, v);
+						builder.AddCubicBezier(new Vector2 { X = casted.X1, Y = casted.Y1 }, c2, v);
+						prevC2 = c2;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicRelative)
 					{
@@ -321,13 +339,16 @@ namespace Mntone.SvgForXaml
 						v.X += casted.X;
 						v.Y += casted.Y;
 						builder.AddCubicBezier(c1, c2, v);
+						prevC2 = c2;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticAbsolute)
 					{
 						var casted = (SvgPathSegmentCurveToQuadraticAbsolute)segment;
+						var c1 = new Vector2 { X = casted.X1, Y = casted.Y1 };
 						v.X = casted.X;
 						v.Y = casted.Y;
-						builder.AddQuadraticBezier(new Vector2 { X = casted.X1, Y = casted.Y1 }, v);
+						builder.AddQuadraticBezier(c1, v);
+						prevC1 = c1;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticRelative)
 					{
@@ -338,6 +359,7 @@ namespace Mntone.SvgForXaml
 						v.X += casted.X;
 						v.Y += casted.Y;
 						builder.AddQuadraticBezier(c1, v);
+						prevC1 = c1;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.ArcAbsolute)
 					{
@@ -384,37 +406,42 @@ namespace Mntone.SvgForXaml
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicSmoothAbsolute)
 					{
 						var casted = (SvgPathSegmentCurveToCubicSmoothAbsolute)segment;
-						var c1 = v;
+						var c1 = new Vector2 { X = 2 * v.X - prevC2.X, Y = 2 * v.Y - prevC2.Y };
+						var c2 = new Vector2 { X = casted.X2, Y = casted.Y2 };
 						v.X = casted.X;
 						v.Y = casted.Y;
-						builder.AddCubicBezier(c1, new Vector2 { X = casted.X2, Y = casted.Y2 }, v);
+						builder.AddCubicBezier(c1, c2, v);
+						prevC2 = c2;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicSmoothRelative)
 					{
 						var casted = (SvgPathSegmentCurveToCubicSmoothRelative)segment;
-						var c1 = v;
+						var c1 = new Vector2 { X = 2 * v.X - prevC2.X, Y = 2 * v.Y - prevC2.Y };
 						var c2 = v;
 						c2.X += casted.X2;
 						c2.Y += casted.Y2;
 						v.X += casted.X;
 						v.Y += casted.Y;
 						builder.AddCubicBezier(c1, c2, v);
+						prevC2 = c2;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticSmoothAbsolute)
 					{
 						var casted = (SvgPathSegmentCurveToQuadraticSmoothAbsolute)segment;
-						var c1 = v;
+						var c1 = new Vector2 { X = 2 * v.X - prevC1.X, Y = 2 * v.Y - prevC1.Y };
 						v.X = casted.X;
 						v.Y = casted.Y;
 						builder.AddQuadraticBezier(c1, v);
+						prevC1 = c1;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticSmoothRelative)
 					{
 						var casted = (SvgPathSegmentCurveToQuadraticSmoothRelative)segment;
-						var c1 = v;
+						var c1 = new Vector2 { X = 2 * v.X - prevC1.X, Y = 2 * v.Y - prevC1.Y };
 						v.X += casted.X;
 						v.Y += casted.Y;
 						builder.AddQuadraticBezier(c1, v);
+						prevC1 = c1;
 					}
 				}
 				if (open)
