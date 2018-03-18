@@ -8,7 +8,7 @@ namespace Mntone.SvgForXaml
 {
 	public sealed class CssStyleDeclaration
 	{
-		private static readonly string[] NON_INHERIT_PROPERTIES = { "clip-path", "stop-color", "stop-opacity", "opacity" };
+		private static readonly string[] NON_INHERIT_PROPERTIES = { "clip-path", "clip-rule", "stop-color", "stop-opacity", "opacity" };
 
 		private readonly ISvgStylable _parent;
 		private readonly List<string> _items;
@@ -101,6 +101,7 @@ namespace Mntone.SvgForXaml
 		public SvgStopColor StopColor => this.GetPropertyCssValue("stop-color") as SvgStopColor;
 		public SvgNumber? StopOpacity => this.GetPropertyCssValue("stop-opacity") as SvgNumber?;
 		public SvgIri ClipPath => this.GetPropertyCssValue("clip-path") as SvgIri;
+		public SvgFillRule? ClipRule => this.GetPropertyCssValue("clip-rule") as SvgFillRule?;
 		public SvgNumber? Opacity => this.GetPropertyCssValue("opacity") as SvgNumber?;
 
 		private void ParseText(string css)

@@ -233,7 +233,7 @@ namespace Mntone.SvgForXaml
 			}
 		}
 
-		private CanvasGeometry CreatePath(CanvasDrawingSession session, SvgPathElement element)
+		private CanvasGeometry CreatePath(CanvasDrawingSession session, SvgPathElement element, bool isClip = false)
 		{
 			if (this.PathCache.ContainsKey(element)) return this.PathCache[element];
 
@@ -246,7 +246,7 @@ namespace Mntone.SvgForXaml
 			CanvasGeometry geometry;
 			using (var builder = new CanvasPathBuilder(this.ResourceCreator))
 			{
-				var fillRule = element.Style.FillRule;
+				var fillRule = isClip ? element.Style.ClipRule : element.Style.FillRule;
 				if (fillRule.HasValue && fillRule.Value.Value != SvgFillRuleType.EvenOdd)
 				{
 					builder.SetFilledRegionDetermination(CanvasFilledRegionDetermination.Winding);

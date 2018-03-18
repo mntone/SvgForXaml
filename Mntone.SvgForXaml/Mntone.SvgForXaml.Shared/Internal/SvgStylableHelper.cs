@@ -21,6 +21,7 @@ namespace Mntone.SvgForXaml.Internal
 			"stop-color",
 			"stop-opacity",
 			"clip-path",
+			"clip-rule",
 			"opacity",
 		};
 
