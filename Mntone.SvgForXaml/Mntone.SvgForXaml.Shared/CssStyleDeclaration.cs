@@ -150,10 +150,6 @@ namespace Mntone.SvgForXaml
 					parsedValue = SvgNumber.Parse(value);
 					break;
 
-				case "stroke-miterlimit":
-					parsedValue = SvgNumber.Parse(value);
-					break;
-
 				case "color":
 				case "stop-color":
 					parsedValue = new SvgColor(value);
