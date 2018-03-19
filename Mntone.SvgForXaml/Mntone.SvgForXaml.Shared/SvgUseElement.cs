@@ -9,6 +9,8 @@ namespace Mntone.SvgForXaml
 {
 	public sealed class SvgUseElement : SvgElement, ISvgStylable, ISvgTransformable
 	{
+		private Lazy<SvgElement> _instanceRoot;
+
 		internal SvgUseElement(INode parent, XmlElement element)
 			: base(parent, element)
 		{
@@ -20,9 +22,24 @@ namespace Mntone.SvgForXaml
 			this.Y = element.ParseCoordinate("y", nan);
 			this.Width = element.ParseLength("width", nan);
 			this.Height = element.ParseLength("height", nan);
-			
 			this.Href = element.GetAttributeNS("http://www.w3.org/1999/xlink", "href").Substring(1);
-			var child = (SvgElement)this.OwnerDocument.GetElementById(this.Href).CloneNode(true);
+			this._instanceRoot = new Lazy<SvgElement>(this.CreateInstanceRoot, true);
+
+			if (this.X.UnitType != SvgLength.SvgLengthType.Unknown && this.Y.UnitType != SvgLength.SvgLengthType.Unknown)
+			{
+				this.Transform.Add(SvgTransform.CreateTranslate(
+					this.X.UnitType != SvgLength.SvgLengthType.Unknown ? this.X.ValueAsPixel : 0.0F,
+					this.Y.UnitType != SvgLength.SvgLengthType.Unknown ? this.Y.ValueAsPixel : 0.0F));
+			}
+		}
+
+		private SvgElement CreateInstanceRoot()
+		{
+			var refNode = this.OwnerDocument.GetElementById(this.Href);
+			if (refNode == null)
+				throw new NullReferenceException($"No element with id = {this.Href}");
+
+			var child = (SvgElement)refNode.CloneNode(true);
 			if (child.GetType() == typeof(SvgSymbolElement))
 			{
 				throw new NotImplementedException();
@@ -33,20 +50,13 @@ namespace Mntone.SvgForXaml
 				if (this.Width.UnitType != SvgLength.SvgLengthType.Unknown) casted.Width = this.Width;
 				if (this.Height.UnitType != SvgLength.SvgLengthType.Unknown) casted.Height = this.Height;
 			}
-			this.InstanceRoot = child;
-
-			if (this.X.UnitType != SvgLength.SvgLengthType.Unknown && this.Y.UnitType != SvgLength.SvgLengthType.Unknown)
-			{
-				this.Transform.Add(SvgTransform.CreateTranslate(
-					this.X.UnitType != SvgLength.SvgLengthType.Unknown ? this.X.ValueAsPixel : 0.0F,
-					this.Y.UnitType != SvgLength.SvgLengthType.Unknown ? this.Y.ValueAsPixel : 0.0F));
-			}
+			return child;
 		}
 
 		protected override void DeepCopy(SvgElement element)
 		{
 			var casted = (SvgUseElement)element;
-			casted.InstanceRoot = (SvgElement)this.InstanceRoot.CloneNode();
+			casted._instanceRoot = new Lazy<SvgElement>(this.CreateInstanceRoot, true);
 			casted._stylableHelper = this._stylableHelper.DeepCopy(casted);
 			casted._transformableHelper = this._transformableHelper.DeepCopy();
 		}
@@ -57,7 +67,7 @@ namespace Mntone.SvgForXaml
 		public SvgLength Width { get; }
 		public SvgLength Height { get; }
 		public string Href { get; }
-		public SvgElement InstanceRoot { get; private set; }
+		public SvgElement InstanceRoot => this._instanceRoot.Value;
 
 		#region ISvgStylable
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
