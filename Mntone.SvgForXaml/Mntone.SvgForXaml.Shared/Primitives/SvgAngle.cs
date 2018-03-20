@@ -117,6 +117,35 @@ namespace Mntone.SvgForXaml.Primitives
 			return new SvgAngle(SvgAngleType.Degree, value);
 		}
 
+		internal static SvgAngle Parse(StringPtr ptr)
+		{
+			var begin = ptr.Index;
+			ptr.AdvanceNumber();
+			if (begin == ptr.Index) throw new ArgumentException(nameof(ptr));
+
+			var value = float.Parse(ptr.Target.Substring(begin, ptr.Index - begin), System.Globalization.CultureInfo.InvariantCulture);
+			if (ptr.Index != ptr.Target.Length)
+			{
+				var unit = ptr.String;
+				if (unit.StartsWith("deg"))
+				{
+					ptr += 3;
+					return new SvgAngle(SvgAngleType.Degree, value);
+				}
+				if (unit.StartsWith("rad"))
+				{
+					ptr += 3;
+					return new SvgAngle(SvgAngleType.Radian, value);
+				}
+				if (unit.StartsWith("grad"))
+				{
+					ptr += 4;
+					return new SvgAngle(SvgAngleType.Grade, value);
+				}
+			}
+			return new SvgAngle(SvgAngleType.Degree, value);
+		}
+
 		public bool Equals(SvgAngle other) => this.UnitType == other.UnitType && this.Value == other.Value;
 
 		public static implicit operator SvgAngle(float f) => new SvgAngle(SvgAngleType.Degree, f);

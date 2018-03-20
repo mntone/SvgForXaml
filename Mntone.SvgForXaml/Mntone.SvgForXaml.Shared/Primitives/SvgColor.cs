@@ -179,6 +179,8 @@ namespace Mntone.SvgForXaml.Primitives
 		{
 			if (color[0] == '#') return ParseColorCode(color.Substring(1));
 			if (color.StartsWith("rgb(")) return ParseColorFunc(color.Substring(4));
+			if (color.StartsWith("hsl(")) return ParseHslColorFunc(color.Substring(4));
+			if (color.StartsWith("hsla(")) return ParseHslColorFunc(color.Substring(5));
 			if (_colors.ContainsKey(color)) return _colors[color];
 			throw new ArgumentException(nameof(color));
 		}
@@ -261,6 +263,69 @@ namespace Mntone.SvgForXaml.Primitives
 			return percentage
 				? new RgbColor((byte)(255.0F * r / 100.0F), (byte)(255.0F * g / 100.0F), (byte)(255.0F * b / 100.0F))
 				: new RgbColor(r, g, b);
+		}
+
+		private static RgbColor ParseHslColorFunc(string color)
+		{
+			var ptr = new StringPtr(color);
+			ptr.AdvanceWhiteSpace();
+
+			var s1 = ptr.Index;
+			var h = SvgAngle.Parse(ptr);
+			if (ptr.Index == s1) throw new ArgumentException(nameof(color));
+
+			ptr.AdvanceWhiteSpace();
+			if (ptr.Char != ',') throw new ArgumentException(nameof(color));
+			++ptr;
+			ptr.AdvanceWhiteSpace();
+
+			var s2 = ptr.Index;
+			ptr.AdvanceInteger();
+			if (ptr.Index == s2) throw new ArgumentException(nameof(color));
+			var s = byte.Parse(color.Substring(s2, ptr.Index - s2));
+			if (ptr.Char != '%') throw new ArgumentException(nameof(color));
+			++ptr;
+
+			ptr.AdvanceWhiteSpace();
+			if (ptr.Char != ',') throw new ArgumentException(nameof(color));
+			++ptr;
+			ptr.AdvanceWhiteSpace();
+
+			var s3 = ptr.Index;
+			ptr.AdvanceInteger();
+			if (ptr.Index == s3) throw new ArgumentException(nameof(color));
+			var l = byte.Parse(color.Substring(s3, ptr.Index - s3));
+			if (ptr.Char != '%') throw new ArgumentException(nameof(color));
+			++ptr;
+
+			ptr.AdvanceWhiteSpace();
+
+			if (ptr.Char != ')') throw new ArgumentException(nameof(color));
+
+			return HlsToRgb(h.ValueAsDegree, s / 100.0, l / 100.0);
+		}
+
+		private static RgbColor HlsToRgb(double hue, double sat, double light)
+		{
+			var t2 = light <= .5
+				? light * (sat + 1.0)
+				: light + sat - (light * sat);
+			var t1 = 2.0 * light - t2;
+			var r = HueToValue(t1, t2, hue + 120.0);
+			var g = HueToValue(t1, t2, hue);
+			var b = HueToValue(t1, t2, hue - 120.0);
+			return new RgbColor(r, g, b);
+		}
+
+		private static byte HueToValue(double t1, double t2, double hue)
+		{
+			while (hue < 0) hue += 360;
+			hue %= 360;
+
+			if (hue < 60) return (byte)(255.0 * ((t2 - t1) * hue / 60.0 + t1));
+			if (hue < 180) return (byte)(255.0 * t2);
+			if (hue < 240) return (byte)(255.0 * ((t2 - t1) * (240 - hue) / 60.0 + t1));
+			return (byte)(255.0 * t1);
 		}
 
 		private static RgbColor ParseOther(string color)
