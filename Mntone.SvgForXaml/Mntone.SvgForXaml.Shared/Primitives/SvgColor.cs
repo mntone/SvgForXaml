@@ -225,8 +225,7 @@ namespace Mntone.SvgForXaml.Primitives
 			}
 
 			ptr.AdvanceWhiteSpace();
-			if (ptr.Char != ',') throw new ArgumentException(nameof(color));
-			++ptr;
+			if (ptr.Char == ',') ++ptr;
 			ptr.AdvanceWhiteSpace();
 
 			var s2 = ptr.Index;
@@ -241,8 +240,7 @@ namespace Mntone.SvgForXaml.Primitives
 			}
 
 			ptr.AdvanceWhiteSpace();
-			if (ptr.Char != ',') throw new ArgumentException(nameof(color));
-			++ptr;
+			if (ptr.Char == ',') ++ptr;
 			ptr.AdvanceWhiteSpace();
 
 			var s3 = ptr.Index;
