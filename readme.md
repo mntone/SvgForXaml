@@ -60,6 +60,14 @@ using (var session = offScreen.CreateDrawingSession())
 }
 ```
 
+
+## Note
+
+**If you build your app for Windows 10 Aniversary Update or later, you should use SVG API on Direct2D.**
+- Direct2D: https://msdn.microsoft.com/en-us/library/windows/desktop/mt790715.aspx, or
+- Win2D: https://microsoft.github.io/Win2D/html/N_Microsoft_Graphics_Canvas_Svg.htm
+
+
 ## LICENSE
 
 [MIT License](https://github.com/mntone/SvgForXaml/blob/master/LICENSE.txt)
