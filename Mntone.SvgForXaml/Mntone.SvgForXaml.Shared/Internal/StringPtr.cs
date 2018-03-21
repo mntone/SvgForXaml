@@ -18,7 +18,7 @@ namespace Mntone.SvgForXaml.Internal
 
 		public bool IsEnd => this.Index == this.Target.Length;
 
-		private readonly char[] WHITESPACE = { ' ', '\r', '\n', '\t' };
+		private static readonly char[] WHITESPACE = { ' ', '\r', '\n', '\t' };
 		public void AdvanceWhiteSpace()
 		{
 			while (!this.IsEnd && WHITESPACE.Any(c => c == this.Char)) ++this.Index;
