@@ -3,7 +3,7 @@
 	<metadata>
 		<id>Mntone.SvgForXaml</id>
 		<title>Svg for Xaml Library</title>
-		<version>0.9.0.0</version>
+		<version>0.9.2.0</version>
 		<authors>mntone</authors>
 		<owners>mntone</owners>
 		<description>Show svg image on xaml UI.</description>
