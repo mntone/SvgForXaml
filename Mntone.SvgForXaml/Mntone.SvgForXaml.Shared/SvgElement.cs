@@ -53,6 +53,12 @@ namespace Mntone.SvgForXaml
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
 		public SvgElement LastChild => this.ChildNodes.LastOrDefault();
 
+		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+		public SvgElement PreviousSibling => this.ParentNode?.ChildNodes?.PreviousOrDefault(e => e == this);
+
+		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+		public SvgElement NextSibling => this.ParentNode?.ChildNodes?.NextOrDefault(e => e == this);
+
 		public virtual INode CloneNode(bool deep = false)
 		{
 			var shallow = (SvgElement)this.MemberwiseClone();
