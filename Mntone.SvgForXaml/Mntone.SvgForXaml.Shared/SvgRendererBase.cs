@@ -2,6 +2,7 @@
 using Mntone.SvgForXaml.Primitives;
 using Mntone.SvgForXaml.Shapes;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Mntone.SvgForXaml
 {
@@ -34,10 +35,12 @@ namespace Mntone.SvgForXaml
 		protected abstract void RenderLine(TSession session, SvgLineElement element);
 		protected abstract void RenderPolyline(TSession session, SvgPolylineElement element);
 		protected abstract void RenderPolygon(TSession session, SvgPolygonElement element);
+		protected abstract void RenderText(TSession session, Texts.SvgTextElement element);
+		protected abstract void RenderTSpan(TSession session, Texts.SvgTSpanElement element);
 
-		protected virtual void RenderChildren(TSession session, IReadOnlyCollection<SvgElement> elements)
+		protected virtual void RenderChildren(TSession session, IReadOnlyCollection<Interfaces.INode> elements)
 		{
-			foreach (var element in elements) this.RenderChild(session, element);
+			foreach (var element in elements.OfType<SvgElement>()) this.RenderChild(session, element);
 		}
 
 		protected virtual void RenderChild(TSession session, SvgElement element)
@@ -81,6 +84,14 @@ namespace Mntone.SvgForXaml
 			else if (element.GetType() == typeof(SvgPolygonElement))
 			{
 				this.RenderPolygon(session, (SvgPolygonElement)element);
+			}
+			else if (element.GetType() == typeof(Texts.SvgTextElement))
+			{
+				this.RenderText(session, (Texts.SvgTextElement)element);
+			}
+			else if (element.GetType() == typeof(Texts.SvgTSpanElement))
+			{
+				this.RenderTSpan(session, (Texts.SvgTSpanElement)element);
 			}
 		}
 	}

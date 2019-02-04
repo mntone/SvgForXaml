@@ -103,6 +103,7 @@ namespace Mntone.SvgForXaml
 		public SvgIri ClipPath => this.GetPropertyCssValue("clip-path") as SvgIri;
 		public SvgFillRule? ClipRule => this.GetPropertyCssValue("clip-rule") as SvgFillRule?;
 		public SvgNumber? Opacity => this.GetPropertyCssValue("opacity") as SvgNumber?;
+		public CssFontSize? FontSize => this.GetPropertyCssValue("font-size") as CssFontSize?;
 
 		private void ParseText(string css)
 		{
@@ -173,6 +174,10 @@ namespace Mntone.SvgForXaml
 				case "fill-rule":
 				case "clip-rule":
 					parsedValue = new SvgFillRule(presentation ? value : value.ToLower());
+					break;
+
+				case "font-size":
+					parsedValue = CssFontSize.Parse(value, presentation);
 					break;
 			}
 

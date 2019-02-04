@@ -6,7 +6,7 @@ using Windows.Data.Xml.Dom;
 namespace Mntone.SvgForXaml.Shapes
 {
 	[System.Diagnostics.DebuggerDisplay("Ellipse: Center = ({this.CenterX.ValueAsString}, {this.CenterY.ValueAsString}), RadiusX = {this.RadiusX.ValueAsString}, RadiusY = {this.RadiusY.ValueAsString}")]
-	public sealed class SvgEllipseElement : SvgElement, ISvgStylable
+	public sealed class SvgEllipseElement : SvgElement, ISvgStylable, ISvgTransformable
 	{
 		internal SvgEllipseElement(INode parent, XmlElement element)
 			: base(parent, element)

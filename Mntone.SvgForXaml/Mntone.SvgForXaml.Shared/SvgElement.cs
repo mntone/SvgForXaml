@@ -38,6 +38,8 @@ namespace Mntone.SvgForXaml
 		public string Id { get; }
 		public abstract string TagName { get; }
 
+		public string InnerText => string.Concat(this.ChildNodes.OfType<XmlText>().Select(textNode => textNode.Data));
+
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
 		public SvgDocument OwnerDocument => this.ParentNode?.OwnerDocument;
 
@@ -45,19 +47,19 @@ namespace Mntone.SvgForXaml
 		public INode ParentNode { get; }
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)]
-		public IReadOnlyCollection<SvgElement> ChildNodes { get; private set; }
+		public IReadOnlyCollection<INode> ChildNodes { get; private set; }
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		public SvgElement FirstChild => this.ChildNodes.FirstOrDefault();
+		public INode FirstChild => this.ChildNodes.FirstOrDefault();
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		public SvgElement LastChild => this.ChildNodes.LastOrDefault();
+		public INode LastChild => this.ChildNodes.LastOrDefault();
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		public SvgElement PreviousSibling => this.ParentNode?.ChildNodes?.PreviousOrDefault(e => e == this);
+		public INode PreviousSibling => this.ParentNode?.ChildNodes?.PreviousOrDefault(e => e == this);
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		public SvgElement NextSibling => this.ParentNode?.ChildNodes?.NextOrDefault(e => e == this);
+		public INode NextSibling => this.ParentNode?.ChildNodes?.NextOrDefault(e => e == this);
 
 		public virtual INode CloneNode(bool deep = false)
 		{
@@ -66,11 +68,11 @@ namespace Mntone.SvgForXaml
 			{
 				if (this.ChildNodes != null)
 				{
-					var deepChildren = new List<SvgElement>();
+					var deepChildren = new Collection<INode>();
 					foreach (var child in this.ChildNodes)
 					{
 						var deepChild = child.CloneNode(deep);
-						deepChildren.Add((SvgElement)deepChild);
+						deepChildren.Add(deepChild);
 					}
 					shallow.ChildNodes = deepChildren;
 				}
@@ -82,13 +84,13 @@ namespace Mntone.SvgForXaml
 
 		protected virtual void DeepCopy(SvgElement element) { }
 
-		protected static IReadOnlyList<SvgElement> ParseChildren(INode parent, XmlNodeList nodes)
+		protected static IReadOnlyList<INode> ParseChildren(INode parent, XmlNodeList nodes)
 		{
-			var result = new Collection<SvgElement>();
+			var result = new Collection<INode>();
 			foreach (var node in nodes)
 			{
 				var elementNode = node as XmlElement;
-				if (elementNode == null) continue;
+				if (elementNode == null) goto other;
 				if (elementNode.NamespaceUri != null && (string)elementNode.NamespaceUri != "http://www.w3.org/2000/svg") continue;
 
 				switch ((string)elementNode.LocalName)
@@ -165,9 +167,24 @@ namespace Mntone.SvgForXaml
 						result.Add(new SvgClipPathElement(parent, elementNode));
 						break;
 
+					case "text":
+						result.Add(new Texts.SvgTextElement(parent, elementNode));
+						break;
+
+					case "tspan":
+						result.Add(new Texts.SvgTSpanElement(parent, elementNode));
+						break;
+
 					default:
 						System.Diagnostics.Debug.WriteLine($"Not supported tag: {elementNode.TagName}");
 						break;
+				}
+
+other:
+				if (node.NodeType == NodeType.TextNode)
+				{
+					var textNode = (Windows.Data.Xml.Dom.XmlText)node;
+					result.Add(new XmlText(parent, textNode.Data));
 				}
 			}
 			return result;

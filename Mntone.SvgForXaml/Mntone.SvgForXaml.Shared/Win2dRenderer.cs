@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Windows.Foundation;
 using Windows.UI;
+using Microsoft.Graphics.Canvas.Text;
 
 #if WINDOWS_UWP
 using System.Numerics;
@@ -230,6 +231,50 @@ namespace Mntone.SvgForXaml
 			using (var geometry = CanvasGeometry.CreatePolygon(this.ResourceCreator, element.Points.Select(p => new Vector2 { X = p.X, Y = p.Y }).ToArray()))
 			{
 				this.RenderGeometory(session, geometry, element.Transform.Result, element.Style);
+			}
+		}
+
+		protected override void RenderText(CanvasDrawingSession session, Texts.SvgTextElement element)
+		{
+			var text = element.InnerText;
+			if (string.IsNullOrEmpty(text)) { return; }
+
+			var textFormat = new CanvasTextFormat();
+			if (element.Style.FontSize.HasValue)
+			{
+				textFormat.FontSize = element.Style.FontSize.Value.ValueAsPixel;
+			}
+			textFormat.LineSpacingBaseline = 0.0f;
+			textFormat.LineSpacingMode = CanvasLineSpacingMode.Proportional;
+
+			var requestWidth = 1000f;
+			var requestedHeight = 1000f;
+			using (var textLayout = new CanvasTextLayout(this.ResourceCreator, text, textFormat, requestWidth, requestedHeight))
+			using (var geometry = CanvasGeometry.CreateText(textLayout))
+			{
+				this.RenderGeometory(session, geometry, element.Transform.Result, element.Style);
+			}
+		}
+
+		protected override void RenderTSpan(CanvasDrawingSession session, Texts.SvgTSpanElement element)
+		{
+			var text = element.InnerText;
+			if (string.IsNullOrEmpty(text)) { return; }
+
+			var textFormat = new CanvasTextFormat();
+			if (element.Style.FontSize.HasValue)
+			{
+				textFormat.FontSize = element.Style.FontSize.Value.ValueAsPixel;
+			}
+			textFormat.LineSpacingBaseline = 0.0f;
+			textFormat.LineSpacingMode = CanvasLineSpacingMode.Proportional;
+
+			var requestWidth = 1000f;
+			var requestedHeight = 1000f;
+			using (var textLayout = new CanvasTextLayout(this.ResourceCreator, text, textFormat, requestWidth, requestedHeight))
+			using (var geometry = CanvasGeometry.CreateText(textLayout))
+			{
+				this.RenderGeometory(session, geometry, SvgMatrix.Indentity, element.Style);
 			}
 		}
 
@@ -465,7 +510,7 @@ namespace Mntone.SvgForXaml
 			}
 			if (child.GetType() != typeof(SvgPathElement)) throw new ArgumentException();
 
-			return this.CreatePath(session, (SvgPathElement)child);
+			return this.CreatePath(session, (SvgPathElement)child, true);
 		}
 
 		private CanvasSolidColorBrush CreateColor(CanvasDrawingSession session, SvgColor color)
@@ -529,7 +574,7 @@ namespace Mntone.SvgForXaml
 		{
 			if (this.ResourceCache.ContainsKey(element)) return (CanvasLinearGradientBrush)this.ResourceCache[element];
 
-			var stops = element.ChildNodes.Cast<SvgStopElement>().Select(s =>
+			var stops = element.ChildNodes.OfType<SvgStopElement>().Select(s =>
 			{
 				var alpha = s.Style.StopOpacity.HasValue ? (byte)(255.0F * s.Style.StopOpacity.Value) : (byte)0xff;
 				var stop = new CanvasGradientStop()
@@ -576,7 +621,7 @@ namespace Mntone.SvgForXaml
 		{
 			if (this.ResourceCache.ContainsKey(element)) return (CanvasRadialGradientBrush)this.ResourceCache[element];
 
-			var stops = element.ChildNodes.Cast<SvgStopElement>().Select(s =>
+			var stops = element.ChildNodes.OfType<SvgStopElement>().Select(s =>
 			{
 				var alpha = s.Style.StopOpacity.HasValue ? (byte)(255.0F * s.Style.StopOpacity.Value) : (byte)0xff;
 				var stop = new CanvasGradientStop()

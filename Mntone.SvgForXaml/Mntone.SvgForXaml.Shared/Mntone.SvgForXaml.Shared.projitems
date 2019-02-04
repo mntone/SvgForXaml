@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Gradients\SvgRadialGradientElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Gradients\SvgSpreadMethodType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Gradients\SvgStopElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ICharacterData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ICssValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\INode.cs" />
@@ -41,6 +42,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegmentLineToVertical.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegmentMoveTo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Path\SvgPathSegmentParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\CssFontSize.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\RgbColor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgAngle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgColor.cs" />
@@ -48,6 +50,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgFillRuleType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgIri.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgLength.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgLengthCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgMatrix.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgNumber.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Primitives\SvgPaint.cs" />
@@ -83,9 +86,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)SvgSymbolElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SvgTitleElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SvgUseElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Texts\SvgTextElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Texts\LengthAdjustType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Texts\SvgTextContentElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Texts\SvgTextPositioningElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Texts\SvgTSpanElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TransformSession.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Xaml\SvgImage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Win2dRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)XmlText.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)Themes\Generic.xaml">

@@ -12,6 +12,7 @@ namespace Mntone.SvgForXaml.Internal
 			"fill",
 			"fill-opacity",
 			"fill-rule",
+			"font-size",
 			"stroke",
 			"stroke-width",
 			"stroke-linecap",

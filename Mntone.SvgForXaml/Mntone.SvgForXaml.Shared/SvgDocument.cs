@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Text;
 using Windows.Data.Xml.Dom;
 
@@ -24,13 +23,19 @@ namespace Mntone.SvgForXaml
 		INode INode.ParentNode => null;
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		IReadOnlyCollection<SvgElement> INode.ChildNodes => this._ChildNodes;
+		IReadOnlyCollection<INode> INode.ChildNodes => this._ChildNodes;
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		SvgElement INode.FirstChild => this.RootElement;
+		INode INode.FirstChild => this.RootElement;
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		SvgElement INode.LastChild => this.RootElement;
+		INode INode.LastChild => this.RootElement;
+
+		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+		INode INode.PreviousSibling => null;
+
+		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+		INode INode.NextSibling => null;
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
 		private IReadOnlyCollection<SvgElement> _ChildNodes;
