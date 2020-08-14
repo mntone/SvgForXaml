@@ -6,7 +6,7 @@ using System.Reflection;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("mntone")]
 [assembly: AssemblyProduct(AssemblyInfo.QualifiedName)]
-[assembly: AssemblyCopyright("Copyright (C) 2015- mntone")]
+[assembly: AssemblyCopyright("Copyright © 2015-2020 mntone")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

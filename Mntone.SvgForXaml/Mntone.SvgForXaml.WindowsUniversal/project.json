@@ -1,6 +1,6 @@
 ﻿{
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.4",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.9",
     "Win2D.uwp": "1.9.0"
   },
   "frameworks": {
