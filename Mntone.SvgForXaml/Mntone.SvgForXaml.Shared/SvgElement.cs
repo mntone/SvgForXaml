@@ -66,7 +66,7 @@ namespace Mntone.SvgForXaml
 			{
 				if (this.ChildNodes != null)
 				{
-					var deepChildren = new List<SvgElement>();
+					var deepChildren = new Collection<SvgElement>();
 					foreach (var child in this.ChildNodes)
 					{
 						var deepChild = child.CloneNode(deep);
