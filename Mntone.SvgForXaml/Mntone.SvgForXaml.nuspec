@@ -3,14 +3,14 @@
 	<metadata>
 		<id>Mntone.SvgForXaml</id>
 		<title>Svg for Xaml Library</title>
-		<version>0.9.3.0</version>
+		<version>0.9.4.0</version>
 		<authors>mntone</authors>
 		<owners>mntone</owners>
 		<description>Show svg image on xaml UI.</description>
 		<projectUrl>https://github.com/mntone/SvgForXaml</projectUrl>
 		<license type="file">license\LICENSE.txt</license>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<copyright>Copyright (C) 2015-2018 mntone</copyright>
+		<copyright>Copyright (C) 2015-2020 mntone</copyright>
 		<language>en-US</language>
 		<tags>UWP WinRT WindowsRuntime SVG Win2D</tags>
 		<dependencies>
