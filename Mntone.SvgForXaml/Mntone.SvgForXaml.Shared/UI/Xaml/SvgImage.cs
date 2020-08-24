@@ -106,6 +106,7 @@ namespace Mntone.SvgForXaml.UI.Xaml
 				var viewPort = this.Content.RootElement.ViewPort;
 				if (viewPort != null)
 				{
+					var offsetViewPort = Matrix3x2.CreateTranslation(-viewPort.Value.X, -viewPort.Value.Y);
 					var iar = viewPort.Value.Width / viewPort.Value.Height;
 					var car = sender.ActualWidth / sender.ActualHeight;
 
@@ -114,13 +115,13 @@ namespace Mntone.SvgForXaml.UI.Xaml
 					{
 						scale = (float)(sender.ActualWidth / viewPort.Value.Width);
 						offset = (float)(sender.ActualHeight - scale * viewPort.Value.Height) / 2.0F;
-						args.DrawingSession.Transform = Matrix3x2.CreateScale(scale) * Matrix3x2.CreateTranslation(0.0F, offset);
+						args.DrawingSession.Transform = offsetViewPort * Matrix3x2.CreateScale(scale) * Matrix3x2.CreateTranslation(0.0F, offset);
 					}
 					else
 					{
 						scale = (float)(sender.ActualHeight / viewPort.Value.Height);
 						offset = (float)(sender.ActualWidth - scale * viewPort.Value.Width) / 2.0F;
-						args.DrawingSession.Transform = Matrix3x2.CreateScale(scale) * Matrix3x2.CreateTranslation(offset, 0.0F);
+						args.DrawingSession.Transform = offsetViewPort * Matrix3x2.CreateScale(scale) * Matrix3x2.CreateTranslation(offset, 0.0F);
 					}
 				}
 
