@@ -239,9 +239,9 @@ namespace Mntone.SvgForXaml
 
 			var open = false;
 			var startPoint = new Vector2 { X = 0.0F, Y = 0.0F };
-			var prevC1 = new Vector2 { X = 0.0F, Y = 0.0F };
-			var prevC2 = new Vector2 { X = 0.0F, Y = 0.0F };
 			var v = new Vector2 { X = 0.0F, Y = 0.0F };
+			var prevC1 = v;
+			var prevC2 = v;
 
 			CanvasGeometry geometry;
 			using (var builder = new CanvasPathBuilder(this.ResourceCreator))
@@ -269,6 +269,8 @@ namespace Mntone.SvgForXaml
 						v.Y = casted.Y;
 						startPoint = v;
 						builder.BeginFigure(v);
+						prevC1 = v;
+						prevC2 = v;
 						open = true;
 						continue;
 					}
@@ -281,6 +283,8 @@ namespace Mntone.SvgForXaml
 						v.Y += casted.Y;
 						startPoint = v;
 						builder.BeginFigure(v);
+						prevC1 = v;
+						prevC2 = v;
 						open = true;
 						continue;
 					}
@@ -290,26 +294,14 @@ namespace Mntone.SvgForXaml
 						builder.BeginFigure(v);
 						open = true;
 					}
-					if (segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToCubicAbsolute
-						&& segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToCubicRelative
-						&& segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToCubicSmoothAbsolute
-						&& segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToCubicSmoothRelative)
-					{
-						prevC2 = v;
-					}
-					if (segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToQuadraticAbsolute
-						&& segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToQuadraticRelative
-						&& segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToQuadraticSmoothAbsolute
-						&& segment.PathSegmentType != SvgPathSegment.SvgPathSegmentType.CurveToQuadraticSmoothRelative)
-					{
-						prevC1 = v;
-					}
 					if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToAbsolute)
 					{
 						var casted = (SvgPathSegmentLineToAbsolute)segment;
 						v.X = casted.X;
 						v.Y = casted.Y;
 						builder.AddLine(v);
+						prevC1 = v;
+						prevC2 = v;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToRelative)
 					{
@@ -317,6 +309,8 @@ namespace Mntone.SvgForXaml
 						v.X += casted.X;
 						v.Y += casted.Y;
 						builder.AddLine(v);
+						prevC1 = v;
+						prevC2 = v;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicAbsolute)
 					{
@@ -325,6 +319,7 @@ namespace Mntone.SvgForXaml
 						v.X = casted.X;
 						v.Y = casted.Y;
 						builder.AddCubicBezier(new Vector2 { X = casted.X1, Y = casted.Y1 }, c2, v);
+						prevC1 = v;
 						prevC2 = c2;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicRelative)
@@ -339,6 +334,7 @@ namespace Mntone.SvgForXaml
 						v.X += casted.X;
 						v.Y += casted.Y;
 						builder.AddCubicBezier(c1, c2, v);
+						prevC1 = v;
 						prevC2 = c2;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticAbsolute)
@@ -349,6 +345,7 @@ namespace Mntone.SvgForXaml
 						v.Y = casted.Y;
 						builder.AddQuadraticBezier(c1, v);
 						prevC1 = c1;
+						prevC2 = v;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticRelative)
 					{
@@ -360,6 +357,7 @@ namespace Mntone.SvgForXaml
 						v.Y += casted.Y;
 						builder.AddQuadraticBezier(c1, v);
 						prevC1 = c1;
+						prevC2 = v;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.ArcAbsolute)
 					{
@@ -369,6 +367,8 @@ namespace Mntone.SvgForXaml
 						var size = casted.LargeArcFlag ? CanvasArcSize.Large : CanvasArcSize.Small;
 						var sweepDirection = casted.SweepFlag ? CanvasSweepDirection.Clockwise : CanvasSweepDirection.CounterClockwise;
 						builder.AddArc(v, casted.RadiusX, casted.RadiusY, 180.0F * casted.Angle / (float)Math.PI, sweepDirection, size);
+						prevC1 = v;
+						prevC2 = v;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.ArcRelative)
 					{
@@ -378,30 +378,40 @@ namespace Mntone.SvgForXaml
 						var size = casted.LargeArcFlag ? CanvasArcSize.Large : CanvasArcSize.Small;
 						var sweepDirection = casted.SweepFlag ? CanvasSweepDirection.Clockwise : CanvasSweepDirection.CounterClockwise;
 						builder.AddArc(v, casted.RadiusX, casted.RadiusY, 180.0F * casted.Angle / (float)Math.PI, sweepDirection, size);
+						prevC1 = v;
+						prevC2 = v;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToHorizontalAbsolute)
 					{
 						var casted = (SvgPathSegmentLineToHorizontalAbsolute)segment;
 						v.X = casted.X;
 						builder.AddLine(v);
+						prevC1 = v;
+						prevC2 = v;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToHorizontalRelative)
 					{
 						var casted = (SvgPathSegmentLineToHorizontalRelative)segment;
 						v.X += casted.X;
 						builder.AddLine(v);
+						prevC1 = v;
+						prevC2 = v;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToVerticalAbsolute)
 					{
 						var casted = (SvgPathSegmentLineToVerticalAbsolute)segment;
 						v.Y = casted.Y;
 						builder.AddLine(v);
+						prevC1 = v;
+						prevC2 = v;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.LineToVerticalRelative)
 					{
 						var casted = (SvgPathSegmentLineToVerticalRelative)segment;
 						v.Y += casted.Y;
 						builder.AddLine(v);
+						prevC1 = v;
+						prevC2 = v;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicSmoothAbsolute)
 					{
@@ -411,6 +421,7 @@ namespace Mntone.SvgForXaml
 						v.X = casted.X;
 						v.Y = casted.Y;
 						builder.AddCubicBezier(c1, c2, v);
+						prevC1 = v;
 						prevC2 = c2;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicSmoothRelative)
@@ -423,6 +434,7 @@ namespace Mntone.SvgForXaml
 						v.X += casted.X;
 						v.Y += casted.Y;
 						builder.AddCubicBezier(c1, c2, v);
+						prevC1 = v;
 						prevC2 = c2;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticSmoothAbsolute)
@@ -433,6 +445,7 @@ namespace Mntone.SvgForXaml
 						v.Y = casted.Y;
 						builder.AddQuadraticBezier(c1, v);
 						prevC1 = c1;
+						prevC2 = v;
 					}
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticSmoothRelative)
 					{
@@ -442,6 +455,7 @@ namespace Mntone.SvgForXaml
 						v.Y += casted.Y;
 						builder.AddQuadraticBezier(c1, v);
 						prevC1 = c1;
+						prevC2 = v;
 					}
 				}
 				if (open)
