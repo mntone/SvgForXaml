@@ -416,7 +416,11 @@ namespace Mntone.SvgForXaml
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicSmoothAbsolute)
 					{
 						var casted = (SvgPathSegmentCurveToCubicSmoothAbsolute)segment;
+#if WINDOWS_UWP
+						var c1 = 2 * v - prevC2;
+#else
 						var c1 = new Vector2 { X = 2 * v.X - prevC2.X, Y = 2 * v.Y - prevC2.Y };
+#endif
 						var c2 = new Vector2 { X = casted.X2, Y = casted.Y2 };
 						v.X = casted.X;
 						v.Y = casted.Y;
@@ -427,7 +431,11 @@ namespace Mntone.SvgForXaml
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToCubicSmoothRelative)
 					{
 						var casted = (SvgPathSegmentCurveToCubicSmoothRelative)segment;
+#if WINDOWS_UWP
+						var c1 = 2 * v - prevC2;
+#else
 						var c1 = new Vector2 { X = 2 * v.X - prevC2.X, Y = 2 * v.Y - prevC2.Y };
+#endif
 						var c2 = v;
 						c2.X += casted.X2;
 						c2.Y += casted.Y2;
@@ -440,7 +448,11 @@ namespace Mntone.SvgForXaml
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticSmoothAbsolute)
 					{
 						var casted = (SvgPathSegmentCurveToQuadraticSmoothAbsolute)segment;
+#if WINDOWS_UWP
+						var c1 = 2 * v - prevC1;
+#else
 						var c1 = new Vector2 { X = 2 * v.X - prevC1.X, Y = 2 * v.Y - prevC1.Y };
+#endif
 						v.X = casted.X;
 						v.Y = casted.Y;
 						builder.AddQuadraticBezier(c1, v);
@@ -450,7 +462,11 @@ namespace Mntone.SvgForXaml
 					else if (segment.PathSegmentType == SvgPathSegment.SvgPathSegmentType.CurveToQuadraticSmoothRelative)
 					{
 						var casted = (SvgPathSegmentCurveToQuadraticSmoothRelative)segment;
+#if WINDOWS_UWP
+						var c1 = 2 * v - prevC1;
+#else
 						var c1 = new Vector2 { X = 2 * v.X - prevC1.X, Y = 2 * v.Y - prevC1.Y };
+#endif
 						v.X += casted.X;
 						v.Y += casted.Y;
 						builder.AddQuadraticBezier(c1, v);
