@@ -42,7 +42,7 @@ namespace Mntone.SvgForXaml
 		public SvgDocument OwnerDocument => this.ParentNode?.OwnerDocument;
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-		public INode ParentNode { get; }
+		public INode ParentNode { get; internal set; }
 
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)]
 		public IReadOnlyCollection<SvgElement> ChildNodes { get; private set; }

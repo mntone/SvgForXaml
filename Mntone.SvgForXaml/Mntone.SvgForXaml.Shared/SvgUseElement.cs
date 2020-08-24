@@ -40,6 +40,7 @@ namespace Mntone.SvgForXaml
 				throw new NullReferenceException($"No element with id = {this.Href}");
 
 			var child = (SvgElement)refNode.CloneNode(true);
+			child.ParentNode = this;
 			if (child.GetType() == typeof(SvgSymbolElement))
 			{
 				throw new NotImplementedException();
