@@ -1,4 +1,4 @@
-﻿using Mntone.SvgForXaml.Gradients;
+using Mntone.SvgForXaml.Gradients;
 using Mntone.SvgForXaml.Interfaces;
 using Mntone.SvgForXaml.Internal;
 using Mntone.SvgForXaml.Maskings;
@@ -163,6 +163,10 @@ namespace Mntone.SvgForXaml
 
 					case "clipPath":
 						result.Add(new SvgClipPathElement(parent, elementNode));
+						break;
+
+					case "filter":
+						result.Add(new Filters.SvgFilterElement(parent, elementNode));
 						break;
 
 					default:

@@ -1,6 +1,7 @@
-﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
+using Mntone.SvgForXaml.Filters;
 using Mntone.SvgForXaml.Gradients;
 using Mntone.SvgForXaml.Maskings;
 using Mntone.SvgForXaml.Path;
@@ -15,7 +16,9 @@ using Windows.UI;
 
 #if WINDOWS_UWP
 using System.Numerics;
+using Windows.Graphics.Effects;
 #else
+using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.Numerics;
 #endif
 
@@ -28,6 +31,7 @@ namespace Mntone.SvgForXaml
 		protected Dictionary<int, CanvasSolidColorBrush> SolidResourceCache { get; }
 		protected Dictionary<SvgGradientElement, ICanvasBrush> ResourceCache { get; }
 		protected Dictionary<SvgPathElement, CanvasGeometry> PathCache { get; }
+		protected Dictionary<SvgFilterElement, IGraphicsEffectSource> FilterCache { get; }
 
 		private bool _disposed = false;
 
@@ -39,6 +43,7 @@ namespace Mntone.SvgForXaml
 			this.SolidResourceCache = new Dictionary<int, CanvasSolidColorBrush>();
 			this.ResourceCache = new Dictionary<SvgGradientElement, ICanvasBrush>();
 			this.PathCache = new Dictionary<SvgPathElement, CanvasGeometry>();
+			this.FilterCache = new Dictionary<SvgFilterElement, IGraphicsEffectSource>();
 		}
 
 		public void Dispose() => this.Dispose(true);

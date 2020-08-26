@@ -10,6 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CssStyleDeclaration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Filters\SvgFEGaussianBlurElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Filters\SvgFilterElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Gradients\SvgGradientElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Gradients\SvgLinearGradientElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Gradients\SvgRadialGradientElement.cs" />

@@ -1,15 +1,20 @@
-﻿using Mntone.SvgForXaml.Interfaces;
+using Mntone.SvgForXaml.Interfaces;
 using Mntone.SvgForXaml.Internal;
 using System;
 
 namespace Mntone.SvgForXaml.Primitives
 {
 	[System.Diagnostics.DebuggerDisplay("Number: {this.Value}")]
-	public struct SvgNumber : ICssValue
+	public struct SvgNumber : IEquatable<SvgNumber>, ICssValue
 	{
 		internal SvgNumber(float value)
 		{
 			this.Value = value;
+		}
+
+		public bool Equals(SvgNumber other)
+		{
+			return this.Value == other.Value;
 		}
 
 		public float Value { get; }
@@ -55,6 +60,15 @@ namespace Mntone.SvgForXaml.Primitives
 			result = Math.Min(Math.Max(float.Parse(numberText), min), max);
 			return true;
 		}
+
+		public static SvgNumber operator +(SvgNumber x, SvgNumber y) => x.Value + y.Value;
+		public static SvgNumber operator -(SvgNumber x, SvgNumber y) => x.Value - y.Value;
+		public static SvgNumber operator *(float x, SvgNumber y) => x * y.Value;
+		public static SvgNumber operator *(SvgNumber x, float y) => x.Value * y;
+		public static SvgNumber operator *(SvgNumber x, SvgNumber y) => x.Value * y.Value;
+		public static SvgNumber operator /(float x, SvgNumber y) => x / y.Value;
+		public static SvgNumber operator /(SvgNumber x, float y) => x.Value / y;
+		public static SvgNumber operator /(SvgNumber x, SvgNumber y) => x.Value / y.Value;
 
 		public static implicit operator SvgNumber(float f) => new SvgNumber(f);
 		public static implicit operator float(SvgNumber n) => n.Value;
