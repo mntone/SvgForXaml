@@ -14,6 +14,14 @@ namespace Mntone.SvgForXaml.Primitives
 			this.Height = height;
 		}
 
+		internal SvgRect(SvgNumber x, SvgNumber y, SvgNumber width, SvgNumber height)
+		{
+			this.X = x.Value;
+			this.Y = y.Value;
+			this.Width = width.Value;
+			this.Height = height.Value;
+		}
+
 		public float X { get; }
 		public float Y { get; }
 		public float Width { get; }
