@@ -13,9 +13,7 @@ namespace Mntone.SvgForXaml.Gradients
 			this._stylableHelper = new SvgStylableHelper(this, element);
 			this._transformableHelper = new SvgTransformableHelper(element);
 
-			var gradientUnits = SvgUnitTypeHelper.Parse(element.GetAttribute("gradientUnits"));
-			if (gradientUnits == SvgUnitType.Unknown) gradientUnits = SvgUnitType.ObjectBoundingBox;
-			this.GradientUnits = gradientUnits;
+			this.GradientUnits = SvgUnitTypeHelper.Parse(element.GetAttribute("gradientUnits"), SvgUnitType.ObjectBoundingBox);
 
 			this.GradientTransform = SvgTransformParser.Parse(element.GetAttribute("gradientTransform"));
 

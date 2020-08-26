@@ -13,9 +13,7 @@ namespace Mntone.SvgForXaml.Maskings
 			this._stylableHelper = new SvgStylableHelper(this, element);
 			this._transformableHelper = new SvgTransformableHelper(element);
 
-			var clipPathUnits = SvgUnitTypeHelper.Parse(element.GetAttribute("clipPathUnits"));
-			if (clipPathUnits == SvgUnitType.Unknown) clipPathUnits = SvgUnitType.UserSpaceOnUse;
-			this.ClipPathUnits = clipPathUnits;
+			this.ClipPathUnits = SvgUnitTypeHelper.Parse(element.GetAttribute("clipPathUnits"), SvgUnitType.UserSpaceOnUse);
 		}
 
 		protected override void DeepCopy(SvgElement element)
