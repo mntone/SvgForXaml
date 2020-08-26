@@ -43,6 +43,13 @@ namespace Mntone.SvgForXaml.Gradients
 		public ICssValue GetPresentationAttribute(string name) => this._stylableHelper.GetPresentationAttribute(name);
 		#endregion
 
+		#region ISvgLocatable
+		public virtual SvgRect GetBBox()
+		{
+			throw new NotSupportedException();
+		}
+		#endregion
+
 		#region ISvgTransformable
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
 		private SvgTransformableHelper _transformableHelper;

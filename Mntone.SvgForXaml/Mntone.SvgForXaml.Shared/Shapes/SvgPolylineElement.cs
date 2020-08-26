@@ -34,6 +34,21 @@ namespace Mntone.SvgForXaml.Shapes
 		public ICssValue GetPresentationAttribute(string name) => this._stylableHelper.GetPresentationAttribute(name);
 		#endregion
 
+		#region ISvgLocatable
+		public SvgRect GetBBox()
+		{
+			float left = float.MaxValue, top = float.MinValue, right = float.MaxValue, bottom = float.MinValue;
+			foreach (var point in this.Points)
+			{
+				if (point.X < left) left = point.X;
+				if (point.X > right) right = point.X;
+				if (point.Y < top) top = point.Y;
+				if (point.Y > bottom) bottom = point.Y;
+			}
+			return new SvgRect(left, top, right - left, bottom - top);
+		}
+		#endregion
+
 		#region ISvgTransformable
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
 		private SvgTransformableHelper _transformableHelper;

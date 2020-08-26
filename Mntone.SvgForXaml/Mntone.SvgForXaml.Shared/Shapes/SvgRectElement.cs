@@ -73,6 +73,10 @@ namespace Mntone.SvgForXaml.Shapes
 		public ICssValue GetPresentationAttribute(string name) => this._stylableHelper.GetPresentationAttribute(name);
 		#endregion
 
+		#region ISvgLocatable
+		public SvgRect GetBBox() => new SvgRect(this.X.ValueAsPixel, this.Y.ValueAsPixel, this.Width.ValueAsPixel, this.Height.ValueAsPixel);
+		#endregion
+
 		#region ISvgTransformable
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
 		private SvgTransformableHelper _transformableHelper;

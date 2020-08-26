@@ -30,7 +30,11 @@ namespace Mntone.SvgForXaml
 		public CssStyleDeclaration Style => this._stylableHelper.Style;
 		public ICssValue GetPresentationAttribute(string name) => this._stylableHelper.GetPresentationAttribute(name);
 		#endregion
-	
+
+		#region ISvgLocatable
+		public SvgRect GetBBox() => SvgLocatableHelper.GetUnionBBox(this);
+		#endregion
+
 		#region ISvgTransformable
 		[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
 		private SvgTransformableHelper _transformableHelper;

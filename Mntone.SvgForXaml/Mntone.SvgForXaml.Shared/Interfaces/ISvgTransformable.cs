@@ -1,8 +1,8 @@
-﻿using Mntone.SvgForXaml.Primitives;
+using Mntone.SvgForXaml.Primitives;
 
 namespace Mntone.SvgForXaml.Interfaces
 {
-	interface ISvgTransformable
+	public interface ISvgTransformable : ISvgLocatable
 	{
 		SvgTransformCollection Transform { get; }
 	}

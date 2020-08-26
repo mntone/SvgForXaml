@@ -22,5 +22,35 @@ namespace Mntone.SvgForXaml.Gradients
 		public SvgLength Y1 { get; }
 		public SvgLength X2 { get; }
 		public SvgLength Y2 { get; }
+
+		#region ISvgLocatable
+		public override SvgRect GetBBox()
+		{
+			float left, right;
+			if (this.X1 < this.X2)
+			{
+				left = this.X1.ValueAsPixel;
+				right = this.X2.ValueAsPixel;
+			}
+			else
+			{
+				left = this.X2.ValueAsPixel;
+				right = this.X1.ValueAsPixel;
+			}
+
+			float top, bottom;
+			if (this.Y1 < this.Y2)
+			{
+				top = this.Y1.ValueAsPixel;
+				bottom = this.Y2.ValueAsPixel;
+			}
+			else
+			{
+				top = this.Y2.ValueAsPixel;
+				bottom = this.Y1.ValueAsPixel;
+			}
+			return new SvgRect(left, top, right - left, bottom - top);
+		}
+		#endregion
 	}
 }

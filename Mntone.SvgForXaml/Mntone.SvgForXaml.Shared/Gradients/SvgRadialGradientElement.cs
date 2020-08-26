@@ -24,5 +24,14 @@ namespace Mntone.SvgForXaml.Gradients
 		public SvgLength Radius { get; }
 		public SvgLength FocusX { get; }
 		public SvgLength FocusY { get; }
+
+		#region ISvgLocatable
+		public override SvgRect GetBBox()
+		{
+			var radius = this.Radius.ValueAsPixel;
+			var diameter = 2.0F * radius;
+			return new SvgRect(this.CenterX.ValueAsPixel - radius, this.CenterY.ValueAsPixel - radius, diameter, diameter);
+		}
+		#endregion
 	}
 }

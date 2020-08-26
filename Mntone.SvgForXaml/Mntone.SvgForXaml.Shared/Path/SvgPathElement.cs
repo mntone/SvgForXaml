@@ -1,6 +1,7 @@
 ﻿using Mntone.SvgForXaml.Interfaces;
 using Mntone.SvgForXaml.Internal;
 using Mntone.SvgForXaml.Primitives;
+using System;
 using Windows.Data.Xml.Dom;
 
 namespace Mntone.SvgForXaml.Path
@@ -35,6 +36,13 @@ namespace Mntone.SvgForXaml.Path
 		public string ClassName => this._stylableHelper.ClassName;
 		public CssStyleDeclaration Style => this._stylableHelper.Style;
 		public ICssValue GetPresentationAttribute(string name) => this._stylableHelper.GetPresentationAttribute(name);
+		#endregion
+
+		#region ISvgLocatable
+		public SvgRect GetBBox()
+		{
+			throw new NotImplementedException();
+		}
 		#endregion
 
 		#region ISvgTransformable

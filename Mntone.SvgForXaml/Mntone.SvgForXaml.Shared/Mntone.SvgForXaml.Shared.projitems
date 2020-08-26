@@ -18,11 +18,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ICssValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\INode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ISvgLocatable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ISvgStylable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ISvgTransformable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internal\LinqExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internal\StringPtr.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internal\SvgHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internal\SvgLocatableHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internal\SvgStylableHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internal\SvgTransformableHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internal\SvgTransformParser.cs" />
